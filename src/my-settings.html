@@ -1,0 +1,83 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="../bower_components/note-app-elements/na-elements.html">
+
+<dom-module id="my-settings">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <div class="card">
+      <h1>Settings</h1>
+     <!--  <na-toolbar
+        signed-in="[[signedIn]]"
+        on-sign-out="signOut">
+      </na-toolbar> -->
+      <na-login
+          on-sign-in="signIn"
+          signed-in="[[signedIn]]"
+          disabled="[[!online]]">
+      </na-login>
+      <firebase-app auth-domain="glass-turbine-148103.firebaseapp.com"
+        database-url="https://glass-turbine-148103.firebaseio.com/"
+        api-key="AIzaSyDXbD71Y_uA8ldm1h9S2-6AOgl73UOid1U">
+      </firebase-app>
+      <firebase-auth
+        id="auth"
+        provider="google"
+        signed-in="{{signedIn}}"
+        user="{{user}}">
+      </firebase-auth>
+      <firebase-document
+        path="update-sale-quanity-demo"
+        data="{{data}}">
+      </firebase-document>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-settings',
+      behaviors: [Polymer.NoteAppBehavior],
+      signIn: function() {
+          this.$.auth
+            .signInWithPopup()
+            .then(function(response) {})
+            .catch(function(error) {});
+      },
+      properites: {
+        data: {
+          type: Object,
+          reflectToAttribute: true,
+          notify: true,
+          value: {},
+          observer: ['_onChange']
+        },
+        testAttr: {
+          type: String,
+          value: 'Test Attri from Property',
+          reflectToAttribute: true
+        }
+      },
+      _onChange(){
+        console.log('see data change');
+      }
+    });
+  </script>
+</dom-module>
