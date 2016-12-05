@@ -1,0 +1,19 @@
+{
+  "name": "polymer-update-sale-quanity-demo",
+  "version": "1.0.0",
+  "description": "polymer-update-sale-quanity-demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "node mocha"
+  },
+  "author": "Anh Le Hoang",
+  "license": "MIT",
+  "dependencies": {
+    "firebase": "^3.6.2",
+    "firebase-admin": "^4.0.3"
+  },
+  "devDependencies": {
+    "assert": "^1.4.1",
+    "mocha": "^3.2.0"
+  }
+}
