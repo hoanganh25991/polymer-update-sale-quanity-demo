@@ -22,15 +22,42 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
         </style>
 
-        <div class="card">
-            <h1>Check auth</h1>
-            <h1>Ask for Google login</h1>
-        </div>
+        <template is="dom-repeat" items="{{stores}}" initialCount="10">
+            <div class="card" on-tap="listProduct" id="[[item.name]]">
+                <p><strong>[[item.name]]</strong></p>
+                <p>[[item.address]]</p>
+            </div>
+        </template>
+
     </template>
 
     <script>
         Polymer({
-            is: 'my-stores'
+            is: 'my-stores',
+            properties: {
+                stores: {
+                    type: Array,
+                    reflectToAttribute: true,
+                    value(){
+                        return [];
+                    }
+                },
+                products: {
+                    type: Array
+                }
+            },
+            listProduct(e){
+//                let div = e.target;
+//                let div = e.currentTarget;
+//                console.log('tab on div');
+//                console.log(div);
+//                let productPage = `${window.location.origin}/stores/${div.id}/products`;
+//                window.location.href = productPage;
+            },
+            ready(){
+                console.log('<my-stores> log stores property');
+                console.log(this.stores);
+            }
         });
     </script>
 </dom-module>
