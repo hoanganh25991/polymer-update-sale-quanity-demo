@@ -21,15 +21,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-icons.html">
-<!--<link rel="import" href="../bower_components/paper-search/paper-search.html">
-<link rel="import" href="../bower_components/paper-search/paper-search-bar.html">-->
-<link rel="import" href="my-search-bar.html">
+<link rel="import" href="my-login.html">
+<link rel="import" href="my-toolbar.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
 <dom-module id="my-app">
     <template>
         <style>
             :host {
-                --app-primary-color: #F9A825;
+                --app-primary-color: #E65100;
                 --app-secondary-color: black;
 
                 display: block;
@@ -72,7 +72,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 route="{{route}}"
                 pattern="/:page"
                 data="{{routeData}}"
-                tail="{{subroute}}"></app-route>
+                tail="{{subroute}}">
+        </app-route>
 
         <app-drawer-layout fullbleed>
             <!-- Drawer content -->
@@ -86,7 +87,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <!-- Main content -->
             <app-header-layout has-scrolling-region>
-
                 <app-header condenses reveals effects="waterfall">
                     <app-toolbar>
                         <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
@@ -94,13 +94,43 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     </app-toolbar>
                 </app-header>
 
+                <!--Handle Google login-->
+                <!--Google login allow get user's info-->
+                <my-toolbar
+                        signed-in="[[signedIn]]"
+                        on-sign-out="signOut">
+                </my-toolbar>
+                <my-login
+                        on-sign-in="signIn"
+                        signed-in="[[signedIn]]"
+                        disabled="[[!online]]">
+                </my-login>
+                <firebase-app
+                        auth-domain="glass-turbine-148103.firebaseapp.com"
+                        database-url="https://glass-turbine-148103.firebaseio.com"
+                        api-key="AIzaSyDXbD71Y_uA8ldm1h9S2-6AOgl73UOid1U">
+                </firebase-app>
+                <firebase-auth
+                        id="auth"
+                        provider="google"
+                        signed-in="{{signedIn}}"
+                        user="{{user}}">
+                </firebase-auth>
+                <firebase-document
+                        id="document"
+                        path="[[saleBranch]]"
+                        data="{{stores}}">
+                </firebase-document>
+
+                <!--Switch main page view-->
                 <iron-pages
                         selected="[[page]]"
                         attr-for-selected="name"
                         fallback-selection="view404"
                         role="main">
                     <my-stores name="stores"></my-stores>
-                    <my-view2 name="settings"></my-view2>
+                    <my-settings name="settings"></my-settings>
+                    <!--Fallback 404-->
                     <my-view404 name="view404"></my-view404>
                 </iron-pages>
             </app-header-layout>
@@ -117,9 +147,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     reflectToAttribute: true,
                     observer: '_pageChanged'
                 },
-                data: {
+                stores: {
                     type: Object
+                },
+                signedIn: {
+                    type: Boolean
+                },
+                user: {
+                    type: Object
+                },
+                saleBranch: {
+                    type: String
                 }
+            },
+
+            signIn(){
+                this.$.auth
+                    .signInWithPopup()
+                    .then()
+                    .catch();
+            },
+
+            ready(){
+                /**
+                 * Load config from server
+                 */
+                this.saleBranch = 'update-sale-quanity-demo';
             },
 
             observers: [

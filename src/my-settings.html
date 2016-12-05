@@ -10,7 +10,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
 <dom-module id="my-settings">
     <template>
@@ -30,31 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <script>
         Polymer({
             is: 'my-settings',
-            behaviors: [Polymer.NoteAppBehavior],
-            signIn(){
-                this.$.auth
-                    .signInWithPopup()
-                    .then(function(response){
-                    })
-                    .catch(function(error){
-                    });
-            },
             properites: {
-                data: {
-                    type: Object,
-                    reflectToAttribute: true,
-                    notify: true,
-                    value: {},
-                    observer: ['_onChange']
-                },
-                testAttr: {
-                    type: String,
-                    value: 'Test Attri from Property',
-                    reflectToAttribute: true
-                }
-            },
-            _onChange(){
-                console.log('see data change');
             }
         });
     </script>
