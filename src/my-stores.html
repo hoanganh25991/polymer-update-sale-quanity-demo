@@ -28,13 +28,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 data="{{stores}}">
         </firebase-document>
 
-        <template is="dom-repeat" items="{{stores}}" initialCount="10">
-            <div class="card" on-tap="listProduct" id="[[item.name]]">
-                <p><strong>[[item.name]]</strong></p>
-                <p>[[item.address]]</p>
-            </div>
+        <template is="dom-if" if="[[isStoresArray]]">
+            <template is="dom-repeat" items="{{stores}}" initialCount="10">
+                <div class="card" on-tap="listProduct" id="[[item.name]]">
+                    <p><strong>[[index]]. [[item.name]]</strong></p>
+                    <p>[[item.address]]</p>
+                </div>
+            </template>
         </template>
-
     </template>
 
     <script>
@@ -46,6 +47,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 },
                 stores: {
                     type: Array
+                },
+                isStoresArray:{
+                    type: Boolean,
+                    computed: '_isStoresArray(stores)'
                 },
                 products: {
                     type: Array
@@ -66,6 +71,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 // Load config from server
                 this.saleBranch = 'update-sale-quanity-demo';
             },
+            _isStoresArray(stores){
+                if(Array.isArray(stores)){
+                    return true;
+                }
+
+                return false;
+            }
         });
     </script>
 </dom-module>
