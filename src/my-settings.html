@@ -35,7 +35,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           disabled="[[!online]]">
       </na-login>
       <firebase-app auth-domain="glass-turbine-148103.firebaseapp.com"
-        database-url="https://glass-turbine-148103.firebaseio.com/"
+        database-url="glass-turbine-148103.firebaseio.com/"
         api-key="AIzaSyDXbD71Y_uA8ldm1h9S2-6AOgl73UOid1U">
       </firebase-app>
       <firebase-auth
@@ -75,7 +75,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           reflectToAttribute: true
         }
       },
-      _onChange(){
+      _onChange: function(){
         console.log('see data change');
       }
     });
