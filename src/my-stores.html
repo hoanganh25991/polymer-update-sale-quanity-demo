@@ -22,6 +22,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
         </style>
 
+        <firebase-document
+                id="document"
+                path="/[[saleBranch]]/stores"
+                data="{{stores}}">
+        </firebase-document>
+
         <template is="dom-repeat" items="{{stores}}" initialCount="10">
             <div class="card" on-tap="listProduct" id="[[item.name]]">
                 <p><strong>[[item.name]]</strong></p>
@@ -35,12 +41,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         Polymer({
             is: 'my-stores',
             properties: {
+                saleBranch: {
+                    type: String
+                },
                 stores: {
-                    type: Array,
-                    reflectToAttribute: true,
-                    value(){
-                        return [];
-                    }
+                    type: Array
                 },
                 products: {
                     type: Array
@@ -54,10 +59,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 //                let productPage = `${window.location.origin}/stores/${div.id}/products`;
 //                window.location.href = productPage;
             },
+            /**
+             * Dom ready, load config|default
+             */
             ready(){
-                console.log('<my-stores> log stores property');
-                console.log(this.stores);
-            }
+                // Load config from server
+                this.saleBranch = 'update-sale-quanity-demo';
+            },
         });
     </script>
 </dom-module>

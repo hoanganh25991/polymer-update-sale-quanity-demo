@@ -120,11 +120,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         signed-in="{{signedIn}}"
                         user="{{user}}">
                 </firebase-auth>
-                <firebase-document
-                        id="document"
-                        path="/[[saleBranch]]/stores"
-                        data="{{stores}}">
-                </firebase-document>
 
                 <!--Switch main page view-->
                 <iron-pages
@@ -132,8 +127,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         attr-for-selected="name"
                         fallback-selection="view404"
                         role="main">
-                    <my-stores name="stores" stores="{{stores}}"></my-stores>
-                    <my-settings name="settings"></my-settings>
+                    <my-stores name="stores"></my-stores>
+                    <my-settings name="settings" user="{{user}}"></my-settings>
                     <!--Fallback 404-->
                     <my-view404 name="view404"></my-view404>
                 </iron-pages>
@@ -151,17 +146,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     reflectToAttribute: true,
                     observer: '_pageChanged'
                 },
-                stores: {
-                    type: Array
-                },
                 signedIn: {
                     type: Boolean
                 },
                 user: {
                     type: Object
-                },
-                saleBranch: {
-                    type: String
                 },
                 online: {
                     type: Boolean
@@ -182,14 +171,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             signOut(){
                 this.$.auth.signOut();
-            },
-
-            /**
-             * Dom ready, load config|default
-             */
-            ready(){
-                // Load config from server
-                this.saleBranch = 'update-sale-quanity-demo';
             },
 
             observers: [
