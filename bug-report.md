@@ -4,3 +4,12 @@ when reload as hostname/view1 > can not get
 when reload as hostname/view2 > can not get
 
 ONLY navigate through menu is allowd
+
+    Solved! live-server --host=localhost --wait=1000 --port=3000 go wrong
+
+#Dom repeat
+Stores when binded, at first it is empty object (firebase default val)
+
+When get return from server, stores updated as array
+
+Object > Array > Dom repeat errors at first sight

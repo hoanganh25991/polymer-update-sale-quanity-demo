@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="71c35e1b-137c-4f76-ac31-c5b388854aed" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/my-app.html" afterPath="$PROJECT_DIR$/src/my-app.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/my-settings.html" afterPath="$PROJECT_DIR$/src/my-settings.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/my-stores.html" afterPath="$PROJECT_DIR$/src/my-stores.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bug-report.md" afterPath="$PROJECT_DIR$/bug-report.md" />
     </list>
     <ignored path="polymer-update-sale-quanity-demo.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -27,12 +24,15 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="my-settings.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/my-settings.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="674">
-              <caret line="58" column="25" selection-start-line="58" selection-start-column="25" selection-end-line="58" selection-end-column="25" />
-              <folding />
+      <file leaf-file-name="bug-report.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/bug-report.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="336">
+                <caret line="14" column="49" selection-start-line="14" selection-start-column="49" selection-end-line="14" selection-end-column="49" />
+                <folding />
+              </first_editor>
+              <second_editor />
             </state>
           </provider>
         </entry>
@@ -53,6 +53,7 @@
         <option value="$PROJECT_DIR$/src/my-stores.html" />
         <option value="$PROJECT_DIR$/src/my-app.html" />
         <option value="$PROJECT_DIR$/src/my-settings.html" />
+        <option value="$PROJECT_DIR$/bug-report.md" />
       </list>
     </option>
   </component>
@@ -477,12 +478,12 @@
       <updated>1480941663223</updated>
       <workItem from="1480941665760" duration="936000" />
       <workItem from="1480942654974" duration="10322000" />
-      <workItem from="1480977318318" duration="371000" />
+      <workItem from="1480977318318" duration="542000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11629000" />
+    <option name="totallyTimeSpent" value="11800000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
@@ -1006,9 +1007,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/my-settings.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="674">
-          <caret line="58" column="25" selection-start-line="58" selection-start-column="25" selection-end-line="58" selection-end-column="25" />
-          <folding />
+        <state relative-caret-position="506">
+          <caret line="51" column="29" selection-start-line="51" selection-start-column="29" selection-end-line="51" selection-end-column="29" />
+          <folding>
+            <marker date="1480977650861" expanded="true" signature="4:509" ph="..." />
+            <marker date="1480977650861" expanded="true" signature="657:1990" ph="..." />
+            <marker date="1480977650861" expanded="true" signature="672:1726" ph="..." />
+            <marker date="1480977650861" expanded="true" signature="712:827" ph="..." />
+            <marker date="1480977650861" expanded="true" signature="732:811" ph="{...}" />
+            <marker date="1480977650861" expanded="true" signature="855:1710" ph="..." />
+            <marker date="1480977650861" expanded="true" signature="1740:1976" ph="..." />
+            <marker date="1480977650861" expanded="true" signature="1758:1961" ph="{&quot;is&quot;: 'my-settings'...}" />
+            <marker date="1480977650861" expanded="true" signature="1815:1951" ph="{...}" />
+            <marker date="1480977650861" expanded="true" signature="1839:1937" ph="{&quot;reflectToAttribute&quot;: true...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bug-report.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="336">
+            <caret line="14" column="49" selection-start-line="14" selection-start-column="49" selection-end-line="14" selection-end-column="49" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
