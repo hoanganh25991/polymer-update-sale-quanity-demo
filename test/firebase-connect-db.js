@@ -8,12 +8,13 @@ describe('firebase-connect-db', function() {
 
     	let ref = firebaseDb.ref(util.saleBranch);
 
-    	return new Promise(function (resolve) {
-			    ref.once('value', function(snapshot){
-	    			assert(true);
-	    			resolve();
-	    		})
-			})
+    	return Promise.resolve(
+				ref.once('value')
+					.then(() => {
+						assert(true);
+						resolve();
+					})
+			)
 			.then(done());
     });
 });
