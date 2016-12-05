@@ -29,7 +29,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template>
         <style>
             :host {
-                --app-primary-color: #E65100;
+                --app-primary-color: var(--paper-yellow-900);
                 --app-secondary-color: black;
 
                 display: block;
@@ -161,17 +161,27 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
             },
 
+            /**
+             * Handle login|logout Google
+             * When Google signed-in
+             * Can use firebase
+             */
             signIn(){
                 this.$.auth
                     .signInWithPopup()
-                    .then()
-                    .catch();
+                    .then(resolve => {console.log('Google login success')})
+                    .catch(reject => {console.log('Google login failed')});
             },
 
+            signOut(){
+                this.$.auth.signOut();
+            },
+
+            /**
+             * Dom ready, load config|default
+             */
             ready(){
-                /**
-                 * Load config from server
-                 */
+                // Load config from server
                 this.saleBranch = 'update-sale-quanity-demo';
             },
 
