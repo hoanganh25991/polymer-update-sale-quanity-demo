@@ -13,3 +13,12 @@ Stores when binded, at first it is empty object (firebase default val)
 When get return from server, stores updated as array
 
 Object > Array > Dom repeat errors at first sight
+
+	Solved! Check by dom-if
+
+#Node js with async
+At node 7+ (current nigthly build has node 8), we can use async/await
+
+Node can parse async synctax need flag as
+
+	--harmony-async-await
