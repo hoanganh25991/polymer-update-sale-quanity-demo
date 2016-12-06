@@ -162,14 +162,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
              * When Google signed-in
              * Can use firebase
              */
-            signIn(){
+            signIn: function(){
                 this.$.auth
                     .signInWithPopup()
-                    .then(resolve => {console.log('Google login success')})
-                    .catch(reject => {console.log('Google login failed')});
+                    .then(function(resolve){console.log('Google login success')})
+                    .catch(function(reject){console.log('Google login failed')});
             },
 
-            signOut(){
+            signOut: function(){
                 this.$.auth.signOut();
             },
 
