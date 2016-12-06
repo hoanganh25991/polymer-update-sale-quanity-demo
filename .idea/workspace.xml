@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="71c35e1b-137c-4f76-ac31-c5b388854aed" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/firebase-query.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/my-stores.html" afterPath="$PROJECT_DIR$/src/my-stores.html" />
     </list>
     <ignored path="polymer-update-sale-quanity-demo.iws" />
@@ -28,8 +30,8 @@
       <file leaf-file-name="my-stores.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/my-stores.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
-              <caret line="42" column="28" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
+            <state relative-caret-position="350">
+              <caret line="122" column="35" selection-start-line="122" selection-start-column="35" selection-end-line="122" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -51,6 +53,7 @@
         <option value="$PROJECT_DIR$/src/my-app.html" />
         <option value="$PROJECT_DIR$/src/my-settings.html" />
         <option value="$PROJECT_DIR$/bug-report.md" />
+        <option value="$PROJECT_DIR$/lib/firebase-query.js" />
         <option value="$PROJECT_DIR$/src/my-stores.html" />
       </list>
     </option>
@@ -68,8 +71,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="54" />
     <option name="y" value="-8" />
-    <option name="width" value="1874" />
-    <option name="height" value="1096" />
+    <option name="width" value="1554" />
+    <option name="height" value="916" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -160,7 +163,39 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="polymer-update-sale-quanity-demo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="polymer-update-sale-quanity-demo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="bower_components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="polymer-update-sale-quanity-demo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="polymer-update-sale-quanity-demo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="bower_components" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="paper-expansion-panel" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -476,19 +511,19 @@
       <updated>1480941663223</updated>
       <workItem from="1480941665760" duration="936000" />
       <workItem from="1480942654974" duration="10322000" />
-      <workItem from="1480977318318" duration="1311000" />
+      <workItem from="1480977318318" duration="10087000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12569000" />
+    <option name="totallyTimeSpent" value="21345000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
+    <frame x="54" y="-8" width="1554" height="916" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21334068" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25903615" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -987,10 +1022,256 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/firebase/firebase.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="229" column="4" selection-start-line="229" selection-start-column="4" selection-end-line="229" selection-end-column="4" />
+          <folding>
+            <marker date="1480910718404" expanded="false" signature="0:99" ph="/*...*/" />
+            <marker date="1480910718404" expanded="true" signature="127:2618" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="155:236" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="285:475" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="538:817" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="871:1021" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="1066:2016" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="2039:2166" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="2651:2869" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="2669:2867" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="2903:6496" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="2953:4387" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="4416:4443" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="4470:4499" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="4562:4693" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="4767:4796" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="4816:4860" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="4929:5034" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="5111:5235" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="5300:5405" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="5480:5604" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="5669:5817" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="5892:6016" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="6083:6212" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="6288:6378" ph="{...}" />
+            <marker date="1480910718404" expanded="true" signature="6404:6493" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="6534:10350" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="6561:6953" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="6976:7162" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="7189:7655" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="7675:9014" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="9070:10148" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="10400:10402" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="10441:10848" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="10465:10846" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="10885:13848" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="10952:11161" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="11185:11924" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="11955:12212" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="12151:12180" ph="/*...*/" />
+            <marker date="1480910718404" expanded="true" signature="12234:12537" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="12589:12700" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="12747:12782" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="12829:12952" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="13024:13056" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="13081:13564" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="13597:13846" ph="..." />
+            <marker date="1480910718404" expanded="true" signature="13876:13900" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/polymerfire/firebase-query.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="501">
+          <caret line="118" column="0" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+          <folding>
+            <marker date="1480910718491" expanded="true" signature="4:225" ph="..." />
+            <marker date="1480910718491" expanded="true" signature="346:1370" ph="..." />
+            <marker date="1480910718491" expanded="true" signature="1405:11828" ph="..." />
+            <marker date="1480910718491" expanded="true" signature="1416:11814" ph="..." />
+            <marker date="1480910718491" expanded="true" signature="1434:11799" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="1471:11791" ph="{&quot;is&quot;: 'firebase-query'...}" />
+            <marker date="1480910718491" expanded="true" signature="1523:1577" ph="[...]" />
+            <marker date="1480910718491" expanded="true" signature="1600:4306" ph="{...}" />
+            <marker date="1480910718491" expanded="false" signature="1612:1808" ph="/** [`firebase.database.Query`](https://firebase.google.com/docs/reference/js/firebase.database.Query##property) ...*/" />
+            <marker date="1480910718491" expanded="true" signature="1826:2029" ph="{&quot;computed&quot;: '__computeQuery(ref, orderByChild, orderByValue, limitToFirst, limitToLast, startAt, endAt, equalTo)'...}" />
+            <marker date="1480910718491" expanded="false" signature="2042:2249" ph="/** The child key of each query result to order the query by. ...*/" />
+            <marker date="1480910718491" expanded="true" signature="2274:2335" ph="{&quot;value&quot;: ''...}" />
+            <marker date="1480910718491" expanded="false" signature="2348:2518" ph="/** Order this query by values. This is only applicable to leaf node queries ...*/" />
+            <marker date="1480910718491" expanded="true" signature="2543:2608" ph="{&quot;value&quot;: false...}" />
+            <marker date="1480910718491" expanded="true" signature="2621:2900" ph="/** The value to start at in the query. ...*/" />
+            <marker date="1480910718491" expanded="true" signature="2920:2981" ph="{&quot;value&quot;: ''...}" />
+            <marker date="1480910718491" expanded="false" signature="2994:3267" ph="/** The value to end at in the query. ...*/" />
+            <marker date="1480910718491" expanded="true" signature="3285:3346" ph="{&quot;value&quot;: ''...}" />
+            <marker date="1480910718491" expanded="true" signature="3359:3605" ph="/** Specifies a child-key value that must be matched for each candidate result. ...*/" />
+            <marker date="1480910718491" expanded="true" signature="3625:3688" ph="{&quot;value&quot;: null...}" />
+            <marker date="1480910718491" expanded="false" signature="3701:3908" ph="/** The maximum number of nodes to include in the query. ...*/" />
+            <marker date="1480910718491" expanded="true" signature="3933:3993" ph="{&quot;value&quot;: 0...}" />
+            <marker date="1480910718491" expanded="false" signature="4006:4212" ph="/** The maximum number of nodes to include in the query. ...*/" />
+            <marker date="1480910718491" expanded="true" signature="4236:4296" ph="{&quot;value&quot;: 0...}" />
+            <marker date="1480910718491" expanded="true" signature="4337:4375" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="4407:4473" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="4505:4634" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="4541:4574" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="4666:4711" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="4734:4809" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="4836:4868" ph="{...}" />
+            <marker date="1480910718491" expanded="false" signature="4879:4915" ph="/** @override ...*/" />
+            <marker date="1480910718491" expanded="true" signature="4964:5397" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="5037:5356" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="5184:5275" ph="{...}" />
+            <marker date="1480910718491" expanded="false" signature="5408:5444" ph="/** @override ...*/" />
+            <marker date="1480910718491" expanded="true" signature="5500:5905" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="5573:5871" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="5749:5815" ph="{...}" />
+            <marker date="1480910718491" expanded="false" signature="5916:5952" ph="/** @override ...*/" />
+            <marker date="1480910718491" expanded="true" signature="6006:6362" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6079:6130" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6170:6270" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6276:6352" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6408:6574" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6509:6564" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6695:7482" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6724:6762" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6814:6879" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6903:6956" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="6962:7013" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="7043:7110" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="7133:7198" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="7223:7280" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="7303:7356" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="7390:7447" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="7535:8400" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="7561:7994" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="7917:7980" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="8017:8390" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="8441:8674" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="8470:8643" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="8527:8631" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="8574:8617" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="8746:9116" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="9172:9570" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="9330:9560" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="9402:9546" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="9447:9530" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="9626:10703" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="9781:10693" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="9817:10679" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="10015:10663" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="10033:10146" ph="//..." />
+            <marker date="1480910718491" expanded="true" signature="10192:10570" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="10240:10335" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="10381:10552" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="10439:10532" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="10576:10647" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="10775:11448" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="11060:11438" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="11239:11424" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="11284:11408" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="11497:11783" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="11641:11700" ph="{...}" />
+            <marker date="1480910718491" expanded="true" signature="11706:11749" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/firebase-connect-db.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1480908758041" expanded="true" signature="335:453" ph="{&quot;databaseURL&quot;: &quot;https://glass-turbine-148103.firebaseio.com/&quot;...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+          <folding>
+            <marker date="1480908651917" expanded="true" signature="0:44" ph="/** Resolve relative to absolute path ...*/" />
+            <marker date="1480908651917" expanded="true" signature="129:275" ph="{...}" />
+            <marker date="1480908651917" expanded="true" signature="208:233" ph="{...}" />
+            <marker date="1480908651917" expanded="false" signature="278:319" ph="/** Firbase branch for this projct ...*/" />
+            <marker date="1480908651917" expanded="false" signature="369:391" ph="/** Export util ...*/" />
+            <marker date="1480908651917" expanded="true" signature="403:429" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/firebase-query.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="8" column="23" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
+          <folding>
+            <marker date="1480989963779" expanded="true" signature="196:249" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/firebase-write-dummy-data.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="48">
+          <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
+          <folding>
+            <marker date="1480909976752" expanded="true" signature="159:1293" ph="{...}" />
+            <marker date="1480909976752" expanded="true" signature="170:348" ph="[...]" />
+            <marker date="1480909976752" expanded="true" signature="174:256" ph="{&quot;name&quot;: 'store A'...}" />
+            <marker date="1480909976752" expanded="true" signature="260:345" ph="{&quot;name&quot;: 'store B'...}" />
+            <marker date="1480909976752" expanded="true" signature="361:1291" ph="[...]" />
+            <marker date="1480909976752" expanded="true" signature="365:453" ph="{&quot;name&quot;: 'Xà lách'...}" />
+            <marker date="1480909976752" expanded="true" signature="457:548" ph="{&quot;name&quot;: 'Khoai lang'...}" />
+            <marker date="1480909976752" expanded="true" signature="552:638" ph="{&quot;name&quot;: 'Bí đỏ'...}" />
+            <marker date="1480909976752" expanded="true" signature="642:731" ph="{&quot;name&quot;: 'Hành lá'...}" />
+            <marker date="1480909976752" expanded="true" signature="735:822" ph="{&quot;name&quot;: 'Bó xôi'...}" />
+            <marker date="1480909976752" expanded="true" signature="826:918" ph="{&quot;name&quot;: 'Lá chè tươi'...}" />
+            <marker date="1480909976752" expanded="true" signature="922:1010" ph="{&quot;name&quot;: 'Cà chua'...}" />
+            <marker date="1480909976752" expanded="true" signature="1014:1101" ph="{&quot;name&quot;: 'Cà tím'...}" />
+            <marker date="1480909976752" expanded="true" signature="1105:1194" ph="{&quot;name&quot;: 'Cải thảo'...}" />
+            <marker date="1480909976752" expanded="true" signature="1198:1288" ph="{&quot;name&quot;: 'Khoai tây'...}" />
+            <marker date="1480909976752" expanded="true" signature="1359:1431" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bower_components/paper-expansion-panel/paper-expansion-panel.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1480990564184" expanded="true" signature="427:1144" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="1186:2225" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="1199:2211" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="1210:1706" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="1223:1436" ph="{...}" />
+            <marker date="1480990564184" expanded="true" signature="1449:1494" ph="{...}" />
+            <marker date="1480990564184" expanded="true" signature="1508:1591" ph="{...}" />
+            <marker date="1480990564184" expanded="true" signature="1605:1696" ph="{...}" />
+            <marker date="1480990564184" expanded="true" signature="1722:2101" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="1743:2085" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="1796:2063" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="1881:1969" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="2155:2197" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="2235:3020" ph="..." />
+            <marker date="1480990564184" expanded="true" signature="2250:3006" ph="{...}" />
+            <marker date="1480990564184" expanded="true" signature="2262:3001" ph="{&quot;is&quot;: 'paper-expansion-panel'...}" />
+            <marker date="1480990564184" expanded="true" signature="2309:2677" ph="{...}" />
+            <marker date="1480990564184" expanded="false" signature="2314:2353" ph="/** Text in the header row ...*/" />
+            <marker date="1480990564184" expanded="false" signature="2377:2424" ph="/** Summary of the expandible area ...*/" />
+            <marker date="1480990564184" expanded="false" signature="2449:2503" ph="/** True if the content section is opened ...*/" />
+            <marker date="1480990564184" expanded="true" signature="2515:2587" ph="{&quot;reflectToAttribute&quot;: true...}" />
+            <marker date="1480990564184" expanded="true" signature="2606:2673" ph="{&quot;computed&quot;: '_computeToggleIcon(opened)'...}" />
+            <marker date="1480990564184" expanded="false" signature="2703:2794" ph="/** Fired whenever the status is changed (opened/closed) ...*/" />
+            <marker date="1480990564184" expanded="true" signature="2824:2890" ph="{...}" />
+            <marker date="1480990564184" expanded="true" signature="2931:2998" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/my-stores.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="42" column="28" selection-start-line="42" selection-start-column="28" selection-end-line="42" selection-end-column="28" />
+        <state relative-caret-position="350">
+          <caret line="122" column="35" selection-start-line="122" selection-start-column="35" selection-end-line="122" selection-end-column="35" />
           <folding />
         </state>
       </provider>

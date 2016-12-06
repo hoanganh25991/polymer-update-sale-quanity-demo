@@ -10,6 +10,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/paper-expansion-panel/paper-expansion-panel.html">
+<!--<link rel="import" href="../bower_components/paper-item/paper-item.html">-->
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
 
 
 <dom-module id="my-stores">
@@ -20,22 +23,55 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 padding: 10px;
             }
+            paper-expansion-panel > paper-card {
+                display: block;
+            }
+            paper-card .hide {
+                position: absolute !important;
+                top: -9999px !important;
+                left: -9999px !important;
+            }
         </style>
 
         <firebase-document
-                id="document"
+                id="documentStores"
                 path="/[[saleBranch]]/stores"
                 data="{{stores}}">
         </firebase-document>
 
+        <!--<firebase-query-->
+                <!--id="queryProducts"-->
+                <!--path="/[[saleBranch]]/products"-->
+                <!--data="{{products}}">-->
+        <!--</firebase-query>-->
+        <firebase-document
+                id="documentProducts"
+                path="/[[saleBranch]]/products"
+                data="{{products}}">
+        </firebase-document>
+
         <template is="dom-if" if="[[isStoresArray]]">
-            <template is="dom-repeat" items="{{stores}}" initialCount="10">
-                <div class="card" on-tap="listProduct" id="[[item.name]]">
-                    <p><strong>[[index]]. [[item.name]]</strong></p>
+            <template is="dom-repeat" items="{{stores}}" initialCount="10" index-as="storeId">
+                <div class="card" on-tap="_setSelectedStoreId" id="[[storeId]]">
+                    <p><strong>[[storeId]]. [[item.name]]</strong></p>
                     <p>[[item.address]]</p>
                 </div>
             </template>
         </template>
+        <paper-expansion-panel header="" summary="List of products">
+            <template is="dom-repeat" items="{{products}}" filter="_productsOfSelectedStore" id="listProduct" index-as="productId">
+                <paper-card id="[[productId]]">
+                    <!--Inside this teamplate #shadowDom, nothing happen-->
+                    <!--<div class="[[_computedClassPaperCard()]]">-->
+                    <div class="[[vkl]]">
+                    <!--<div class="card-content">-->
+                        <p>[[item.name]]</p>
+                        <p>[[item.price]]</p>
+                        <p>[[item.quanity]] <span>[[item.type]]</span></p>
+                    </div>
+                </paper-card>
+            </template>
+    </paper-expansion-panel>
     </template>
 
     <script>
@@ -54,15 +90,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 },
                 products: {
                     type: Array
+                },
+                selectedStoreId: {
+                    type: Number
+                },
+                isProductsArray: {
+                    type: Boolean,
+                    computed: '_isProductsArray(products)'
                 }
+
             },
-            listProduct(e){
-//                let div = e.target;
-//                let div = e.currentTarget;
-//                console.log('tab on div');
-//                console.log(div);
-//                let productPage = `${window.location.origin}/stores/${div.id}/products`;
-//                window.location.href = productPage;
+            _listProduct(e){
+                let div = e.currentTarget;
+                let storeId = div.id;
+                console.log(storeId);
             },
             /**
              * Dom ready, load config|default
@@ -70,6 +111,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             ready(){
                 // Load config from server
                 this.saleBranch = 'update-sale-quanity-demo';
+
+            },
+            attached(){
+                this.$.listProduct._computedClassPaperCard = function(){
+                    return 'hide';
+                };
+                this.$.listProduct.properties = {
+                    vkl: {
+                        type: String,
+                        value: "vkl"
+                    }
+                };
             },
             _isStoresArray(stores){
                 if(Array.isArray(stores)){
@@ -77,6 +130,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 }
 
                 return false;
+            },
+            _isProductsArray(products){
+                if(Array.isArray(products)){
+                    return true;
+                }
+
+                return false;
+            },
+            _setSelectedStoreId(e){
+                console.log('tab');
+                let div = e.currentTarget;
+                let storeId = div.id;
+                this.selectedStoreId = storeId;
+                if(this.$.listProduct){
+                    this.$.listProduct.render();
+                }
+            },
+            _productsOfSelectedStore(product){
+//                console.log(this);
+//                console.log(this.selectedStoreId);
+                return product.store_id == this.selectedStoreId;
+            },
+            _editProductQuanity(e){
+                let paperCard = e.currentTarget;
+                let productId = paperCard.id;
+                let fdp = this.$.documentProducts;
+                fdp.set(`data.${productId}.quanity`, 10000);
+                console.log('set quanity of current product to 10000');
+            },
+            _computedClassPaperCard(){
+                return 'hide';
             }
         });
     </script>
