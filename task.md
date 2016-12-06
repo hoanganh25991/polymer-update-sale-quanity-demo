@@ -14,4 +14,9 @@ store has product
 
 + Click on each store update row > products of store
 
+#Clean code
+Remove comment
+
+Choose one way to run app
+
 
