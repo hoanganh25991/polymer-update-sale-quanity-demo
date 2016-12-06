@@ -50,16 +50,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 data="{{products}}">
         </firebase-document>
 
-        <template is="dom-if" if="[[isStoresArray]]">
-            <template is="dom-repeat" items="{{stores}}" initialCount="10" index-as="storeId">
+        <!--<template is="dom-if" if="[[isStoresArray]]">-->
+            <template is="dom-repeat" items="[[_computedStores(stores)]]" initialCount="10" index-as="storeId">
                 <div class="card" on-tap="_setSelectedStoreId" id="[[storeId]]">
                     <p><strong>[[storeId]]. [[item.name]]</strong></p>
                     <p>[[item.address]]</p>
                 </div>
             </template>
-        </template>
+        <!--</template>-->
         <paper-expansion-panel header="" summary="List of products">
-            <template is="dom-repeat" items="{{products}}" filter="_productsOfSelectedStore" id="listProduct" index-as="productId">
+            <template is="dom-repeat" items="{{_computedProducts(products)}}" filter="_productsOfSelectedStore" id="listProduct" index-as="productId">
                 <paper-card id="[[productId]]">
                     <!--Inside this teamplate #shadowDom, nothing happen-->
                     <!--<div class="[[_computedClassPaperCard()]]">-->
@@ -161,6 +161,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             _computedClassPaperCard(){
                 return 'hide';
+            },
+            _computedStores(stores){
+                return Object.values(stores);
+            },
+            _computedProducts(p){
+                return Object.values(p);
             }
         });
     </script>

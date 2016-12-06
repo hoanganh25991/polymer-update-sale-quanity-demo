@@ -47,7 +47,7 @@ routing for the app:
 ### Build
 
 This command performs HTML, CSS, and JS minification on the application
-dependencies, and generates a service-worker.js file with code to pre-cache the
+dependencies, and generates a service-worker-bak1.js file with code to pre-cache the
 dependencies based on the entrypoint and fragments specified in `polymer.json`.
 The minified files are output to the `build/unbundled` folder, and are suitable
 for serving from a HTTP/2+Push compatible server.
