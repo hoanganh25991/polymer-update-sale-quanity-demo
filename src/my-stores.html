@@ -1,77 +1,30 @@
-<!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
-
-<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="shared-styles.html">
-<link rel="import" href="../bower_components/paper-expansion-panel/paper-expansion-panel.html">
-<!--<link rel="import" href="../bower_components/paper-item/paper-item.html">-->
-<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 
+<link rel="import" href="my-firebase-list.html">
 
 <dom-module id="my-stores">
     <template>
         <style include="shared-styles">
             :host {
                 display: block;
-
                 padding: 10px;
-            }
-            paper-expansion-panel > paper-card {
-                display: block;
-            }
-            paper-card .hide {
-                position: absolute !important;
-                top: -9999px !important;
-                left: -9999px !important;
             }
         </style>
 
         <firebase-document
-                id="documentStores"
                 path="/[[saleBranch]]/stores"
                 data="{{stores}}">
         </firebase-document>
 
-        <!--<firebase-query-->
-                <!--id="queryProducts"-->
-                <!--path="/[[saleBranch]]/products"-->
-                <!--data="{{products}}">-->
-        <!--</firebase-query>-->
         <firebase-document
-                id="documentProducts"
                 path="/[[saleBranch]]/products"
                 data="{{products}}">
         </firebase-document>
 
-        <!--<template is="dom-if" if="[[isStoresArray]]">-->
-            <template is="dom-repeat" items="[[_computedStores(stores)]]" initialCount="10" index-as="storeId">
-                <div class="card" on-tap="_setSelectedStoreId" id="[[storeId]]">
-                    <p><strong>[[storeId]]. [[item.name]]</strong></p>
-                    <p>[[item.address]]</p>
-                </div>
-            </template>
-        <!--</template>-->
-        <paper-expansion-panel header="" summary="List of products">
-            <template is="dom-repeat" items="{{_computedProducts(products)}}" filter="_productsOfSelectedStore" id="listProduct" index-as="productId">
-                <paper-card id="[[productId]]">
-                    <!--Inside this teamplate #shadowDom, nothing happen-->
-                    <!--<div class="[[_computedClassPaperCard()]]">-->
-                    <div class="[[vkl]]">
-                    <!--<div class="card-content">-->
-                        <p>[[item.name]]</p>
-                        <p>[[item.price]]</p>
-                        <p>[[item.quanity]] <span>[[item.type]]</span></p>
-                    </div>
-                </paper-card>
-            </template>
-    </paper-expansion-panel>
+        <my-firebase-list
+                firebase-obj="[[stores]]">
+        </my-firebase-list>
     </template>
 
     <script>
@@ -82,91 +35,47 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     type: String
                 },
                 stores: {
-                    type: Array
-                },
-                isStoresArray:{
-                    type: Boolean,
-                    computed: '_isStoresArray(stores)'
+                    type: Object
                 },
                 products: {
-                    type: Array
+                    type: Object
                 },
-                selectedStoreId: {
-                    type: Number
+                listStore: {
+                    type: Array,
+                    computed: '_computeListKey(stores)'
                 },
-                isProductsArray: {
-                    type: Boolean,
-                    computed: '_isProductsArray(products)'
+                listProduct: {
+                    type: Array,
+                    computed: '_computeListKey(products)'
                 }
 
-            },
-            _listProduct(e){
-                let div = e.currentTarget;
-                let storeId = div.id;
-                console.log(storeId);
             },
             /**
              * Dom ready, load config|default
              */
             ready(){
-                // Load config from server
                 this.saleBranch = 'update-sale-quanity-demo';
-
             },
-            attached(){
-                this.$.listProduct._computedClassPaperCard = function(){
-                    return 'hide';
-                };
-                this.$.listProduct.properties = {
-                    vkl: {
-                        type: String,
-                        value: "vkl"
-                    }
-                };
+            /**
+             * List just where show up
+             * When people edit, point to real obj > realtime binding
+             */
+            _computeListKey: function(objData){
+                return Object.keys(objData);
             },
-            _isStoresArray(stores){
-                if(Array.isArray(stores)){
-                    return true;
+            _computeListStore: function(stores){
+                if(Object.keys(stores).length == 0){
+                    return [];
                 }
 
-                return false;
+                return Object.keys(stores);
             },
-            _isProductsArray(products){
-                if(Array.isArray(products)){
-                    return true;
+            _computeListProduct: function(products){
+                if(Object.keys(products).length == 0){
+                    return [];
                 }
 
-                return false;
-            },
-            _setSelectedStoreId(e){
-                console.log('tab');
-                let div = e.currentTarget;
-                let storeId = div.id;
-                this.selectedStoreId = storeId;
-                if(this.$.listProduct){
-                    this.$.listProduct.render();
-                }
-            },
-            _productsOfSelectedStore(product){
-//                console.log(this);
-//                console.log(this.selectedStoreId);
-                return product.store_id == this.selectedStoreId;
-            },
-            _editProductQuanity(e){
-                let paperCard = e.currentTarget;
-                let productId = paperCard.id;
-                let fdp = this.$.documentProducts;
-                fdp.set(`data.${productId}.quanity`, 10000);
-                console.log('set quanity of current product to 10000');
-            },
-            _computedClassPaperCard(){
-                return 'hide';
-            },
-            _computedStores(stores){
-                return Object.values(stores);
-            },
-            _computedProducts(p){
-                return Object.values(p);
+                return Object.keys(products);
             }
         });
     </script>

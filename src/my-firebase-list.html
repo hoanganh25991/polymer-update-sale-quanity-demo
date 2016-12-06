@@ -1,0 +1,61 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-behaviors/paper-button-behavior.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+
+<dom-module id="my-firebase-list">
+    <template>
+        <style is="custom-style">
+            :host {
+                display: block;
+                position: relative;
+                border-radius: 3px;
+                background-color: #fff;
+            }
+            paper-material {
+                border-radius: inherit;
+                padding: 16px;
+            }
+        </style>
+
+        <template
+                is="dom-repeat"
+                items="[[items]]">
+            <paper-material class="content" elevation="1" animated>
+                <p>[[item]]</p>
+                <h3>[[_computeItem(item, 'name')]]</h3>
+                <p>[[_computeItem(item, 'address')]]</p>
+            </paper-material>
+        </template>
+    </template>
+    <script>
+        Polymer({
+            is: 'my-firebase-list',
+            behaviors: [Polymer.PaperButtonBehavior],
+            properties: {
+                firebaseObj: {
+                    type: Object,
+                    reflectToAttribute: true
+                },
+                items: {
+                    type: Array,
+                    computed: '_computeItems(firebaseObj)'
+                }
+            },
+            _computeItems: function(firebaseObj){
+//                this._setFirebaseObjForDomRepeat(firebaseObj);
+                return Object.keys(firebaseObj);
+            },
+//            ready: function(){
+//                this.$$('template[is="dom-repeat"]').computeItem = function(item, path){
+//                    return this.$$('template[is="dom-repeat"]').firebaseObj[item][path];
+//                };
+//            },
+//            _setFirebaseObjForDomRepeat: function(firebaseObj){
+//                this.$$('template[is="dom-repeat"]').firebaseObj = firebaseObj;
+//            },
+            _computeItem: function(item, path){
+                return this.firebaseObj[item][path];
+            }
+        });
+    </script>
+</dom-module>
