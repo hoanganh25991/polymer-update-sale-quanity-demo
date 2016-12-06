@@ -21,9 +21,9 @@
                 is="dom-repeat"
                 items="[[items]]">
             <paper-material class="content" elevation="1" animated>
-                <p>[[item]]</p>
-                <h3>[[_computeItem(item, 'name')]]</h3>
-                <p>[[_computeItem(item, 'address')]]</p>
+                <template is="dom-repeat" items="_computeItemKeys(item)">
+
+                </template>
             </paper-material>
         </template>
     </template>
@@ -46,16 +46,32 @@
                 return Object.keys(firebaseObj);
             },
 //            ready: function(){
-//                this.$$('template[is="dom-repeat"]').computeItem = function(item, path){
-//                    return this.$$('template[is="dom-repeat"]').firebaseObj[item][path];
-//                };
+//                let templateRepeat = this.$$('template[is="dom-repeat"]');
+//                templateRepeat.listen();
 //            },
 //            _setFirebaseObjForDomRepeat: function(firebaseObj){
 //                this.$$('template[is="dom-repeat"]').firebaseObj = firebaseObj;
 //            },
-            _computeItem: function(item, path){
-                return this.firebaseObj[item][path];
-            }
+//            listeners: {
+//                'dom-change': '_simpleRenderItem'
+//            },
+//            _simpleRenderItem: function(uuid, containerId){
+//                let item = this.firebaseObj[uuid];
+//                let keys = Object.keys(item);
+//                console.log(this);
+//                console.log(this.$.listItem);
+//                let containerDiv = this.$.listItem.$['div_' + containerId];
+//
+//                keys.forEach(function(key){
+//                    let node = document.createElement('p');
+//                    if(key == 'name'){
+//                        node = document.createElement('h1');
+//                    }
+//
+//                    node.textContent = item[key];
+//                    containerDiv.appendChild(node);
+//                });
+//            }
         });
     </script>
 </dom-module>
