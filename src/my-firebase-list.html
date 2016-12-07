@@ -52,16 +52,14 @@
             ],
             _computeItems: function(firebaseObj, searchTerm, by){
                 console.log('%c _computeItems', 'color: blue; font-weight: bold;');
+                let uuids = Object.keys(firebaseObj);
 //                console.log(searchTerm, by);
-                if(false
-                        || searchTerm == ''
-                        || by == ''
-                ){
-                    console.log('Nothing to compute');
+                if(searchTerm == '' || by == ''){
+//                    console.log('Nothing to compute');
+                    this._delayUpdateItems(uuids);
                     return;
                 }
 
-                let uuids = Object.keys(firebaseObj);
                 let items = uuids.filter(function(uuid){
                     if(firebaseObj[uuid][by]){
                         return firebaseObj[uuid][by].match(new RegExp(searchTerm));
@@ -113,7 +111,6 @@
                         scope.set('items', items);
                     });
                 })(this);
-//
             }
         });
     </script>

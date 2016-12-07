@@ -45,12 +45,12 @@
         <my-firebase-list
                 id="listStore"
                 firebase-obj="[[stores]]"
-                search-term="A"
+                search-term=""
                 by="name">
             <template id="templ">
                 <paper-material
                         class="content"
-                        elevation="1"
+                        elevation="0"
                         animated
                         hidden$="[[_computeItemHiddenAttr(item)]]">
                     <h1>[[_computeVal(item, 'name')]]</h1>
@@ -63,23 +63,19 @@
         <my-firebase-list
                 id="listProduct"
                 firebase-obj="[[products]]"
-                search-term="KYMbvewGoe-9ncs6hGH"
+                search-term=""
                 by="store_id">
             <template id="templ">
-                <paper-material class="content" elevation="1" animated hidden$="[[_computeItemHiddenAttr(item)]]">
-                    <h1>[[_computeVal(item, 'name')]]</h1>
-                    <p>[[_computeVal(item, 'price')]]</p>
+                <paper-material
+                        class="content"
+                        elevation="0"
+                        animated
+                        hidden$="[[_computeItemHiddenAttr(item)]]">
+                    <h1>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h1>
                     <p>[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
                     <paper-ripple></paper-ripple>
                 </paper-material>
-            </template>  <template id="templ">
-            <paper-material class="content" elevation="1" animated hidden$="[[_computeItemHiddenAttr(item)]]">
-                <h1>[[_computeVal(item, 'name')]]</h1>
-                <p>[[_computeVal(item, 'price')]]</p>
-                <p>[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
-                <paper-ripple></paper-ripple>
-            </paper-material>
-        </template>
+            </template>
         </my-firebase-list>
     </template>
 
