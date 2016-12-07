@@ -16,12 +16,7 @@
         </style>
 
         <content></content>
-        <template is="dom-repeat" id="repeater" items="[[items]]">
-            <template is="dom-ref" bind="[[item]]" ref="templ"></template>
-        </template>
-        <!--<template is="dom-repeat" items="[[itemObjs]]">-->
-            <!--<pre>[[item.name]] [[item.address]]</pre>-->
-        <!--</template>-->
+        <template is="dom-repeat" id="repeater" items="[[items]]"></template>
     </template>
     <script>
         Polymer({
@@ -37,13 +32,7 @@
                 items: {
                     type: Array,
                     notify: true,
-//                    computed: '_computeItems(firebaseObj, searchTerm, by)'
                 },
-//                itemObjs: {
-//                    type: Array,
-//                    notify: true,
-//                    computed: '_computeItemObjs(firebaseObj, searchTerm, by)'
-//                },
                 searchTerm: {
                     type: String,
                     reflectToAttribute: true
@@ -68,12 +57,10 @@
                     return false;
                 });
 
-//                return items;
                 this.set('items', items);
-//                this._askRenderContentHole();
             },
-            attached: function(){
-//                this._askRenderContentHole();
+            ready: function(){
+                this._modelBindItemTemplate();
             },
             _computeVal: function(uuid, path){
                 return this.firebaseObj[uuid][path];
@@ -81,15 +68,12 @@
             _computeItemHiddenAttr: function(uuid){
                 return this.firebaseObj[uuid][this.by].match(new RegExp(this.searchTerm)) ? false : true;
             },
-            _askRenderContentHole: function(){
-                this.$.repeater.templatize(this.querySelector('#templ'));
-//                Polymer.Bind.prepareModel(this.$.repeater);
-//                Polymer.Base.prepareModelNotifyPath(this.$.repeater);
-                this.itemContent = this.$.repeater.render();
+            _modelBindItemTemplate: function(){
+                const itemContentTemplate = this.querySelector('#templ');
+                this.$.repeater.templatize(itemContentTemplate);
+                Polymer.Bind.prepareModel(this.$.repeater);
+                Polymer.Base.prepareModelNotifyPath(this.$.repeater);
             },
-//            _computeItemObjs: function(firebaseObj, searchTerm, by){
-//                return Object.values(firebaseObj);
-//            }
         });
     </script>
 </dom-module>
