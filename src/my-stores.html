@@ -55,7 +55,6 @@
                         hidden$="[[_computeItemHiddenAttr(item)]]">
                     <h1>[[_computeVal(item, 'name')]]</h1>
                     <p>[[_computeVal(item, 'address')]]</p>
-                    <p>[[vkl]]</p>
                     <paper-ripple></paper-ripple>
                 </paper-material>
             </template>
@@ -97,10 +96,6 @@
                 products: {
                     type: Object
                 },
-                vkl: {
-                    type: String,
-                    value: 'vkl the outside'
-                }
             },
             /**
              * Dom ready, load config|default

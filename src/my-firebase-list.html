@@ -46,16 +46,21 @@
                     value: 'name',
                     reflectToAttribute: true
                 },
-                vkl: {
-                    type: String,
-                    value: 'vkl nhe'
-                }
             },
             observers: [
                 '_computeItems(firebaseObj, searchTerm, by)'
             ],
             _computeItems: function(firebaseObj, searchTerm, by){
                 console.log('%c _computeItems', 'color: blue; font-weight: bold;');
+//                console.log(searchTerm, by);
+                if(false
+                        || searchTerm == ''
+                        || by == ''
+                ){
+                    console.log('Nothing to compute');
+                    return;
+                }
+
                 let uuids = Object.keys(firebaseObj);
                 let items = uuids.filter(function(uuid){
                     if(firebaseObj[uuid][by]){
@@ -65,9 +70,10 @@
                     return false;
                 });
 
-                console.log(items);
-
-                this.set('items', items);
+//                this.set('items', items);
+//                this.items = [];
+//                this.items = items;
+                this._delayUpdateItems(items);
             },
             ready: function(){
                 this._modelBindItemTemplate();
@@ -84,6 +90,31 @@
                 Polymer.Bind.prepareModel(this.$.repeater);
                 Polymer.Base.prepareModelNotifyPath(this.$.repeater);
             },
+            listeners: {
+                /**
+                 * Test complet, comment out
+                 */
+//                'items-changed': '_logPropertiesChanged'
+            },
+            _logPropertiesChanged: function(e){
+                console.log('properties x changed');
+                console.log(e);
+            },
+            _delayUpdateItems: function(items){
+                this.set('items', []);
+                (function(scope){
+                    let delay = new Promise(function(resolve){
+//                        setTimeout(resolve, 100);
+                        setTimeout(resolve, 10);
+                    });
+                    delay.then(function(){
+                        console.log('delay set items');
+//                        console.log(scope);
+                        scope.set('items', items);
+                    });
+                })(this);
+//
+            }
         });
     </script>
 </dom-module>
