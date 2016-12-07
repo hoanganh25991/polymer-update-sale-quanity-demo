@@ -17,14 +17,13 @@
             }
         </style>
 
-        <template
-                is="dom-repeat"
-                items="[[items]]">
+        <template is="dom-repeat" items="[[items]]">
             <paper-material class="content" elevation="1" animated>
-                <template is="dom-repeat" items="_computeItemKeys(item)">
-
-                </template>
+                    <!--<content></content>-->
             </paper-material>
+        </template>
+        <template is="dom-bind">
+            <content></content>
         </template>
     </template>
     <script>
@@ -39,39 +38,14 @@
                 items: {
                     type: Array,
                     computed: '_computeItems(firebaseObj)'
+                },
+                currentItemUuid: {
+                    type: String
                 }
             },
             _computeItems: function(firebaseObj){
-//                this._setFirebaseObjForDomRepeat(firebaseObj);
                 return Object.keys(firebaseObj);
-            },
-//            ready: function(){
-//                let templateRepeat = this.$$('template[is="dom-repeat"]');
-//                templateRepeat.listen();
-//            },
-//            _setFirebaseObjForDomRepeat: function(firebaseObj){
-//                this.$$('template[is="dom-repeat"]').firebaseObj = firebaseObj;
-//            },
-//            listeners: {
-//                'dom-change': '_simpleRenderItem'
-//            },
-//            _simpleRenderItem: function(uuid, containerId){
-//                let item = this.firebaseObj[uuid];
-//                let keys = Object.keys(item);
-//                console.log(this);
-//                console.log(this.$.listItem);
-//                let containerDiv = this.$.listItem.$['div_' + containerId];
-//
-//                keys.forEach(function(key){
-//                    let node = document.createElement('p');
-//                    if(key == 'name'){
-//                        node = document.createElement('h1');
-//                    }
-//
-//                    node.textContent = item[key];
-//                    containerDiv.appendChild(node);
-//                });
-//            }
+            }
         });
     </script>
 </dom-module>

@@ -24,6 +24,7 @@
 
         <my-firebase-list
                 firebase-obj="[[stores]]">
+            <h2>[[firebaseObj]]</h2>
         </my-firebase-list>
     </template>
 
@@ -40,15 +41,6 @@
                 products: {
                     type: Object
                 },
-                listStore: {
-                    type: Array,
-                    computed: '_computeListKey(stores)'
-                },
-                listProduct: {
-                    type: Array,
-                    computed: '_computeListKey(products)'
-                }
-
             },
             /**
              * Dom ready, load config|default
@@ -60,22 +52,10 @@
              * List just where show up
              * When people edit, point to real obj > realtime binding
              */
-            _computeListKey: function(objData){
-                return Object.keys(objData);
-            },
-            _computeListStore: function(stores){
-                if(Object.keys(stores).length == 0){
-                    return [];
-                }
-
-                return Object.keys(stores);
-            },
-            _computeListProduct: function(products){
-                if(Object.keys(products).length == 0){
-                    return [];
-                }
-
-                return Object.keys(products);
+            _computeVal: function(data, uuid, key){
+                console.log('data', 'uuid', 'key');
+                console.log(data, uuid, key);
+                return data[uuid][key];
             }
         });
     </script>
