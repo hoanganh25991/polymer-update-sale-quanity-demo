@@ -16,7 +16,11 @@
         </style>
 
         <content></content>
-        <template is="dom-repeat" id="repeater" items="[[items]]"></template>
+        <template
+                is="dom-repeat"
+                id="repeater"
+                items="[[items]]">
+        </template>
     </template>
     <script>
         Polymer({
@@ -41,6 +45,10 @@
                     type: String,
                     value: 'name',
                     reflectToAttribute: true
+                },
+                vkl: {
+                    type: String,
+                    value: 'vkl nhe'
                 }
             },
             observers: [
@@ -56,6 +64,8 @@
 
                     return false;
                 });
+
+                console.log(items);
 
                 this.set('items', items);
             },
