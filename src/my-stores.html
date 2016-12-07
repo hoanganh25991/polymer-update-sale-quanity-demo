@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <link rel="import" href="my-firebase-list.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
 
 <dom-module id="my-stores">
     <template>
@@ -24,8 +25,11 @@
 
         <my-firebase-list
                 firebase-obj="[[stores]]">
-            <h1>Item go here</h1>
-            <p>[[item]]</p>
+            <template id="templ">
+                <paper-material class="content" elevation="1" animated>
+                    <h1>[[item]]</h1>
+                </paper-material>
+            </template>
         </my-firebase-list>
     </template>
 

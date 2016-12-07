@@ -22,3 +22,16 @@ At node 7+ (current nigthly build has node 8), we can use async/await
 Node can parse async synctax need flag as
 
 	--harmony-async-await
+
+#My firebase list > treat main function is LIST
+No, manipulate on list is hard
+
+So, dom-repeat close function to work with items
+
+Good enough, iron-list, ok,...
+
+    Should call
+        +my-firebase-stores
+        +my-firebase-products
+    Which is the view of stores list, products list ONLY
+    Not for common use
