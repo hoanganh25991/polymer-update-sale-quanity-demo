@@ -3,6 +3,7 @@
 
 <link rel="import" href="my-firebase-list.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
 
 <dom-module id="my-stores">
     <template>
@@ -10,6 +11,12 @@
             :host {
                 display: block;
                 padding: 10px;
+            }
+            my-firebase-list::shadow paper-material {
+                border-radius: inherit;
+                padding: 10px;
+                position: relative;
+                margin-bottom: 10px;
             }
         </style>
 
@@ -26,8 +33,22 @@
         <my-firebase-list
                 firebase-obj="[[stores]]">
             <template id="templ">
-                <paper-material class="content" elevation="1" animated>
-                    <h1>[[item]]</h1>
+                <paper-material class="content" elevation="2" animated>
+                    <h1>[[_computeVal(item, 'name')]]</h1>
+                    <p>[[_computeVal(item, 'address')]]</p>
+                    <paper-ripple></paper-ripple>
+                </paper-material>
+            </template>
+        </my-firebase-list>
+
+        <my-firebase-list
+                firebase-obj="[[products]]">
+            <template id="templ">
+                <paper-material class="content" elevation="2" animated>
+                    <h1>[[_computeVal(item, 'name')]]</h1>
+                    <p>[[_computeVal(item, 'price')]]</p>
+                    <p>[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
+                    <paper-ripple></paper-ripple>
                 </paper-material>
             </template>
         </my-firebase-list>
@@ -52,15 +73,6 @@
              */
             ready(){
                 this.saleBranch = 'update-sale-quanity-demo';
-            },
-            /**
-             * List just where show up
-             * When people edit, point to real obj > realtime binding
-             */
-            _computeVal: function(data, uuid, key){
-                console.log('data', 'uuid', 'key');
-                console.log(data, uuid, key);
-                return data[uuid][key];
             }
         });
     </script>
