@@ -1,5 +1,8 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-behaviors/paper-button-behavior.html">
+<link rel="import" href="../bower_components/dom-bindref/dom-bindref.html">
+
+<link rel="import" href="dom-ref.html">
 
 <dom-module id="my-firebase-list">
     <template>
@@ -13,7 +16,12 @@
         </style>
 
         <content></content>
-        <template is="dom-repeat" id="repeater" items="[[items]]"></template>
+        <template is="dom-repeat" id="repeater" items="[[items]]">
+            <template is="dom-ref" bind="[[item]]" ref="templ"></template>
+        </template>
+        <!--<template is="dom-repeat" items="[[itemObjs]]">-->
+            <!--<pre>[[item.name]] [[item.address]]</pre>-->
+        <!--</template>-->
     </template>
     <script>
         Polymer({
@@ -28,11 +36,16 @@
                 },
                 items: {
                     type: Array,
-                    computed: '_computeItems(firebaseObj)'
+                    notify: true,
+//                    computed: '_computeItems(firebaseObj, searchTerm, by)'
                 },
+//                itemObjs: {
+//                    type: Array,
+//                    notify: true,
+//                    computed: '_computeItemObjs(firebaseObj, searchTerm, by)'
+//                },
                 searchTerm: {
                     type: String,
-                    value: '',
                     reflectToAttribute: true
                 },
                 by: {
@@ -41,20 +54,42 @@
                     reflectToAttribute: true
                 }
             },
-            _computeItems: function(firebaseObj){
-                return Object.keys(firebaseObj);
+            observers: [
+                '_computeItems(firebaseObj, searchTerm, by)'
+            ],
+            _computeItems: function(firebaseObj, searchTerm, by){
+                console.log('%c _computeItems', 'color: blue; font-weight: bold;');
+                let uuids = Object.keys(firebaseObj);
+                let items = uuids.filter(function(uuid){
+                    if(firebaseObj[uuid][by]){
+                        return firebaseObj[uuid][by].match(new RegExp(searchTerm));
+                    }
+
+                    return false;
+                });
+
+//                return items;
+                this.set('items', items);
+//                this._askRenderContentHole();
             },
-            ready: function() {
-                this.$.repeater.templatize(this.querySelector('#templ'));
-                Polymer.Bind.prepareModel(this.$.repeater);
-                Polymer.Base.prepareModelNotifyPath(this.$.repeater);
+            attached: function(){
+//                this._askRenderContentHole();
             },
             _computeVal: function(uuid, path){
                 return this.firebaseObj[uuid][path];
             },
             _computeItemHiddenAttr: function(uuid){
-                return this.firebaseObj[uuid][this.by].match(new RegExp(this.searchTerm)) ? false: true;
-            }
+                return this.firebaseObj[uuid][this.by].match(new RegExp(this.searchTerm)) ? false : true;
+            },
+            _askRenderContentHole: function(){
+                this.$.repeater.templatize(this.querySelector('#templ'));
+//                Polymer.Bind.prepareModel(this.$.repeater);
+//                Polymer.Base.prepareModelNotifyPath(this.$.repeater);
+                this.itemContent = this.$.repeater.render();
+            },
+//            _computeItemObjs: function(firebaseObj, searchTerm, by){
+//                return Object.values(firebaseObj);
+//            }
         });
     </script>
 </dom-module>

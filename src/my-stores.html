@@ -47,7 +47,8 @@
                 firebase-obj="[[stores]]"
                 search-term="A"
                 by="name">
-            <template id="templ">
+            <!--<template id="templ">-->
+            <template is="templ">
                 <paper-material class="content" elevation="1" animated hidden$="[[_computeItemHiddenAttr(item)]]">
                     <h1>[[_computeVal(item, 'name')]]</h1>
                     <p>[[_computeVal(item, 'address')]]</p>
