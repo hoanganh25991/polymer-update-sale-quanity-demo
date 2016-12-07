@@ -7,16 +7,28 @@
 
 <dom-module id="my-stores">
     <template>
-        <style include="shared-styles">
+        <style include="shared-styles"
+               is="custom-style">
             :host {
                 display: block;
-                padding: 10px;
+                /*padding: 24px;*/
             }
-            my-firebase-list::shadow paper-material {
+            #listStore::shadow paper-material {
                 border-radius: inherit;
                 padding: 10px;
-                position: relative;
-                margin-bottom: 10px;
+                margin: 10px;
+                background-color: var(--paper-yellow-200);
+            }
+            #listProduct::shadow paper-material {
+                border-radius: inherit;
+                padding: 10px;
+                margin: 10px;
+                background-color: var(--paper-yellow-50);
+            }
+            my-firebase-list::shadow paper-material[hidden] {
+                position: absolute;
+                top: -9999px;
+                lefy: -9999px;
             }
         </style>
 
@@ -31,9 +43,12 @@
         </firebase-document>
 
         <my-firebase-list
-                firebase-obj="[[stores]]">
+                id="listStore"
+                firebase-obj="[[stores]]"
+                search-term="A"
+                by="name">
             <template id="templ">
-                <paper-material class="content" elevation="2" animated>
+                <paper-material class="content" elevation="1" animated hidden$="[[_computeItemHiddenAttr(item)]]">
                     <h1>[[_computeVal(item, 'name')]]</h1>
                     <p>[[_computeVal(item, 'address')]]</p>
                     <paper-ripple></paper-ripple>
@@ -42,9 +57,12 @@
         </my-firebase-list>
 
         <my-firebase-list
-                firebase-obj="[[products]]">
+                id="listProduct"
+                firebase-obj="[[products]]"
+                search-term="KYMbvewGoe-9ncs6hGH"
+                by="store_id">
             <template id="templ">
-                <paper-material class="content" elevation="2" animated>
+                <paper-material class="content" elevation="1" animated hidden$="[[_computeItemHiddenAttr(item)]]">
                     <h1>[[_computeVal(item, 'name')]]</h1>
                     <p>[[_computeVal(item, 'price')]]</p>
                     <p>[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>

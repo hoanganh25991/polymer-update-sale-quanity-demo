@@ -30,8 +30,15 @@
                     type: Array,
                     computed: '_computeItems(firebaseObj)'
                 },
-                currentItemUuid: {
-                    type: String
+                searchTerm: {
+                    type: String,
+                    value: '',
+                    reflectToAttribute: true
+                },
+                by: {
+                    type: String,
+                    value: 'name',
+                    reflectToAttribute: true
                 }
             },
             _computeItems: function(firebaseObj){
@@ -44,6 +51,9 @@
             },
             _computeVal: function(uuid, path){
                 return this.firebaseObj[uuid][path];
+            },
+            _computeItemHiddenAttr: function(uuid){
+                return this.firebaseObj[uuid][this.by].match(new RegExp(this.searchTerm)) ? false: true;
             }
         });
     </script>
