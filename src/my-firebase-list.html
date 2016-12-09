@@ -14,7 +14,7 @@
                 background-color: #fff;
             }
         </style>
-        <pre>[[selected]]</pre>
+        <!--<pre>[[selected]]</pre>-->
         <content></content>
         <template
                 is="dom-repeat"
@@ -48,7 +48,8 @@
                     reflectToAttribute: true
                 },
                 selected: {
-                    type: String
+                    type: String,
+                    notify: true
                 }
             },
             observers: [

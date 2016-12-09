@@ -4,6 +4,8 @@
 <link rel="import" href="my-firebase-list.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="my-search-bar.html">
+
 
 <dom-module id="my-stores">
     <template>
@@ -13,72 +15,89 @@
                 display: block;
                 /*padding: 24px;*/
             }
+
             #listStore::shadow paper-material {
                 border-radius: inherit;
                 padding: 10px;
                 margin: 10px;
                 background-color: var(--paper-yellow-200);
             }
+
             #listProduct::shadow paper-material {
                 border-radius: inherit;
                 padding: 10px;
                 margin: 10px;
                 background-color: var(--paper-yellow-50);
             }
+
             my-firebase-list::shadow paper-material[hidden] {
                 position: absolute;
                 top: -9999px;
                 lefy: -9999px;
             }
+
+            paper-fab.orange {
+                --paper-fab-background: var(--paper-orange-500);
+            }
+
+            .float-right-bottom {
+                position: fixed;
+                top: 90%;
+                right: 20px;
+            }
         </style>
+        <div style="position: relative">
+            <firebase-document
+                    path="/[[saleBranch]]/stores"
+                    data="{{stores}}">
+            </firebase-document>
 
-        <firebase-document
-                path="/[[saleBranch]]/stores"
-                data="{{stores}}">
-        </firebase-document>
+            <firebase-document
+                    path="/[[saleBranch]]/products"
+                    data="{{products}}">
+            </firebase-document>
 
-        <firebase-document
-                path="/[[saleBranch]]/products"
-                data="{{products}}">
-        </firebase-document>
+            <my-firebase-list
+                    id="listStore"
+                    firebase-obj="[[stores]]"
+                    search-term="[[searchStore]]"
+                    by="name"
+                    selected="{{filterProductByStoreId}}">
+                <template id="templ">
+                    <paper-material
+                            class="content"
+                            elevation="0"
+                            animated
+                            hidden$="[[_computeItemHiddenAttr(item)]]"
+                            on-click="_toggleSelection">
+                        <h1>[[_computeVal(item, 'name')]]</h1>
+                        <p>[[_computeVal(item, 'address')]]</p>
+                        <paper-ripple></paper-ripple>
+                    </paper-material>
+                </template>
+            </my-firebase-list>
 
-        <my-firebase-list
-                id="listStore"
-                firebase-obj="[[stores]]"
-                search-term=""
-                by="name">
-            <template id="templ">
-                <paper-material
-                        class="content"
-                        elevation="0"
-                        animated
-                        hidden$="[[_computeItemHiddenAttr(item)]]"
-                        on-click="_toggleSelection">
-                    <h1>[[_computeVal(item, 'name')]]</h1>
-                    <p>[[_computeVal(item, 'address')]]</p>
-                    <paper-ripple></paper-ripple>
-                </paper-material>
-            </template>
-        </my-firebase-list>
+            <my-firebase-list
+                    id="listProduct"
+                    firebase-obj="[[products]]"
+                    search-term="[[filterProductByStoreId]]"
+                    by="store_id">
+                <template id="templ">
+                    <paper-material
+                            class="content"
+                            elevation="0"
+                            animated
+                            hidden$="[[_computeItemHiddenAttr(item)]]"
+                            on-click="_toggleSelection">
+                        <h1>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h1>
+                        <p>[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
+                        <paper-ripple></paper-ripple>
+                    </paper-material>
+                </template>
+            </my-firebase-list>
 
-        <my-firebase-list
-                id="listProduct"
-                firebase-obj="[[products]]"
-                search-term=""
-                by="store_id">
-            <template id="templ">
-                <paper-material
-                        class="content"
-                        elevation="0"
-                        animated
-                        hidden$="[[_computeItemHiddenAttr(item)]]"
-                        on-click="_toggleSelection">
-                    <h1>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h1>
-                    <p>[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
-                    <paper-ripple></paper-ripple>
-                </paper-material>
-            </template>
-        </my-firebase-list>
+            <my-search-bar search-term="{{searchStore}}"></my-search-bar>
+        </div>
     </template>
 
     <script>
@@ -94,6 +113,14 @@
                 products: {
                     type: Object
                 },
+                searchStore: {
+                    type: String,
+                    notify: true
+                },
+                filterProductByStoreId: {
+                    type: String,
+                    notify: true
+                }
             },
             /**
              * Dom ready, load config|default
