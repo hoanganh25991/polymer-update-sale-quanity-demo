@@ -14,13 +14,14 @@
                 background-color: #fff;
             }
         </style>
-
+        <pre>[[selected]]</pre>
         <content></content>
         <template
                 is="dom-repeat"
                 id="repeater"
                 items="[[items]]">
         </template>
+        <array-selector id="selector" items="[[items]]" selected="{{selected}}" toggle></array-selector>
     </template>
     <script>
         Polymer({
@@ -46,6 +47,9 @@
                     value: 'name',
                     reflectToAttribute: true
                 },
+                selected: {
+                    type: String
+                }
             },
             observers: [
                 '_computeItems(firebaseObj, searchTerm, by)'
@@ -111,6 +115,13 @@
                         scope.set('items', items);
                     });
                 })(this);
+            },
+            _toggleSelection: function(e) {
+                console.log('Tap tap tap');
+                console.log(e);
+                var item = this.$.repeater.itemForElement(e.target);
+                this.$.selector.select(item);
+                console.log(this.selected);
             }
         });
     </script>

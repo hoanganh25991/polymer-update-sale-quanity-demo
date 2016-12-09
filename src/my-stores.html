@@ -52,7 +52,8 @@
                         class="content"
                         elevation="0"
                         animated
-                        hidden$="[[_computeItemHiddenAttr(item)]]">
+                        hidden$="[[_computeItemHiddenAttr(item)]]"
+                        on-click="_toggleSelection">
                     <h1>[[_computeVal(item, 'name')]]</h1>
                     <p>[[_computeVal(item, 'address')]]</p>
                     <paper-ripple></paper-ripple>
