@@ -1,12 +1,25 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<!--<link rel="import" href="my-css-mixin.html">-->
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="my-icons.html">
 
 <dom-module id="my-search-bar">
     <template>
-        <style>
-            :host {
+        <style is="cutom-style" include="shared-styles">
+            #searchBar {
                 display: block;
-                height: 100%;
+                height: 100vh;
+                width: 100vw;
+                position: fixed;
+                background-color: #eee;
+                z-index: 50;
+            }
+
+            #searchBar[hidden] {
+                /*@apply(--hidden);*/
             }
 
             .float-right-bottom {
@@ -15,48 +28,67 @@
                 right: 20px;
             }
 
-            #overlaySearch {
-                width: 100%;
-                height: 100%;
-                display: block;
-                background-color: #eee;
-                position: absolute;
-                overflow: hidden
+            .float-right-bottom[hidden] {
+                /*@apply(--hidden);*/
             }
-
-            #overlaySearch[hidden] {
-                position: fixed;
-                top: -9999px;
-                left: -999px;
+            paper-input {
+                display: inline-block;
             }
         </style>
-        <div id="overlaySearch" style="" hidden$="[[toggleOverlaySearch]]">
-            <input type="text" id="searchTerm">
+        <div id="searchBar" hidden$="[[toggleSearchBar]]">
+            <paper-icon-button icon="arrow-back"></paper-icon-button>
+            <!--<iron-a11y-keys id="a11y" target="[[target]]" keys="enter"-->
+                            <!--on-keys-pressed="_setSearchTerm"></iron-a11y-keys>-->
+            <paper-input label="Search" id="inputSearch"></paper-input>
         </div>
-        <div class="float-right-bottom">
-            <paper-fab icon="search" title="heart" class="orange" on-tap="_toggle"></paper-fab>
+        <div class="float-right-bottom"
+             hidden$="[[toggleSearchIcon]]"
+             on-tap="_toggleSearchBar">
+            <content></content>
         </div>
     </template>
     <script>
         Polymer({
             is: 'my-search-bar',
             properties: {
-                toggleOverlaySearch: {
+                toggleSearchBar: {
                     type: Boolean,
                     value: true
+                },
+                toggleSearchIcon: {
+                    type: Boolean,
+                    value: false,
                 },
                 searchTerm: {
                     type: String,
                     notify: true,
                     reflectToAttribute: true
+                },
+//                inputSearch: {
+//                    type: Object,
+//                    value: function(){
+//                        return this.$.inputSearch;
+//                    }
+//                }
+            },
+            _toggleSearchBar: function(){
+               this._reverse();
+                this.$.inputSearch.focus();
+            },
+            listeners: {
+                'keydown': '_setSearchTerm'
+            },
+            _setSearchTerm: function(e){
+                console.log('keydown');
+                if (e.keyCode === 13) {
+                    // enter pressed!
+                    this.searchTerm = this.$.inputSearch.value;
+                    this._reverse();
                 }
             },
-            _toggle: function(){
-                console.log('toggle overlay search');
-                if(this.toggleOverlaySearch == false){
-                    this.searchTerm = this.$.searchTerm.value;
-                }
-                this.toggleOverlaySearch = !this.toggleOverlaySearch;
+            _reverse: function(){
+                this.toggleSearchBar = !this.toggleSearchBar;
+                this.toggleSearchIcon = !this.toggleSearchIcon;
             }
         });
     </script>
