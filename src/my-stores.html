@@ -63,18 +63,16 @@
                     search-term="[[searchStore]]"
                     by="name"
                     selected="{{filterProductByStoreId}}">
-                <template id="templ">
-                    <paper-material
-                            class="content"
-                            elevation="0"
-                            animated
-                            hidden$="[[_computeItemHiddenAttr(item)]]"
-                            on-click="_toggleSelection">
-                        <h1>[[_computeVal(item, 'name')]]</h1>
-                        <p>[[_computeVal(item, 'address')]]</p>
-                        <paper-ripple></paper-ripple>
-                    </paper-material>
-                </template>
+                <paper-material
+                        class="content"
+                        elevation="0"
+                        animated
+                        hidden$="[[_computeItemHiddenAttr(item)]]"
+                        on-click="_toggleSelection">
+                    <h1>[[_computeVal(item, 'name')]]</h1>
+                    <p>[[_computeVal(item, 'address')]]</p>
+                    <paper-ripple></paper-ripple>
+                </paper-material>
             </my-firebase-list>
 
             <my-firebase-list
@@ -82,18 +80,16 @@
                     firebase-obj="[[products]]"
                     search-term="[[filterProductByStoreId]]"
                     by="store_id">
-                <template id="templ">
-                    <paper-material
-                            class="content"
-                            elevation="0"
-                            animated
-                            hidden$="[[_computeItemHiddenAttr(item)]]"
-                            on-click="_toggleSelection">
-                        <h1>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h1>
-                        <p>[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
-                        <paper-ripple></paper-ripple>
-                    </paper-material>
-                </template>
+                <paper-material
+                        class="content"
+                        elevation="0"
+                        animated
+                        hidden$="[[_computeItemHiddenAttr(item)]]"
+                        on-click="_toggleSelection">
+                    <h1>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h1>
+                    <p>[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
+                    <paper-ripple></paper-ripple>
+                </paper-material>
             </my-firebase-list>
 
             <my-search-bar search-term="{{searchStore}}"></my-search-bar>

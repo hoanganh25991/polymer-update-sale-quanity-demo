@@ -1,57 +1,56 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/iron-list/iron-list.html">
+<link rel="import" href="../bower_components/paper-behaviors/paper-button-behavior.html">
+<link rel="import" href="../bower_components/dom-bindref/dom-bindref.html">
+
+<link rel="import" href="dom-ref.html">
 
 <dom-module id="my-firebase-list">
     <template>
         <style is="custom-style">
             :host {
                 display: block;
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-            }
-
-            iron-list {
-                flex: 1 1 auto;
+                position: relative;
+                border-radius: 3px;
+                background-color: #fff;
+                z-index: 10;
             }
         </style>
-        <iron-list
-                items="[[items]]"
-                selection-enabled
-                selectedItem="{{selected}}">
-            <template>
-                <h1>[[item.name]]</h1>
-            </template>
-        </iron-list>
+        <!--<pre>[[selected]]</pre>-->
+        <content></content>
+        <template
+                is="dom-repeat"
+                id="repeater"
+                items="[[items]]">
+        </template>
+        <array-selector id="selector" items="[[items]]" selected="{{selected}}" toggle></array-selector>
     </template>
     <script>
         Polymer({
             is: 'my-firebase-list',
+            behaviors: [
+                Polymer.Templatizer
+            ],
             properties: {
                 firebaseObj: {
                     type: Object,
-                    notify: true,
                     reflectToAttribute: true
                 },
                 items: {
                     type: Array,
-                    notify: true
+                    notify: true,
                 },
                 searchTerm: {
                     type: String,
-                    notify: true,
                     reflectToAttribute: true
                 },
                 by: {
                     type: String,
                     value: 'name',
-                    notify: true,
                     reflectToAttribute: true
                 },
                 selected: {
                     type: String,
-                    notify: true,
-                    reflectToAttribute: true
+                    notify: true
                 }
             },
             observers: [
@@ -75,13 +74,31 @@
                     return false;
                 });
 
+//                this.set('items', items);
+//                this.items = [];
+//                this.items = items;
                 this._updateItemsWithDelay(items);
+            },
+            ready: function(){
+                this._modelBindItemTemplate();
             },
             _computeVal: function(uuid, path){
                 return this.firebaseObj[uuid][path];
             },
             _computeItemHiddenAttr: function(uuid){
                 return this.firebaseObj[uuid][this.by].match(new RegExp(this.searchTerm)) ? false : true;
+            },
+            _modelBindItemTemplate: function(){
+                const itemContentTemplate = this.querySelector('#templ');
+                this.$.repeater.templatize(itemContentTemplate);
+                Polymer.Bind.prepareModel(this.$.repeater);
+                Polymer.Base.prepareModelNotifyPath(this.$.repeater);
+            },
+            listeners: {
+                /**
+                 * Test complet, comment out
+                 */
+//                'items-changed': '_logPropertiesChanged'
             },
             _logPropertiesChanged: function(e){
                 console.log('properties x changed');
@@ -96,11 +113,17 @@
                     });
                     delay.then(function(){
                         console.log('delay set items');
-                        console.log(items);
 //                        console.log(scope);
                         scope.set('items', items);
                     });
                 })(this);
+            },
+            _toggleSelection: function(e) {
+                console.log('Tap tap tap');
+                console.log(e);
+                var item = this.$.repeater.itemForElement(e.target);
+                this.$.selector.select(item);
+                console.log(this.selected);
             }
         });
     </script>
