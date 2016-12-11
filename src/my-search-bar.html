@@ -2,81 +2,78 @@
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<!--<link rel="import" href="my-css-mixin.html">-->
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 
 <dom-module id="my-search-bar">
     <template>
-        <style is="cutom-style" include="shared-styles">
-            #searchBar {
+        <style is="cutom-style"
+               include="shared-styles">
+            :host {
                 display: block;
-                height: 100vh;
-                width: 100vw;
-                position: fixed;
-                background-color: #eee;
-                z-index: 200;
+            }
+
+            #searchBar {
+                display: flex;
+                flex-direction: row;
+                background-color: #fff;
+                position: relative;
+                margin: 24px auto;
+                max-width: 800px;
+                padding-bottom: 1px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2)
+            }
+
+            #searchBar paper-input {
+                flex: 1;
             }
 
             .float-right-bottom {
                 position: fixed;
                 top: 90vh;
-                right: 20px;
+                right: 5vw;
             }
 
-            .float-right-bottom[hidden] {
-                /*@apply(--hidden);*/
-            }
             paper-input {
                 display: inline-block;
+                --paper-input-container-underline-focus: var(--paper-grey-50);
+                --paper-input-container-focus-color: var(--paper-grey-500);
+                --paper-input-container-input-color: black;
+            }
+
+            paper-icon-button {
+                --paper-icon-button-ink-color: var(--paper-grey-50);
             }
         </style>
-        <div id="searchBar" hidden$="[[toggleSearchBar]]">
-            <paper-icon-button icon="arrow-back"></paper-icon-button>
-            <!--<iron-a11y-keys id="a11y" target="[[target]]" keys="enter"-->
-                            <!--on-keys-pressed="_setSearchTerm"></iron-a11y-keys>-->
-            <paper-input label="Search" id="inputSearch"></paper-input>
-        </div>
-        <div class="float-right-bottom"
-             hidden$="[[toggleSearchIcon]]"
-             on-tap="_toggleSearchBar">
-            <content></content>
+        <div id="searchBar"
+        >
+            <paper-icon-button icon="search"></paper-icon-button>
+            <paper-input
+                    placeholder="Find your store"
+                    no-label-float
+                    id="inputSearch"
+                    value="{{searchTerm}}">
+            </paper-input>
+            <paper-icon-button icon="close"
+            on-tap="_clearInputSearch"></paper-icon-button>
         </div>
     </template>
     <script>
         Polymer({
             is: 'my-search-bar',
             properties: {
-                toggleSearchBar: {
-                    type: Boolean,
-                    value: true
-                },
-                toggleSearchIcon: {
-                    type: Boolean,
-                    value: false,
-                },
                 searchTerm: {
                     type: String,
                     notify: true,
                     reflectToAttribute: true
                 },
-//                inputSearch: {
-//                    type: Object,
-//                    value: function(){
-//                        return this.$.inputSearch;
-//                    }
-//                }
-            },
-            _toggleSearchBar: function(){
-               this._reverse();
-                this.$.inputSearch.focus();
             },
             listeners: {
                 'keydown': '_setSearchTerm'
             },
             _setSearchTerm: function(e){
                 console.log('keydown');
-                if (e.keyCode === 13) {
+                if(e.keyCode === 13){
                     // enter pressed!
                     this.searchTerm = this.$.inputSearch.value;
                     this._reverse();
@@ -85,6 +82,9 @@
             _reverse: function(){
                 this.toggleSearchBar = !this.toggleSearchBar;
                 this.toggleSearchIcon = !this.toggleSearchIcon;
+            },
+            _clearInputSearch: function(){
+                this.$.inputSearch.value = '';
             }
         });
     </script>

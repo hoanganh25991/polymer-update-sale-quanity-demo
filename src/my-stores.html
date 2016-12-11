@@ -83,15 +83,9 @@
                 max-width: 672px;
                 padding: 0;
             }
-
-            paper-fab {
-                --paper-fab-background: var(--paper-orange-600);
-                --paper-fab-keyboard-focus-background: var(--paper-orange-800);
-            }
         </style>
         <my-search-bar
                 search-term="{{searchStore}}">
-            <paper-fab icon="search"></paper-fab>
         </my-search-bar>
         <firebase-document
                 path="/[[saleBranch]]/stores"
