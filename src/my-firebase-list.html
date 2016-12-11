@@ -7,8 +7,6 @@
                 display: block;
                 position: relative;
                 border-radius: 3px;
-                background-color: #fff;
-                z-index: 10;
             }
         </style>
         <!--<pre>[[selected]]</pre>-->
@@ -18,7 +16,8 @@
                 id="repeater"
                 items="[[items]]">
         </template>
-        <array-selector id="selector" items="[[items]]" selected="{{selected}}" toggle></array-selector>
+        <!--<array-selector id="selector" items="[[items]]" selected="{{selected}}" toggle></array-selector>-->
+        <array-selector id="selector" items="[[items]]" selected="{{selected}}"></array-selector>
     </template>
     <script>
         Polymer({
@@ -76,6 +75,10 @@
             _computeVal: function(uuid, path){
                 return this.firebaseObj[uuid][path];
             },
+            _computeIdLink: function(uuid, path){
+                let val = this.firebaseObj[uuid][path];
+                return val.toLowerCase().replace(/\s+/g, '-');
+            },
             _computeItemHiddenAttr: function(uuid){
                 return this.firebaseObj[uuid][this.by].match(new RegExp(this.searchTerm)) ? false : true;
             },
@@ -115,6 +118,7 @@
                 var item = this.$.repeater.itemForElement(e.target);
                 this.$.selector.select(item);
                 console.log(this.selected);
+                this.fire('item-selected');
             }
         });
     </script>

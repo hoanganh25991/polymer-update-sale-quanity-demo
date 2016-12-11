@@ -29,14 +29,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template>
         <style>
             :host {
-                --app-primary-color: var(--paper-yellow-900);
+                --app-primary-color: var(--paper-blue-500);
                 --app-secondary-color: black;
 
                 display: block;
             }
 
             app-header {
-                color: var(--paper-yellow-50);
+                color: var(--paper-blue-50);
                 background-color: var(--app-primary-color);
             }
 
@@ -50,20 +50,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             .drawer-list a {
                 display: block;
-
                 padding: 0 16px;
-
                 text-decoration: none;
-
                 color: var(--app-secondary-color);
-
                 line-height: 40px;
             }
 
             .drawer-list a.iron-selected {
                 color: black;
-
                 font-weight: bold;
+            }
+
+            iron-pages {
+                width: 100%;
+                height: 100%;
             }
         </style>
 
@@ -77,9 +77,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <app-drawer-layout fullbleed>
             <!-- Drawer content -->
-            <app-drawer>
+            <app-drawer id="drawer">
                 <app-toolbar>Menu</app-toolbar>
-                <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                <iron-selector
+                        selected="[[page]]"
+                        attr-for-selected="name"
+                        class="drawer-list"
+                        role="navigation">
                     <a name="stores" href="/stores">Stores</a>
                     <a name="settings" href="/settings">Settings</a>
                 </iron-selector>
@@ -87,24 +91,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <!-- Main content -->
             <app-header-layout has-scrolling-region>
-                <app-header fixed condenses reveals effects="waterfall">
+                <app-header fixed>
                     <my-toolbar
                             signed-in="[[signedIn]]"
-                            on-sign-out="signOut">
+                            on-sign-out="signOut"
+                            drawer="[[drawer]]">
                     </my-toolbar>
                 </app-header>
 
-                <!--Handle Google login-->
-                <!--Google login allow get user's info-->
-                <!--<my-toolbar-->
-                <!--signed-in="[[signedIn]]"-->
-                <!--on-sign-out="signOut">-->
-                <!--</my-toolbar>-->
-                <my-login
-                        on-sign-in="signIn"
-                        signed-in="[[signedIn]]"
-                        disabled="[[!online]]">
-                </my-login>
+
                 <firebase-app
                         auth-domain="glass-turbine-148103.firebaseapp.com"
                         database-url="https://glass-turbine-148103.firebaseio.com"
@@ -117,15 +112,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         user="{{user}}">
                 </firebase-auth>
 
-                <!--Switch main page view-->
                 <iron-pages
                         selected="[[page]]"
                         attr-for-selected="name"
                         fallback-selection="view404"
                         role="main">
+                    <my-login
+                            name="login"
+                            on-sign-in="signIn"
+                            signed-in="[[signedIn]]"
+                            disabled="[[!online]]">
+                    </my-login>
                     <my-stores name="stores"></my-stores>
                     <my-settings name="settings" user="{{user}}"></my-settings>
-                    <!--Fallback 404-->
                     <my-view404 name="view404"></my-view404>
                 </iron-pages>
             </app-header-layout>
@@ -143,13 +142,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     observer: '_pageChanged'
                 },
                 signedIn: {
-                    type: Boolean
+                    type: Boolean,
+                    notify: true
                 },
                 user: {
                     type: Object
                 },
                 online: {
                     type: Boolean
+                },
+                drawer: {
+                    type: Object,
+                    value: function(){
+                        return this.$.drawer;
+                    }
                 }
             },
 
@@ -170,11 +176,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
 
             observers: [
-                '_routePageChanged(routeData.page)'
+                '_routePageChanged(routeData.page)',
+                '_redirectToStores(signedIn)'
             ],
 
             _routePageChanged: function(page){
-                this.page = page || 'stores';
+                this.page = page || 'login';
             },
 
             _pageChanged: function(page){
@@ -186,6 +193,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             _showPage404: function(){
                 this.page = 'view404';
             },
+            _redirectToStores: function(signedIn){
+                if(signedIn){
+                    this.page = 'stores';
+                }
+            }
 
         });
     </script>

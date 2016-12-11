@@ -3,10 +3,12 @@
 
 <link rel="import" href="my-firebase-list.html">
 <link rel="import" href="../bower_components/paper-ripple/paper-ripple.html">
-<link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="my-search-bar.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="my-icons.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
 <dom-module id="my-stores">
     <template>
@@ -14,35 +16,81 @@
                is="custom-style">
             :host {
                 display: block;
-                /*padding: 24px;*/
+                padding: 0 20px;
             }
 
-            #listStore::shadow paper-material {
-                border-radius: inherit;
-                padding: 10px;
-                margin: 10px;
-                background-color: var(--paper-yellow-200);
+            my-firebase-list::shadow div.list-item {
+                position: relative;
+                background-color: white;
+                margin: 24px auto;
+                max-width: 800px;
+                padding-bottom: 1px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
-            #listProduct::shadow paper-material {
-                border-radius: inherit;
-                padding: 10px;
-                margin: 10px;
-                background-color: var(--paper-yellow-50);
+            my-firebase-list::shadow div.list-item .item-margin {
+                margin: 16px 20px;
             }
 
-            my-firebase-list::shadow paper-material[hidden] {
-                  position: absolute;
-                  top: -9999px;
-                  lefy: -9999px;
-              }
+            my-firebase-list::shadow div.list-item h2 {
+                border-bottom: 1px solid #e5e5e5;
+                font-size: 20px;
+                line-height: 28px;
+                padding: 10px 18px;
+                margin: 0;
+                font-weight: normal;
+            }
+
+            h2 {
+                border-bottom: 1px solid #e5e5e5;
+                font-size: 20px;
+                line-height: 28px;
+                padding: 10px 18px;
+                margin: 0;
+                font-weight: normal;
+            }
+
+            my-firebase-list::shadow div.list-item .reference-link {
+                float: right;
+                margin: 12px 18px;
+                color: #999;
+            }
+
+            .reference-link {
+                float: right;
+                margin: 12px 18px;
+                color: #999;
+            }
+
+            my-firebase-list::shadow div.list-item pre {
+                padding: 20px;
+                background: #fafafa;
+                border: solid #e5e5e5;
+                border-width: 1px 0;
+            }
+
+            #modal {
+                top: 5vh;
+                background-color: #eeeeee;
+                transition: all .4s cubic-bezier(.25, .8, .25, 1);
+                overflow: auto;
+                max-height: 80vh;
+            }
+
+            .dialog {
+                position: relative;
+                width: 75vw;
+                max-width: 672px;
+                padding: 0;
+            }
 
             paper-fab {
                 --paper-fab-background: var(--paper-orange-600);
                 --paper-fab-keyboard-focus-background: var(--paper-orange-800);
             }
         </style>
-        <my-search-bar search-term="{{searchStore}}" >
+        <my-search-bar
+                search-term="{{searchStore}}">
             <paper-fab icon="search"></paper-fab>
         </my-search-bar>
         <firebase-document
@@ -62,40 +110,61 @@
                 by="name"
                 selected="{{filterProductByStoreId}}"
                 vertical-align="top"
-                horizontal-align="auto">
+                horizontal-align="auto"
+                on-item-selected="_toggleModal"
+        >
             <template id="templ">
-                <paper-material
-                        class="content"
+                <div
+                        class="list-item"
                         elevation="0"
                         animated
                         hidden$="[[_computeItemHiddenAttr(item)]]"
                         on-click="_toggleSelection">
-                    <h1>[[_computeVal(item, 'name')]]</h1>
-                    <p>[[_computeVal(item, 'address')]]</p>
+                    <a class="reference-link" href="#[[_computeIdLink(item, 'name')]]">
+                        <iron-icon icon="link"></iron-icon>
+                    </a>
+                    <h2>[[_computeVal(item, 'name')]]</h2>
+                    <p class="item-margin">[[_computeVal(item, 'address')]]</p>
                     <paper-ripple></paper-ripple>
-                </paper-material>
+                </div>
             </template>
         </my-firebase-list>
 
-        <my-firebase-list
-                id="listProduct"
-                firebase-obj="[[products]]"
-                search-term="[[filterProductByStoreId]]"
-                by="store_id"
-                hidden$="[[!filterProductByStoreId]]">
-            <template id="templ">
-                <paper-material
-                        class="content"
-                        elevation="0"
-                        animated
-                        hidden$="[[_computeItemHiddenAttr(item)]]"
-                        on-click="_toggleSelection">
-                    <h1>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h1>
-                    <p>[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
-                    <paper-ripple></paper-ripple>
-                </paper-material>
-            </template>
-        </my-firebase-list>
+        <paper-dialog id="modal"
+                      on-iron-overlay-opened="_patchOverlay"
+                      modal
+                      entry-animation="scale-up-animation"
+                      exit-animation="fade-out-animation">
+            <div class="dialog">
+                <header style="width: inherit; z-index: 10; background-color: #eee">
+                    <paper-icon-button
+                            icon="close"
+                            dialog-dismiss
+                            style="float: right">
+                    </paper-icon-button>
+                    <h2>[[_computeVal(stores, filterProductByStoreId, 'name')]]</h2>
+                </header>
+                <my-firebase-list
+                        id="listProduct"
+                        firebase-obj="[[products]]"
+                        search-term="[[filterProductByStoreId]]"
+                        by="store_id"
+                        hidden$="[[!filterProductByStoreId]]">
+                    <template id="templ">
+                        <div
+                                class="list-item"
+                                elevation="0"
+                                animated
+                                hidden$="[[_computeItemHiddenAttr(item)]]"
+                                on-click="_toggleSelection">
+                            <h2>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h2>
+                            <p class="item-margin">[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
+                            <paper-ripple></paper-ripple>
+                        </div>
+                    </template>
+                </my-firebase-list>
+            </div>
+        </paper-dialog>
     </template>
 
     <script>
@@ -126,7 +195,48 @@
              */
             ready: function(){
                 this.saleBranch = 'update-sale-quanity-demo';
-            }
+            },
+            _toggleModal: function(){
+                console.log('toggle modal');
+                this.$.modal.toggle();
+            },
+            // https://github.com/PolymerElements/paper-dialog/issues/7
+            _patchOverlay: function(e){
+                if(e.target.withBackdrop){
+                    e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
+                }
+            },
+            _computeVal: function(stores, filterProductByStoreId, path){
+                if(stores[filterProductByStoreId]){
+                    return stores[filterProductByStoreId][path];
+
+                }
+
+                return '';
+            },
+            listeners: {
+                'iron-overlay-opened': '_changeAppHeaderZIndex',
+                'iron-overlay-closed': '_changeAppHeaderZIndex',
+            },
+            _changeAppHeaderZIndex: function(){
+                let appHeader = document.querySelector('my-app').$$('app-header');
+                let zIndex = Number(appHeader.style.zIndex);
+                appHeader.style.zIndex = zIndex >= 0 ? -1 : 1;
+            },
+//            _fixHeaderOnTop: function(e){
+//                let dialog = e.target;
+//                if(dialog.localName == 'paper-dialog'){
+//                    console.log('dialog header should fixed');
+//                    let header = dialog.querySelector('header');
+//                    if(dialog.scrollTop > 0){
+//                        header.style.position = 'absolute';
+//                        header.classList = ['shadow'];
+//                    }
+//                    if(dialog.scrollTop == 0){
+//                        header.style.position = 'relative';
+//                    }
+//                }
+//            }
         });
     </script>
 </dom-module>
