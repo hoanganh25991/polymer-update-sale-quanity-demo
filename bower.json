@@ -24,7 +24,8 @@
     "paper-item": "PolymerElements/paper-item#^1.2.1",
     "paper-material": "PolymerElements/paper-material#^1.0.6",
     "paper-input": "PolymerElements/paper-input#^1.1.22",
-    "paper-fab": "PolymerElements/paper-fab#^1.2.1"
+    "paper-fab": "PolymerElements/paper-fab#^1.2.1",
+    "iron-fit-behavior": "PolymerElements/iron-fit-behavior#^1.2.5"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

@@ -32,10 +32,10 @@
             }
 
             my-firebase-list::shadow paper-material[hidden] {
-                position: absolute;
-                top: -9999px;
-                lefy: -9999px;
-            }
+                  position: absolute;
+                  top: -9999px;
+                  lefy: -9999px;
+              }
 
             paper-fab {
                 --paper-fab-background: var(--paper-orange-600);
@@ -60,7 +60,9 @@
                 firebase-obj="[[stores]]"
                 search-term="[[searchStore]]"
                 by="name"
-                selected="{{filterProductByStoreId}}">
+                selected="{{filterProductByStoreId}}"
+                vertical-align="top"
+                horizontal-align="auto">
             <template id="templ">
                 <paper-material
                         class="content"
@@ -79,7 +81,8 @@
                 id="listProduct"
                 firebase-obj="[[products]]"
                 search-term="[[filterProductByStoreId]]"
-                by="store_id">
+                by="store_id"
+                hidden$="[[!filterProductByStoreId]]">
             <template id="templ">
                 <paper-material
                         class="content"
@@ -93,8 +96,6 @@
                 </paper-material>
             </template>
         </my-firebase-list>
-
-
     </template>
 
     <script>
@@ -112,6 +113,7 @@
                 },
                 searchStore: {
                     type: String,
+                    value: null,
                     notify: true
                 },
                 filterProductByStoreId: {

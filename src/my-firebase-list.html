@@ -47,17 +47,17 @@
                 }
             },
             observers: [
+                '_transform(searchTerm, by)',
                 '_computeItems(firebaseObj, searchTerm, by)'
             ],
+            _transform: function(searchTerm, by){
+                console.log('%c _transform(searchTerm, by)', 'color: blue; font-weight: bold;');
+                this.searchTerm = searchTerm || '\\w';
+                this.by = by || 'name';
+            },
             _computeItems: function(firebaseObj, searchTerm, by){
                 console.log('%c _computeItems', 'color: blue; font-weight: bold;');
                 var uuids = Object.keys(firebaseObj);
-//                console.log(searchTerm, by);
-                if(searchTerm == '' || by == ''){
-//                    console.log('Nothing to compute');
-                    this._delayUpdateItems(uuids);
-                    return;
-                }
 
                 var items = uuids.filter(function(uuid){
                     if(firebaseObj[uuid][by]){
@@ -66,10 +66,8 @@
 
                     return false;
                 });
+                console.log('items searchTerm by', items, searchTerm, by);
 
-//                this.set('items', items);
-//                this.items = [];
-//                this.items = items;
                 this._delayUpdateItems(items);
             },
             ready: function(){
@@ -111,7 +109,7 @@
                     });
                 })(this);
             },
-            _toggleSelection: function(e) {
+            _toggleSelection: function(e){
                 console.log('Tap tap tap');
                 console.log(e);
                 var item = this.$.repeater.itemForElement(e.target);
