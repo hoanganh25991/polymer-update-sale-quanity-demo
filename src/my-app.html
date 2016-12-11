@@ -24,11 +24,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="my-login.html">
 <link rel="import" href="my-toolbar.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="shared-styles.html">
 
 <dom-module id="my-app">
     <template>
-        <style is="custom-style">
+        <style is="custom-style"
+               include="iron-flex shared-styles">
             :host {
                 --app-primary-color: var(--paper-yellow-900);
                 --app-secondary-color: black;
@@ -66,17 +68,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
                 font-weight: bold;
             }
-            .layout-vertical {
-                display: flex;
-                flex-direction: column;
-            }
-            .full {
-                height: 100vh;
-                width: 100vw;
-            }
-            .flex {
-                flex: 1;
-            }
         </style>
 
         <app-location route="{{route}}"></app-location>
@@ -98,19 +89,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </app-drawer>
 
             <!-- Main content -->
-            <app-header-layout has-scrolling-region>
-                <app-header fixed condenses reveals effects="waterfall">
-                    <app-toolbar>
-                        <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
-                        <div main-title>Stores</div>
-                    </app-toolbar>
+            <!--<app-header-layout has-scrolling-region>-->
+            <div class="layout vertical vertical">
+                <header>
                     <my-toolbar
                             signed-in="[[signedIn]]"
                             on-sign-out="signOut">
+                        <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+                        <div main-title>Stores</div>
                     </my-toolbar>
-                </app-header>
+                </header>
 
-                <div class="layout-vertical full">
+
+                <div class="flex">
                     <my-login
                             on-sign-in="signIn"
                             signed-in="[[signedIn]]"
@@ -141,8 +132,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <my-view404 name="view404"></my-view404>
                     </iron-pages>
                 </div>
-            </app-header-layout>
-        </app-drawer-layout>
+                </app-header-layout>
+                <!--</app-drawer-layout>-->
+            </div>
     </template>
 
     <script>
@@ -174,8 +166,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             signIn: function(){
                 this.$.auth
                     .signInWithPopup()
-                    .then(function(resolve){console.log('Google login success')})
-                    .catch(function(reject){console.log('Google login failed')});
+                    .then(function(resolve){
+                        console.log('Google login success')
+                    })
+                    .catch(function(reject){
+                        console.log('Google login failed')
+                    });
             },
 
             signOut: function(){
