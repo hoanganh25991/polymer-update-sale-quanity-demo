@@ -16,25 +16,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <template>
         <style>
             :host {
-                position: absolute;
-                top: 46px;
-                left: 0;
-                right: 0;
-                bottom: 0;
                 background-color: var(--paper-yellow-800);
                 transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 z-index: 1;
-                color: var(--paper-yellow-50);;
-                @apply(--layout);
-                @apply(--layout-center-center);
+                color: var(--paper-yellow-50);
+                display: flex;
+                flex-direction: column;
+                align-content: center;
             }
             :host([signed-in]) {
                 opacity: 0;
                 pointer-events: none;
             }
-            paper-button > * {
-                vertical-align: middle;
-                text-transform: none;
+            paper-button {
+                flex: 0.5;
             }
         </style>
         <paper-button on-tap="signIn" disabled="[[disabled]]">
