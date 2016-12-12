@@ -17,7 +17,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <style>
             :host {
                 display: block;
-                margin: 50% 0;
+                width: 100%;
+                height: 100%;
                 padding: 0;
                 transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                 color: var(--google-grey-700);
@@ -28,13 +29,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 opacity: 0;
                 pointer-events: none;
             }
+
+            paper-button {
+                margin-top: 40vh;
+            }
         </style>
-        <div class="wrapper">
-            <paper-button on-tap="signIn" disabled="[[disabled]]">
-                <iron-icon icon="account-circle"></iron-icon>
-                <span>Sign in with Google</span>
-            </paper-button>
-        </div>
+        <paper-button on-tap="signIn" disabled="[[disabled]]">
+            <iron-icon icon="account-circle"></iron-icon>
+            <span>Sign in with Google</span>
+        </paper-button>
     </template>
     <script>
         Polymer({
