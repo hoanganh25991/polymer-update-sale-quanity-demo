@@ -9,10 +9,12 @@
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="my-edit-bar.html">
 
 <dom-module id="my-stores">
     <template>
-        <style include="shared-styles"
+        <style include="shared-styles iron-flex"
                is="custom-style">
             :host {
                 display: block;
@@ -113,7 +115,7 @@
                         elevation="0"
                         animated
                         hidden$="[[_computeItemHiddenAttr(item)]]"
-                        on-click="_toggleSelection">
+                        on-tap="_toggleSelection">
                     <a class="reference-link" href="#[[_computeIdLink(item, 'name')]]">
                         <iron-icon icon="link"></iron-icon>
                     </a>
@@ -126,6 +128,7 @@
 
         <paper-dialog id="modal"
                       on-iron-overlay-opened="_patchOverlay"
+                      on-iron-overlay-closed="_hideEditBar"
                       modal
                       entry-animation="scale-up-animation"
                       exit-animation="fade-out-animation">
@@ -143,14 +146,16 @@
                         firebase-obj="[[products]]"
                         search-term="[[filterProductByStoreId]]"
                         by="store_id"
-                        hidden$="[[!filterProductByStoreId]]">
+                        hidden$="[[!filterProductByStoreId]]"
+                        selected="{{selectedProductId}}"
+                        on-item-selected="_openEditBar">
                     <template id="templ">
                         <div
                                 class="list-item"
                                 elevation="0"
                                 animated
                                 hidden$="[[_computeItemHiddenAttr(item)]]"
-                                on-click="_toggleSelection">
+                                on-tap="_toggleSelection">
                             <h2>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h2>
                             <p class="item-margin">[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
                             <paper-ripple></paper-ripple>
@@ -159,6 +164,11 @@
                 </my-firebase-list>
             </div>
         </paper-dialog>
+
+        <my-edit-bar
+                count="{{count}}"
+                on-confirm="_updateProductQuanity">
+        </my-edit-bar>
     </template>
 
     <script>
@@ -181,6 +191,14 @@
                 },
                 filterProductByStoreId: {
                     type: String,
+                    notify: true
+                },
+                selectedProductId: {
+                    type: String,
+                    notify: true
+                },
+                count: {
+                    type: Number,
                     notify: true
                 }
             },
@@ -217,20 +235,42 @@
                 let zIndex = Number(appHeader.style.zIndex);
                 appHeader.style.zIndex = zIndex >= 0 ? -1 : 1;
             },
-//            _fixHeaderOnTop: function(e){
-//                let dialog = e.target;
-//                if(dialog.localName == 'paper-dialog'){
-//                    console.log('dialog header should fixed');
-//                    let header = dialog.querySelector('header');
-//                    if(dialog.scrollTop > 0){
-//                        header.style.position = 'absolute';
-//                        header.classList = ['shadow'];
-//                    }
-//                    if(dialog.scrollTop == 0){
-//                        header.style.position = 'relative';
-//                    }
-//                }
-//            }
+            _openEditBar: function(e){
+                let editBar = this.$$('my-edit-bar');
+                /**
+                 * Un-hide editBar
+                 */
+                editBar.$.editBar.removeAttribute('hidden');
+                /**
+                 * Re compute the count on the new one
+                 */
+                this.count = this._computeCount();
+                /**
+                 * Move EditBar to where current div
+                 */
+//                console.log(e);
+                let target = e.detail.target;
+                let bound = target.getBoundingClientRect()
+                editBar.style.top = bound.top + 'px';
+                editBar.style.left = (bound.left + bound.width) - 100 + 'px';
+            },
+            _computeCount: function(){
+                if(this.filterProductByStoreId && this.selectedProductId){
+                    return this.products[this.selectedProductId]['quanity'];
+                }
+
+                return 0;
+            },
+            _updateProductQuanity: function(){
+                console.log('%c _updateProductQuanity', 'color: blue; font-weight: bold;');
+//                this.products[this.selectedProductId]['quanity'] = this.count;
+                let path = 'products.' + this.selectedProductId + '.quanity';
+                this.set(path, this.count);
+            },
+            _hideEditBar: function(){
+                let editBar = this.$$('my-edit-bar');
+                editBar.$.editBar.setAttribute('hidden', true);
+            }
         });
     </script>
 </dom-module>

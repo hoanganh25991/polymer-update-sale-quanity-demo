@@ -1,0 +1,65 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="my-icons.html">
+<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="my-edit-bar">
+    <template>
+        <style is="custom-style" include="shared-styles iron-flex">
+            :host {
+                position: fixed;
+                z-index: 104;
+            }
+
+            paper-fab {
+                --paper-fab-background: var(--paper-blue-500);
+                --paper-fab-keyboard-focus-background: var(--paper-blue-900);
+                margin: 5px auto;
+            }
+
+            #ok {
+                --paper-fab-background: var(--paper-green-500);
+                --paper-fab-keyboard-focus-background: var(--paper-green-900);
+            }
+
+            h1 {
+                margin-right: 20px;
+            }
+        </style>
+        <div id="editBar" hidden>
+            <div class="layout horizontal center">
+                <h1>[[count]]</h1>
+
+                <div class="layout vertical">
+                    <paper-fab mini icon="expand-less" on-tap="_add"></paper-fab>
+                    <paper-fab mini icon="done" id="ok" on-tap="_confirm"></paper-fab>
+                    <paper-fab mini icon="expand-more" on-tap="_minus"></paper-fab>
+                </div>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: 'my-edit-bar',
+            properties: {
+                count: {
+                    type: Number,
+                    notify: true,
+                    reflectToAttribute: true
+                }
+            },
+            _confirm: function(){
+
+
+                this.fire('confirm');
+            },
+            _add: function(){
+                this.count++;
+            },
+            _minus: function(){
+                this.count--;
+            }
+        });
+    </script>
+</dom-module>

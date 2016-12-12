@@ -118,7 +118,7 @@
                 var item = this.$.repeater.itemForElement(e.target);
                 this.$.selector.select(item);
                 console.log(this.selected);
-                this.fire('item-selected');
+                this.fire('item-selected', {target: e.currentTarget});
             }
         });
     </script>
