@@ -60,7 +60,7 @@
 
                 var items = uuids.filter(function(uuid){
                     if(firebaseObj[uuid][by]){
-                        return firebaseObj[uuid][by].match(new RegExp(searchTerm));
+                        return firebaseObj[uuid][by].match(new RegExp(searchTerm, 'i'));
                     }
 
                     return false;
