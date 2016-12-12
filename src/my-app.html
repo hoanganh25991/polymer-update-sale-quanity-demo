@@ -89,8 +89,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         class="drawer-list"
                         role="navigation">
                     <!--<a name="login" href="/login">Login</a>-->
-                    <a name="stores" href="stores">Stores</a>
-                    <a name="settings" href="settings">Settings</a>
+                    <a name="stores" href="/stores">Stores</a>
+                    <a name="settings" href="/settings">Settings</a>
                 </iron-selector>
             </app-drawer>
 
@@ -163,6 +163,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                     value: function(){
                         return this.$.drawer;
                     }
+                },
+                routeData: {
+                    type: Object,
+                    notify: true
                 }
             },
 
@@ -192,7 +196,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             observers: [
                 '_routePageChanged(routeData.page)',
-                '_redirectToStores(signedIn)'
+                '_redirectToStores(signedIn)',
+                '_computePage(routeData)'
             ],
 
             _routePageChanged: function(page){
@@ -207,6 +212,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             _showPage404: function(){
                 this.page = 'view404';
+            },
+            _computePage: function(routeData){
+                console.log('%c _computePage', 'color: blue; font-weight: bold;');
+                let page = routeData.page;
+                if(page){
+                    this.page = page;
+                }
+
+                console.log(this.page);
             },
             _redirectToStores: function(signedIn, oldVal){
                 /**
