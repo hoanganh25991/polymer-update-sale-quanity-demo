@@ -78,20 +78,16 @@
                 transition: all .4s cubic-bezier(.25, .8, .25, 1);
                 overflow: auto;
                 max-height: 80vh;
+                margin: 0 auto;
             }
 
             .dialog {
                 position: relative;
                 max-width: 672px;
                 padding: 0;
+                margin: 0;
+                box-sizing: border-box;
             }
-
-            /*.dialog-container {*/
-                /*position: absolute;*/
-                /*top: 0;*/
-                /*left: 0;*/
-                /*width: 100%;*/
-            /*}*/
         </style>
         <my-search-bar
                 search-term="{{searchStore}}">
@@ -133,46 +129,45 @@
             </template>
         </my-firebase-list>
 
-        <!--<div class="dialog-container">-->
-            <paper-dialog id="modal"
-                          on-iron-overlay-opened="_patchOverlay"
-                          on-iron-overlay-closed="_hideEditBar"
-                          with-backdrop
-                          entry-animation="scale-up-animation"
-                          exit-animation="fade-out-animation">
-                <div class="dialog">
-                    <header style="width: inherit; z-index: 10; background-color: #eee">
-                        <paper-icon-button
-                                icon="close"
-                                dialog-dismiss
-                                style="float: right">
-                        </paper-icon-button>
-                        <h2>[[_computeVal(stores, filterProductByStoreId, 'name')]]</h2>
-                    </header>
-                    <my-firebase-list
-                            id="listProduct"
-                            firebase-obj="[[products]]"
-                            search-term="[[filterProductByStoreId]]"
-                            by="store_id"
-                            hidden$="[[!filterProductByStoreId]]"
-                            selected="{{selectedProductId}}"
-                            on-item-selected="_openEditBar">
-                        <template id="templ">
-                            <div
-                                    class="list-item"
-                                    elevation="0"
-                                    animated
-                                    hidden$="[[_computeItemHiddenAttr(item)]]"
-                                    on-tap="_toggleSelection">
-                                <h2>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h2>
-                                <p class="item-margin">[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
-                                <paper-ripple></paper-ripple>
-                            </div>
-                        </template>
-                    </my-firebase-list>
-                </div>
-            </paper-dialog>
-        <!--</div>-->
+        <paper-dialog id="modal"
+                      on-iron-overlay-opened="_patchOverlay"
+                      on-iron-overlay-closed="_hideEditBar"
+                      modal
+                      entry-animation="scale-up-animation"
+                      exit-animation="fade-out-animation">
+            <div class="dialog">
+                <header style="z-index: 10; background-color: #eee">
+                    <paper-icon-button
+                            icon="close"
+                            dialog-dismiss
+                            style="float: right">
+                    </paper-icon-button>
+                    <h2>[[_computeVal(stores, filterProductByStoreId, 'name')]]</h2>
+                </header>
+                <my-firebase-list
+                        id="listProduct"
+                        firebase-obj="[[products]]"
+                        search-term="[[filterProductByStoreId]]"
+                        by="store_id"
+                        hidden$="[[!filterProductByStoreId]]"
+                        selected="{{selectedProductId}}"
+                        on-item-selected="_openEditBar">
+                    <template id="templ">
+                        <div
+                                class="list-item"
+                                elevation="0"
+                                animated
+                                hidden$="[[_computeItemHiddenAttr(item)]]"
+                                on-tap="_toggleSelection">
+                            <h2>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h2>
+                            <p class="item-margin">[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
+                            <paper-ripple></paper-ripple>
+                        </div>
+                    </template>
+                </my-firebase-list>
+            </div>
+        </paper-dialog>
+
         <my-edit-bar
                 count="{{count}}"
                 on-confirm="_updateProductQuanity">
@@ -224,6 +219,7 @@
             _patchOverlay: function(e){
                 if(e.target.withBackdrop){
                     let appHeaderLayout = document.querySelector('my-app').$$('app-header-layout');
+                    let appDrawer = document.querySelector('my-app').$$('app-drawer');
 //                    e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
                     let backDrop = e.target.backdropElement;
                     /**
@@ -239,11 +235,9 @@
                     dialog.style.width = dialogWidth + 'px';
 
                     let paperDialog = e.target;
-//                    let paperDialogLeft = backDrop.clientWidth * 0.125;
-                    paperDialog.style.left = '';
+                    let offsetLeftByDrawer = this._isElementInViewport(appDrawer) ? appDrawer.offsetWidth : 0;
+                    paperDialog.style.left = (offsetLeftByDrawer + backDrop.clientWidth * 0.125) + 'px';
                 }
-
-
             },
             _computeVal: function(stores, filterProductByStoreId, path){
                 if(stores[filterProductByStoreId]){
@@ -297,6 +291,13 @@
             _hideEditBar: function(){
                 let editBar = this.$$('my-edit-bar');
                 editBar.$.editBar.setAttribute('hidden', true);
+            },
+            _isElementInViewport: function(el){
+                //special bonus for those using jQuery
+                var rect = el.getBoundingClientRect();
+                var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+
+                return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
             }
         });
     </script>
