@@ -17,7 +17,7 @@
                 items="[[items]]">
         </template>
         <!--<array-selector id="selector" items="[[items]]" selected="{{selected}}" toggle></array-selector>-->
-        <array-selector id="selector" items="[[items]]" selected="{{selected}}"></array-selector>
+        <array-selector id="selector" items="[[items]]" selected="[[selected]]" on-selected-changed="_updateSelected"></array-selector>
     </template>
     <script>
         Polymer({
@@ -120,7 +120,15 @@
                 console.log(this.selected);
                 this.fire('item-selected', {target: e.currentTarget});
 //                e.currentTarget.scrollIntoView();
-            }
+            },
+            _updateSelected: function(){
+                console.log('re-render list, not lose track on selected item');
+                let arraySelector = this.$.selector;
+                if(arraySelector.selected){
+                    this.selected = arraySelector.selected;
+                }
+            },
+//            attached: function(){}
         });
     </script>
 </dom-module>

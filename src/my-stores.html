@@ -285,6 +285,8 @@
             },
             _updateProductQuanity: function(){
                 console.log('%c _updateProductQuanity', 'color: blue; font-weight: bold;');
+                console.log(this.selectedProductId);
+                console.log(this.products[this.selectedProductId]['quanity'], this.count);
 //                this.products[this.selectedProductId]['quanity'] = this.count;
                 let path = 'products.' + this.selectedProductId + '.quanity';
                 this.set(path, this.count);
