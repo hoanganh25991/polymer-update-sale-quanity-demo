@@ -109,7 +109,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         id="auth"
                         provider="google"
                         signed-in="{{signedIn}}"
-                        user="{{user}}">
+                        user="{{user}}"
+                        on-error="_handleError">
                 </firebase-auth>
 
                 <iron-pages
@@ -197,6 +198,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 if(signedIn){
                     this.page = 'stores';
                 }
+            },
+            _handleError: function(error){
+                console.log(error);
             }
 
         });
