@@ -235,7 +235,8 @@
                     dialog.style.width = dialogWidth + 'px';
 
                     let paperDialog = e.target;
-                    let offsetLeftByDrawer = this._isElementInViewport(appDrawer) ? appDrawer.offsetWidth : 0;
+//                    let offsetLeftByDrawer = this._isElementInViewport(appDrawer) ? appDrawer.offsetWidth : 0;
+                    let offsetLeftByDrawer = appDrawer.hasAttribute('opened') ? appDrawer.offsetWidth : 0;
                     paperDialog.style.left = (offsetLeftByDrawer + backDrop.clientWidth * 0.125) + 'px';
                 }
             },
