@@ -274,7 +274,7 @@
                 let target = e.detail.target;
                 let bound = target.getBoundingClientRect()
                 editBar.style.top = bound.top + 'px';
-                editBar.style.left = (bound.left + bound.width) - 100 + 'px';
+                editBar.style.left = (bound.left + bound.width) - 26 - 10 + 'px';
             },
             _computeCount: function(){
                 if(this.filterProductByStoreId && this.selectedProductId){
