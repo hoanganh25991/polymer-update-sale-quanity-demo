@@ -98,7 +98,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <app-header fixed>
                     <my-toolbar
                             signed-in="[[signedIn]]"
-                            on-sign-out="signOut"
+                            on-tap="signOut"
                             drawer="[[drawer]]">
                     </my-toolbar>
                 </app-header>
@@ -143,6 +143,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             properties: {
                 page: {
                     type: String,
+                    notify: true,
                     reflectToAttribute: true,
                     observer: '_pageChanged'
                 },
@@ -177,7 +178,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
 
             signOut: function(){
+                console.log('Has sign out');
                 this.$.auth.signOut();
+                this.signedIn = false;
+                this.page = 'login';
             },
 
             observers: [

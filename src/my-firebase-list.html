@@ -80,7 +80,7 @@
                 return val.toLowerCase().replace(/\s+/g, '-');
             },
             _computeItemHiddenAttr: function(uuid){
-                return this.firebaseObj[uuid][this.by].match(new RegExp(this.searchTerm)) ? false : true;
+                return this.firebaseObj[uuid][this.by].match(new RegExp(this.searchTerm, 'i')) ? false : true;
             },
             _modelBindItemTemplate: function(){
                 const itemContentTemplate = this.querySelector('#templ');
