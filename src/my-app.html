@@ -129,7 +129,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                             signed-in="[[signedIn]]"
                             disabled="[[!online]]">
                     </my-login>
-                    <my-stores name="stores"></my-stores>
+                    <my-stores name="stores" signed-in="[[signedIn]]"></my-stores>
                     <my-settings name="settings" user="{{user}}"></my-settings>
                     <my-view404 name="view404"></my-view404>
                 </iron-pages>
@@ -186,6 +186,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 console.log('Has sign out');
                 this.$.auth.signOut();
                 this.signedIn = false;
+                window.location.href = window.location.origin;
 //                this.page = 'login';
                 if(!this.signedIn && this.page != 'login'){
 //                    this.page = 'stores';

@@ -13,7 +13,7 @@
 <link rel="import" href="my-edit-bar.html">
 
 <dom-module id="my-stores">
-    <template>
+<template>
         <style include="shared-styles iron-flex"
                is="custom-style">
             :host {
@@ -93,11 +93,13 @@
                 search-term="{{searchStore}}">
         </my-search-bar>
         <firebase-document
+                id="fdStore"
                 path="/[[saleBranch]]/stores"
                 data="{{stores}}">
         </firebase-document>
 
         <firebase-document
+                id="fdProduct"
                 path="/[[saleBranch]]/products"
                 data="{{products}}">
         </firebase-document>
@@ -203,6 +205,12 @@
                 count: {
                     type: Number,
                     notify: true
+                },
+                signedIn: {
+                    type: Boolean,
+                    reflectToAttribute: true,
+                    notify: true,
+                    observer: ['_resetFirebase']
                 }
             },
             /**
@@ -304,6 +312,23 @@
             },
             attached: function(){
                 console.log('Attach to page, stores');
+            },
+//            observers: [
+//                '_resetFirebase(signedIn)'
+//            ],
+            _resetFirebase: function(signedIn, oldVal){
+                console.log('%c _resetFirebase', 'color: blue; font-weight: bold');
+                console.log(signedIn, oldVal);
+                /**
+                 * Just logout, so logout firebase too
+                 */
+                if(signedIn == false && oldVal == true){
+                    console.log('go to destroy');
+//                    this.$.fdStore.reset();
+//                    this.$.fdProduct.reset();
+//                    this.$.fdStore.destroy();
+//                    this.$.fdProduct.destroy();
+                }
             }
         });
     </script>
