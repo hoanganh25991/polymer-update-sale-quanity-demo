@@ -33,7 +33,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-icon-button
                     icon="[[computeLockIcon(signedIn)]]"
                     disabled="[[!signedIn]]"
-                    on-tap="lock">
+                    on-tap="_askSignOut">
             </paper-icon-button>
         </app-toolbar>
     </template>
@@ -67,6 +67,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 if(this.drawer){
                     this.drawer.toggle();
                 }
+            },
+            _askSignOut: function(){
+                console.log('%c _askSignOut', 'color: blue; font-weight: bold');
+                this.fire('sign-out');
             }
         });
     </script>

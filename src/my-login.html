@@ -25,10 +25,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 text-align: center;
             }
 
-            :host([signed-in]) {
-                opacity: 0;
-                pointer-events: none;
-            }
+            /*:host([signed-in]) {*/
+                /*opacity: 0;*/
+                /*pointer-events: none;*/
+            /*}*/
 
             paper-button {
                 margin-top: 40vh;
@@ -36,7 +36,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </style>
         <paper-button on-tap="signIn" disabled="[[disabled]]">
             <iron-icon icon="account-circle"></iron-icon>
-            <span>Sign in with Google</span>
+            <span hidden$="[[signedIn]]">Sign in with Google</span>
+            <span hidden$="[[!signedIn]]">You now logged in, go to <a href="/stores">Stores</a> page</span>
         </paper-button>
     </template>
     <script>
@@ -56,6 +57,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             },
             signIn: function(){
                 this.fire('sign-in', null, {bubbles: false});
+            },
+            attached: function(){
+                console.log('Attach to page, login');
             }
         });
     </script>

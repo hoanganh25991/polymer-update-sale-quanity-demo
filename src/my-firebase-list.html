@@ -17,7 +17,8 @@
                 items="[[items]]">
         </template>
         <!--<array-selector id="selector" items="[[items]]" selected="{{selected}}" toggle></array-selector>-->
-        <array-selector id="selector" items="[[items]]" selected="[[selected]]" on-selected-changed="_updateSelected"></array-selector>
+        <array-selector id="selector" items="[[items]]" selected="[[selected]]"
+                        on-selected-changed="_updateSelected"></array-selector>
     </template>
     <script>
         Polymer({
@@ -128,7 +129,9 @@
                     this.selected = arraySelector.selected;
                 }
             },
-//            attached: function(){}
+            attached: function(){
+//                console.log('Attach to page');
+            }
         });
     </script>
 </dom-module>
