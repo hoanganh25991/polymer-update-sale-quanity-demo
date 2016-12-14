@@ -13,7 +13,7 @@
 <link rel="import" href="my-edit-bar.html">
 
 <dom-module id="my-stores">
-<template>
+    <template>
         <style include="shared-styles iron-flex"
                is="custom-style">
             :host {
@@ -131,12 +131,13 @@
             </template>
         </my-firebase-list>
 
-        <paper-dialog id="modal"
-                      on-iron-overlay-opened="_patchOverlay"
-                      on-iron-overlay-closed="_hideEditBar"
-                      modal
-                      entry-animation="scale-up-animation"
-                      exit-animation="fade-out-animation">
+        <paper-dialog
+                id="modal"
+                on-iron-overlay-opened="_patchOverlay"
+                on-iron-overlay-closed="_hideEditBar"
+                modal
+                entry-animation="scale-up-animation"
+                exit-animation="fade-out-animation">
             <div class="dialog">
                 <header style="z-index: 10; background-color: #eee">
                     <paper-icon-button
