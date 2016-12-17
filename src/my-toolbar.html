@@ -2,6 +2,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/app-storage/app-network-status-behavior.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="my-util.html">
 
 <dom-module id="my-toolbar">
     <template>
@@ -43,11 +44,11 @@
                 this.fire('ask-sign-out');
             },
             _askToggleDrawer: function(){
-                console.log('%c _askToggleDrawer', 'color: blue; font-weight: bold');
+                log('_askToggleDrawer');
                 this.fire('ask-toggle-drawer');
             },
             _askSignOut: function(){
-                console.log('%c _askSignOut', 'color: blue; font-weight: bold');
+                log('_askSignOut');
                 this.fire('ask-sign-out');
             }
         });
