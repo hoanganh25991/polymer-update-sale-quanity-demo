@@ -11,6 +11,9 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="my-edit-bar.html">
+<link rel="import" href="my-util.html">
+<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
 
 <dom-module id="my-stores">
     <template>
@@ -237,16 +240,17 @@
                     backDrop.style.position = 'absolute';
                     backDrop.style.top = '0';
                     backDrop.style.left = '0';
-                    appHeaderLayout.appendChild(backDrop);
+//                    appHeaderLayout.appendChild(backDrop);
+                    document.querySelector('body').insertBefore(backDrop, document.querySelector('my-app'));
 
-                    let dialog = e.target.querySelector('div.dialog');
-                    let dialogWidth = backDrop.clientWidth * 0.75;
-                    dialog.style.width = dialogWidth + 'px';
-
-                    let paperDialog = e.target;
-//                    let offsetLeftByDrawer = this._isElementInViewport(appDrawer) ? appDrawer.offsetWidth : 0;
-                    let offsetLeftByDrawer = appDrawer.hasAttribute('opened') ? appDrawer.offsetWidth : 0;
-                    paperDialog.style.left = (offsetLeftByDrawer + backDrop.clientWidth * 0.125) + 'px';
+//                    let dialog = e.target.querySelector('div.dialog');
+//                    let dialogWidth = backDrop.clientWidth * 0.75;
+//                    dialog.style.width = dialogWidth + 'px';
+//
+//                    let paperDialog = e.target;
+////                    let offsetLeftByDrawer = this._isElementInViewport(appDrawer) ? appDrawer.offsetWidth : 0;
+//                    let offsetLeftByDrawer = appDrawer.hasAttribute('opened') ? appDrawer.offsetWidth : 0;
+//                    paperDialog.style.left = (offsetLeftByDrawer + backDrop.clientWidth * 0.125) + 'px';
                 }
             },
             _computeVal: function(stores, filterProductByStoreId, path){
@@ -269,19 +273,18 @@
             _openEditBar: function(e){
                 let editBar = this.$$('my-edit-bar');
                 /**
-                 * Un-hide editBar
-                 */
-                editBar.$.editBar.removeAttribute('hidden');
-                /**
                  * Re compute the count on the new one
                  */
                 this.count = this._computeCount();
                 /**
                  * Move EditBar to where current div
                  */
-//                console.log(e);
                 let target = e.detail.target;
                 let bound = target.getBoundingClientRect()
+                /**
+                 * Un-hide editBar
+                 */
+                editBar.$.editBar.removeAttribute('hidden');
                 editBar.style.top = bound.top + 'px';
                 editBar.style.left = (bound.left + bound.width) - 26 - 10 + 'px';
             },
@@ -293,42 +296,29 @@
                 return 0;
             },
             _updateProductQuanity: function(){
-                console.log('%c _updateProductQuanity', 'color: blue; font-weight: bold;');
-                console.log(this.selectedProductId);
-                console.log(this.products[this.selectedProductId]['quanity'], this.count);
-//                this.products[this.selectedProductId]['quanity'] = this.count;
+                log('_updateProductQuanity');
                 let path = 'products.' + this.selectedProductId + '.quanity';
                 this.set(path, this.count);
             },
             _hideEditBar: function(){
-                let editBar = this.$$('my-edit-bar');
-                editBar.$.editBar.setAttribute('hidden', true);
-            },
-            _isElementInViewport: function(el){
-                //special bonus for those using jQuery
-                var rect = el.getBoundingClientRect();
-                var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-
-                return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+                let editBarElement = this.$$('my-edit-bar');
+                editBarElement.$.editBar.setAttribute('hidden', true);
             },
             attached: function(){
-                console.log('Attach to page, stores');
+                log('Attach to page, stores');
             },
-//            observers: [
+            observers: [
 //                '_resetFirebase(signedIn)'
-//            ],
+            ],
             _resetFirebase: function(signedIn, oldVal){
-                console.log('%c _resetFirebase', 'color: blue; font-weight: bold');
+                log('_resetFirebase');
                 console.log(signedIn, oldVal);
                 /**
                  * Just logout, so logout firebase too
                  */
                 if(signedIn == false && oldVal == true){
-                    console.log('go to destroy');
-//                    this.$.fdStore.reset();
-//                    this.$.fdProduct.reset();
-//                    this.$.fdStore.destroy();
-//                    this.$.fdProduct.destroy();
+                    console.log('Clear firebase data, by reload to home page');
+                    window.location.href = window.location.origin;
                 }
             }
         });
