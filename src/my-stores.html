@@ -137,7 +137,6 @@
         <paper-dialog
                 id="modal"
                 on-iron-overlay-opened="_patchOverlay"
-                on-iron-overlay-closed="_hideEditBar"
                 modal
                 entry-animation="scale-up-animation"
                 exit-animation="fade-out-animation">
@@ -245,14 +244,13 @@
                 return '';
             },
             listeners: {
-                'iron-overlay-opened': '_changeAppHeaderZIndex',
-                'iron-overlay-closed': '_changeAppHeaderZIndex',
+                'ask-hide-edit-bar': '_hideEditBar'
             },
-            _changeAppHeaderZIndex: function(){
-                let appHeader = document.querySelector('my-app').$$('app-header');
-                let zIndex = Number(appHeader.style.zIndex);
-                appHeader.style.zIndex = zIndex >= 0 ? -1 : 1;
-            },
+//            _changeAppHeaderZIndex: function(){
+//                let appHeader = document.querySelector('my-app').$$('app-header');
+//                let zIndex = Number(appHeader.style.zIndex);
+//                appHeader.style.zIndex = zIndex >= 0 ? -1 : 1;
+//            },
             _openEditBar: function(e){
                 let editBar = this.$$('my-edit-bar');
                 /**
@@ -289,6 +287,14 @@
             },
             attached: function(){
                 log('Attach to page, stores');
+                let dialog = this.$.modal;
+                let dialogRenderCloses = dialog._renderClosed.bind(dialog);
+                // Override, before renderClose, askHideEditBar
+                dialog._renderClosed = function(){
+                    console.log('fire ask hide edit bar');
+                    dialog.fire('ask-hide-edit-bar');
+                    dialogRenderCloses();
+                };
             },
             observers: [
 //                '_resetFirebase(signedIn)'
