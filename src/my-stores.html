@@ -78,10 +78,10 @@
             #modal {
                 top: 5vh;
                 background-color: #eeeeee;
-                transition: all .4s cubic-bezier(.25, .8, .25, 1);
                 overflow: auto;
                 max-height: 80vh;
-                margin: 0 auto;
+                min-width: 75%;
+                position: absolute;
             }
 
             .dialog {
@@ -229,28 +229,11 @@
             },
             // https://github.com/PolymerElements/paper-dialog/issues/7
             _patchOverlay: function(e){
-                if(e.target.withBackdrop){
-                    let appHeaderLayout = document.querySelector('my-app').$$('app-header-layout');
-                    let appDrawer = document.querySelector('my-app').$$('app-drawer');
-//                    e.target.parentNode.insertBefore(e.target.backdropElement, e.target);
+                let dialog = e.target;
+                if(dialog.withBackdrop){
                     let backDrop = e.target.backdropElement;
-                    /**
-                     * Change default style of iron-overlay
-                     */
-                    backDrop.style.position = 'absolute';
-                    backDrop.style.top = '0';
-                    backDrop.style.left = '0';
-//                    appHeaderLayout.appendChild(backDrop);
-                    document.querySelector('body').insertBefore(backDrop, document.querySelector('my-app'));
-
-//                    let dialog = e.target.querySelector('div.dialog');
-//                    let dialogWidth = backDrop.clientWidth * 0.75;
-//                    dialog.style.width = dialogWidth + 'px';
-//
-//                    let paperDialog = e.target;
-////                    let offsetLeftByDrawer = this._isElementInViewport(appDrawer) ? appDrawer.offsetWidth : 0;
-//                    let offsetLeftByDrawer = appDrawer.hasAttribute('opened') ? appDrawer.offsetWidth : 0;
-//                    paperDialog.style.left = (offsetLeftByDrawer + backDrop.clientWidth * 0.125) + 'px';
+//                    backDrop.style.position = 'absolute';
+                    this.shadowRoot.appendChild(backDrop);
                 }
             },
             _computeVal: function(stores, filterProductByStoreId, path){
