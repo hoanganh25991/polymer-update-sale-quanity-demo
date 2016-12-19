@@ -14,6 +14,7 @@
 <link rel="import" href="my-util.html">
 <link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 
 <dom-module id="my-stores">
     <template>
@@ -106,6 +107,11 @@
                 path="/[[saleBranch]]/products"
                 data="{{products}}">
         </firebase-document>
+
+        <firebase-query
+                path="/[[saleBranch]]/stores"
+                data="{{productXs}}">
+        </firebase-query>
 
         <my-firebase-list
                 id="listStore"
