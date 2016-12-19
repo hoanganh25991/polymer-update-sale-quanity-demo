@@ -301,6 +301,12 @@
                     dialog.fire('ask-hide-edit-bar');
                     dialogRenderCloses();
                 };
+
+                let fq = this.$$('firebase-query');
+                fq.query.on('value', function(s){
+                    console.log('value change query query query');
+                    console.log(s);
+                }, fq.__onError, fq);
             },
             observers: [
 //                '_resetFirebase(signedIn)'
