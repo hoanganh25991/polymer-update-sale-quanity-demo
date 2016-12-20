@@ -131,12 +131,13 @@
             }
         },
         attached: function() {
-            this.__refChanged(this.ref, this.ref);
+          this.__queryChanged(this.query, this.query);
         },
         detached: function() {
-            if (this.ref) {
-                this.ref.off('value', this.__onFirebaseValue, this);
-            }
+          if (this.query == null) {
+            return;
+          }
+          this.__queryChanged(null, this.query);
         },
         /**
          * @override
@@ -240,14 +241,6 @@
          */
         setStoredValue: function(path, value) {
             return this._setFirebaseValue(path, value);
-        },
-        __refChanged: function(ref, oldRef) {
-            if (oldRef) {
-                oldRef.off('value', this.__onFirebaseValue, this);
-            }
-            if (ref) {
-                ref.on('value', this.__onFirebaseValue, this.__onError, this);
-            }
         },
         __onFirebaseValue: function(snapshot) {
             var value = snapshot.val();

@@ -99,16 +99,16 @@
                 search-term="{{searchStore}}">
         </my-search-bar>
 
-        <!--<my-firebase-->
-                <!--path="/[[saleBranch]]/stores"-->
-                <!--order-by-child="by"-->
-                <!--order-by-value="[[user.email]]"-->
-                <!--data="{{stores}}">-->
-        <!--</my-firebase>-->
-        <firebase-document
+        <my-firebase
+                path="/[[saleBranch]]/stores"
+                order-by-child="by"
+                equal-to="[[user.email]]"
+                data="{{stores}}">
+        </my-firebase>
+        <!-- <firebase-document
                 path="/[[saleBranch]]/stores"
                 data="{{stores}}">
-        </firebase-document>
+        </firebase-document> -->
 
         <firebase-document
                 id="fdProduct"
@@ -137,6 +137,7 @@
                     </a>
                     <h2>[[_computeVal(item, 'name')]]</h2>
                     <p class="item-margin">[[_computeVal(item, 'address')]]</p>
+                    <p class="item-margin">[[_computeVal(item, 'by')]]</p>
                     <paper-ripple></paper-ripple>
                 </div>
             </template>
