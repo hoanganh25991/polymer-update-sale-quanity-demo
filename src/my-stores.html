@@ -103,7 +103,7 @@
                 max-width: 200px;
                 margin-top: 20px;
                 --paper-button: {
-                  background-color: var(--paper-grey-500);
+                  background-color: var(--paper-grey-400);
                 };
                 --paper-button-flat-keyboard-focus: var(--paper-grey-900);
             }
@@ -453,18 +453,18 @@
 
                 this.currentProductDiv = target;
                 this.currentProductDiv.style.pointerEvents = 'none';
+                this.lastProductDeselected = e.detail.item;
             },
             _editOrder: function(){
-                this.currentProductDiv.style.pointerEvents = 'inherit';
+                this.currentProductDiv.style.pointerEvents = '';
                 this.currentProductDiv.click();
                 let askCancelOrder = this.$.askCancelOrder;
                 askCancelOrder.classList = 'hidden';
             },
             _removeOrder: function(){
-                this.currentProductDiv.style.pointerEvents = 'inherit';
+                this.currentProductDiv.style.pointerEvents = '';
 
-                let currentSelectedProductId = this.selectedProductIds[this.selectedProductIds.length - 1];
-                delete this.productOrders[this.selectedStoreId][currentSelectedProductId];
+                delete this.productOrders[this.selectedStoreId][this.lastProductDeselected];
 
                 let orderDiv = this.currentProductDiv.querySelector('p.order');
                 if(orderDiv){

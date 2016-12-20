@@ -129,12 +129,15 @@
             _toggleSelection: function(e){
                 console.log('Tap tap tap');
                 var item = this.$.repeater.itemForElement(e.target);
+//                let oldState = this.$.selector.isSelected(item);
                 this.$.selector.select(item);
+//                let newState = this.$.selector.isSelected(item);
                 console.log(this.selected);
+
                 if(this.$.selector.isSelected(item)){
                     this.fire('item-selected', {target: e.currentTarget});
                 }else{
-                    this.fire('item-deselected', {target: e.currentTarget});
+                    this.fire('item-deselected', {target: e.currentTarget, item: item});
                 }
 
 
