@@ -196,8 +196,9 @@
         </paper-dialog>
 
         <my-edit-bar
-                count="{{count}}"
+                order="{{order}}"
                 on-confirm="_updateProductQuanity">
+            <h1>Order: [[order]]</h1>
         </my-edit-bar>
     </template>
 
@@ -243,7 +244,8 @@
                 },
                 productOrders: {
                     type: Object,
-                    notify: true
+                    notify: true,
+                    value: []
                 }
             },
             /**
@@ -286,7 +288,7 @@
                 /**
                  * Re compute the count on the new one
                  */
-                this.order = this._computeCount();
+                this.order = this._computeOrder();
                 /**
                  * Move EditBar to where current div
                  */
@@ -297,14 +299,20 @@
                  */
                 editBar.$.editBar.removeAttribute('hidden');
                 editBar.style.top = bound.top + 'px';
-                editBar.style.left = (bound.left + bound.width) - 26 - 10 + 'px';
+                editBar.style.right = (bound.left - 10) + 'px';
             },
-            _computeCount: function(){
-                if(this.filterProductByStoreId && this.selectedProductIds){
-                    return this.products[this.selectedProductIds]['quanity'];
-                }
-
-                return 0;
+            _computeOrder: function(){
+                /**
+                 * Always sure that this one exists
+                 */
+                let currentSelectedProductId = this.selectedProductIds[this.selectedProductIds.length - 1];
+                return this.productOrders[currentSelectedProductId] ?
+                            this.productOrders[currentSelectedProductId] : 0;
+//                if(this.productOrders[currentSelectedProductId]){
+//                    return this.productOrders[currentSelectedProductId];
+//                }
+//
+//                return 0;
             },
             _updateProductQuanity: function(){
                 log('_updateProductQuanity');
@@ -323,6 +331,21 @@
                 dialog._renderClosed = function(){
                     console.log('fire ask hide edit bar');
                     dialog.fire('ask-hide-edit-bar');
+                    /**
+                     * Clear product list selected item
+                     * each store has different selected item
+                     */
+//                    let mf = dialog.$$('my-firebase-list');
+                    /**
+                     * Fail to find mf, bcs mf in shadowRoot
+                     */
+                    /**
+                     * Find by querySelector of DOM API
+                     */
+                    let mf = dialog.querySelector('#listProduct');
+                    mf.$.selector.clearSelection();
+                    // Force mf.selected update
+                    mf.selected = mf.$.selector.selected;
                     dialogRenderCloses();
                 };
             },

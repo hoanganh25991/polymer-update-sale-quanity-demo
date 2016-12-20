@@ -23,15 +23,15 @@
                 --paper-fab-keyboard-focus-background: var(--paper-green-900);
             }
 
-            h1 {
-                margin-right: 20px;
+            #buttonDiv {
+                margin-left: 20px;
             }
         </style>
         <div id="editBar" hidden>
             <div class="layout horizontal center">
-                <h1>[[count]]</h1>
+                <content></content>
 
-                <div class="layout vertical">
+                <div class="layout vertical" id="buttonDiv">
                     <paper-fab mini icon="expand-less" on-tap="_add"></paper-fab>
                     <paper-fab mini icon="done" id="ok" on-tap="_confirm"></paper-fab>
                     <paper-fab mini icon="expand-more" on-tap="_minus"></paper-fab>
@@ -42,6 +42,9 @@
     <script>
         Polymer({
             is: 'my-edit-bar',
+            behaviors: [
+                Polymer.Templatizer
+            ],
             properties: {
                 order: {
                     type: Number,
@@ -49,17 +52,22 @@
                     reflectToAttribute: true
                 }
             },
+            _instanceProps: {
+                order: true
+            },
             _confirm: function(){
-
-
                 this.fire('confirm');
             },
             _add: function(){
-                this.count++;
+                this.order++;
             },
             _minus: function(){
-                this.count--;
-            }
+                this.order--;
+            },
+//            ready: function(){
+//                const itemContentTemplate = this.querySelector('#templ');
+//                this.$.repeater.templatize(itemContentTemplate);
+//            }
         });
     </script>
 </dom-module>
