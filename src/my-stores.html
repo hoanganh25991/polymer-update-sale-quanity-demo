@@ -93,9 +93,11 @@
                 box-sizing: border-box;
             }
         </style>
+        
         <my-search-bar
                 search-term="{{searchStore}}">
         </my-search-bar>
+        
         <firebase-document
                 id="fdStore"
                 path="/[[saleBranch]]/stores"
@@ -108,17 +110,11 @@
                 data="{{products}}">
         </firebase-document>
 
-        <firebase-query
-                path="/[[saleBranch]]/stores"
-                data="{{productXs}}">
-        </firebase-query>
-
         <my-firebase-list
                 id="listStore"
                 firebase-obj="[[stores]]"
                 search-term="[[searchStore]]"
                 by="name"
-                selected="{{filterProductByStoreId}}"
                 vertical-align="top"
                 horizontal-align="auto"
                 on-item-selected="_toggleModal"
@@ -155,13 +151,18 @@
                     </paper-icon-button>
                     <h2>[[_computeVal(stores, filterProductByStoreId, 'name')]]</h2>
                 </header>
+
+                <my-search-bar
+                    search-term="{{searchProduct}}">
+                </my-search-bar>
+                
                 <my-firebase-list
                         id="listProduct"
                         firebase-obj="[[products]]"
-                        search-term="[[filterProductByStoreId]]"
-                        by="store_id"
-                        hidden$="[[!filterProductByStoreId]]"
-                        selected="{{selectedProductId}}"
+                        search-term="[[searchProduct]]"
+                        by="name"
+                        hidden$="[[_computeItemHiddenAttr(item)]]"
+                        selected="{{selectedProductIds}}"
                         on-item-selected="_openEditBar">
                     <template id="templ">
                         <div
@@ -203,15 +204,16 @@
                     value: null,
                     notify: true
                 },
-                filterProductByStoreId: {
+                searchProduct: {
                     type: String,
+                    value: null,
                     notify: true
                 },
-                selectedProductId: {
-                    type: String,
+                selectedProductIds: {
+                    type: Array,
                     notify: true
                 },
-                count: {
+                order: {
                     type: Number,
                     notify: true
                 },
@@ -276,16 +278,16 @@
                 editBar.style.left = (bound.left + bound.width) - 26 - 10 + 'px';
             },
             _computeCount: function(){
-                if(this.filterProductByStoreId && this.selectedProductId){
-                    return this.products[this.selectedProductId]['quanity'];
+                if(this.filterProductByStoreId && this.selectedProductIds){
+                    return this.products[this.selectedProductIds]['quanity'];
                 }
 
                 return 0;
             },
             _updateProductQuanity: function(){
                 log('_updateProductQuanity');
-                let path = 'products.' + this.selectedProductId + '.quanity';
-                this.set(path, this.count);
+                let path = 'products.' + this.selectedProductIds + '.quanity';
+                this.set(path, this.order);
             },
             _hideEditBar: function(){
                 let editBarElement = this.$$('my-edit-bar');
