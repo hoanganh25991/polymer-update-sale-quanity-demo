@@ -180,9 +180,12 @@
                                 elevation="0"
                                 animated
                                 hidden$="[[_computeItemHiddenAttr(item)]]"
-                                on-tap="_toggleSelection">
-                            <h2>[[_computeVal(item, 'name')]] [[_computeVal(item, 'price')]]</h2>
-                            <p class="item-margin">[[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
+                                on-tap="_toggleSelection"
+                                selected$="[[_computeSelectedItem(item)]]">
+                            <h2>[[_computeVal(item, 'name')]]</h2>
+                            <p class="item-margin">Price: [[_computeVal(item, 'price')]]</p>
+                            <p class="item-margin">Stock: [[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
+                            <p class="item-margin">Order: [[_computeVal(item, 'order')]]</p>
                             <paper-ripple></paper-ripple>
                         </div>
                     </template>
@@ -235,6 +238,10 @@
                 },
                 user: {
                     type: Object
+                },
+                productOrders: {
+                    type: Object,
+                    notify: true
                 }
             },
             /**
@@ -277,7 +284,7 @@
                 /**
                  * Re compute the count on the new one
                  */
-                this.count = this._computeCount();
+                this.order = this._computeCount();
                 /**
                  * Move EditBar to where current div
                  */

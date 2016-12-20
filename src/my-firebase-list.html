@@ -17,8 +17,12 @@
                 items="[[items]]">
         </template>
         <!--<array-selector id="selector" items="[[items]]" selected="{{selected}}" toggle></array-selector>-->
-        <array-selector id="selector" items="[[items]]" selected="[[selected]]"
-                        on-selected-changed="_updateSelected"></array-selector>
+        <array-selector id="selector"
+                        items="[[items]]"
+                        selected="[[selected]]"
+                        on-selected-changed="_updateSelected"
+                        toggle$="[[toggleSelector]]"
+        multi$="[[multiSelector]]"></array-selector>
     </template>
     <script>
         Polymer({
@@ -42,13 +46,22 @@
                     reflectToAttribute: true
                 },
                 selected: {
-                    type: String,
+                    type: Array,
                     notify: true
+                },
+                toggleSelector: {
+                    type: Boolean,
+                    value: false
+                },
+                multiSelector: {
+                    type: Boolean,
+                    value: false
                 }
             },
             observers: [
                 '_transform(searchTerm, by)',
-                '_computeItems(firebaseObj, searchTerm, by)'
+                '_computeItems(firebaseObj, searchTerm, by)',
+                '_computeSelectedItem(selected)'
             ],
             _transform: function(searchTerm, by){
                 console.log('%c _transform(searchTerm, by)', 'color: blue; font-weight: bold;');
@@ -125,12 +138,42 @@
             _updateSelected: function(){
                 console.log('re-render list, not lose track on selected item');
                 let arraySelector = this.$.selector;
-                if(arraySelector.selected){
+                function empty(x){
+                    if(x){
+                        // x has length, x is array, lenght should > 0
+                        if(x.length){
+                            return !(x.length > 0);
+                        }
+                        // x just a normal String item id
+                        return false;
+                    }
+
+                    return true;
+                }
+                if(!empty(arraySelector.selected)){
                     this.selected = arraySelector.selected;
                 }
             },
             attached: function(){
 //                console.log('Attach to page');
+            },
+            _computeSelectedItem: function(uuid){
+                // Make sure sth selected
+                // if not undefined
+                if(this.selected){
+                    /**
+                     * Array case
+                     */
+                    if(this.selected.length){
+                        return this.selected.includes(uuid);
+                    }
+
+
+                    /**
+                     * String case
+                     */
+                    return this.selected == uuid;
+                }
             }
         });
     </script>
