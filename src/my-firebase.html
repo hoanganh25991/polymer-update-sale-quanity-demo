@@ -123,7 +123,12 @@
             return query;
         },
         __queryChanged: function(query, oldQuery) {
-            this.__refChanged(query, oldQuery);
+            if (oldQuery) {
+                oldQuery.off('value', this.__onFirebaseValue, this);
+            }
+            if (query) {
+                query.on('value', this.__onFirebaseValue, this.__onError, this);
+            }
         },
         attached: function() {
             this.__refChanged(this.ref, this.ref);

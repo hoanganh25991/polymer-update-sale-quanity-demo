@@ -15,6 +15,7 @@
 <link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+<link rel="import" href="my-firebase.html">
 
 <dom-module id="my-stores">
     <template>
@@ -93,13 +94,18 @@
                 box-sizing: border-box;
             }
         </style>
-        
+
         <my-search-bar
                 search-term="{{searchStore}}">
         </my-search-bar>
-        
+
+        <!--<my-firebase-->
+                <!--path="/[[saleBranch]]/stores"-->
+                <!--order-by-child="by"-->
+                <!--order-by-value="[[user.email]]"-->
+                <!--data="{{stores}}">-->
+        <!--</my-firebase>-->
         <firebase-document
-                id="fdStore"
                 path="/[[saleBranch]]/stores"
                 data="{{stores}}">
         </firebase-document>
@@ -153,9 +159,9 @@
                 </header>
 
                 <my-search-bar
-                    search-term="{{searchProduct}}">
+                        search-term="{{searchProduct}}">
                 </my-search-bar>
-                
+
                 <my-firebase-list
                         id="listProduct"
                         firebase-obj="[[products]]"
@@ -222,6 +228,9 @@
                     reflectToAttribute: true,
                     notify: true,
                     observer: ['_resetFirebase']
+                },
+                user: {
+                    type: Object
                 }
             },
             /**
@@ -303,12 +312,6 @@
                     dialog.fire('ask-hide-edit-bar');
                     dialogRenderCloses();
                 };
-
-                let fq = this.$$('firebase-query');
-                fq.query.on('value', function(s){
-                    console.log('value change query query query');
-                    console.log(s);
-                }, fq.__onError, fq);
             },
             observers: [
 //                '_resetFirebase(signedIn)'
