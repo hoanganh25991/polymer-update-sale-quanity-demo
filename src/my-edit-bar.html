@@ -13,8 +13,8 @@
             }
 
             paper-fab {
-                --paper-fab-background: var(--paper-blue-500);
-                --paper-fab-keyboard-focus-background: var(--paper-blue-900);
+                --paper-fab-background: var(--paper-grey-500);
+                --paper-fab-keyboard-focus-background: var(--paper-grey-900);
                 margin: 5px auto;
             }
 
@@ -60,9 +60,11 @@
             },
             _add: function(){
                 this.order++;
+                this.fire('edit');
             },
             _minus: function(){
                 this.order--;
+                this.fire('edit');
             },
 //            ready: function(){
 //                const itemContentTemplate = this.querySelector('#templ');

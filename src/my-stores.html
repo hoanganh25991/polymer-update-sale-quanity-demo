@@ -16,6 +16,8 @@
 <link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="my-firebase.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 
 <dom-module id="my-stores">
     <template>
@@ -96,6 +98,15 @@
                 margin: 0;
                 box-sizing: border-box;
             }
+
+            paper-button {
+                max-width: 200px;
+                margin-top: 20px;
+                --paper-button: {
+                  background-color: var(--paper-grey-500);
+                };
+                --paper-button-flat-keyboard-focus: var(--paper-grey-900);
+            }
         </style>
 
         <my-search-bar
@@ -108,10 +119,6 @@
                 equal-to="[[user.email]]"
                 data="{{stores}}">
         </my-firebase>
-        <!-- <firebase-document
-                path="/[[saleBranch]]/stores"
-                data="{{stores}}">
-        </firebase-document> -->
 
         <firebase-document
                 id="fdProduct"
@@ -123,6 +130,7 @@
                 id="listStore"
                 firebase-obj="[[stores]]"
                 search-term="[[searchStore]]"
+                selected="{{selectedStoreId}}"
                 by="name"
                 vertical-align="top"
                 horizontal-align="auto"
@@ -174,6 +182,7 @@
                         hidden$="[[_computeItemHiddenAttr(item)]]"
                         selected="{{selectedProductIds}}"
                         on-item-selected="_openEditBar"
+                        on-item-deselected="_askRemoveOrder"
                         toggle-selector="true"
                         multi-selector="true">
                     <template id="templ">
@@ -186,8 +195,8 @@
                                 selected$="[[_computeSelectedItem(item)]]">
                             <h2>[[_computeVal(item, 'name')]]</h2>
                             <p class="item-margin">Price: [[_computeVal(item, 'price')]]</p>
-                            <p class="item-margin">Stock: [[_computeVal(item, 'quanity')]] [[_computeVal(item, 'type')]]</p>
-                            <p class="item-margin">Order: [[_computeVal(item, 'order')]]</p>
+                            <p class="item-margin">Stock: [[_computeVal(item, 'quanity')]] [[_computeVal(item,
+                                'type')]]</p>
                             <paper-ripple></paper-ripple>
                         </div>
                     </template>
@@ -197,9 +206,18 @@
 
         <my-edit-bar
                 order="{{order}}"
-                on-confirm="_updateProductQuanity">
+                on-confirm="_updateProductQuanity"
+                on-edit="_validateOrder">
             <h1>Order: [[order]]</h1>
         </my-edit-bar>
+
+        <paper-toast id="toast"></paper-toast>
+
+        <div class="hidden" id="askCancelOrder" style="position: fixed; z-index: 104;">
+            <paper-button on-tap="_editOrder" style="display: block">Edit</paper-button>
+            <paper-button on-tap="_removeOrder" style="display: block">Remove</paper-button>
+        </div>
+
     </template>
 
     <script>
@@ -225,6 +243,10 @@
                     value: null,
                     notify: true
                 },
+                selectedStoreId: {
+                    type: String,
+                    notify: true
+                },
                 selectedProductIds: {
                     type: Array,
                     notify: true
@@ -245,7 +267,7 @@
                 productOrders: {
                     type: Object,
                     notify: true,
-                    value: []
+                    value: {}
                 }
             },
             /**
@@ -300,14 +322,19 @@
                 editBar.$.editBar.removeAttribute('hidden');
                 editBar.style.top = bound.top + 'px';
                 editBar.style.right = (bound.left - 10) + 'px';
+                this.currentProductDiv = target;
             },
             _computeOrder: function(){
                 /**
                  * Always sure that this one exists
                  */
                 let currentSelectedProductId = this.selectedProductIds[this.selectedProductIds.length - 1];
-                return this.productOrders[currentSelectedProductId] ?
-                            this.productOrders[currentSelectedProductId] : 0;
+                if(!this.productOrders[this.selectedStoreId]){
+                    // init
+                    this.productOrders[this.selectedStoreId] = {};
+                }
+                return this.productOrders[this.selectedStoreId][currentSelectedProductId] ?
+                        this.productOrders[this.selectedStoreId][currentSelectedProductId] : 0;
 //                if(this.productOrders[currentSelectedProductId]){
 //                    return this.productOrders[currentSelectedProductId];
 //                }
@@ -316,8 +343,24 @@
             },
             _updateProductQuanity: function(){
                 log('_updateProductQuanity');
-                let path = 'products.' + this.selectedProductIds + '.quanity';
-                this.set(path, this.order);
+//                let path = 'products.' + this.selectedProductIds + '.quanity';
+//                this.set(path, this.order);
+                let currentSelectedProductId = this.selectedProductIds[this.selectedProductIds.length - 1];
+                if(!this.productOrders[this.selectedStoreId]){
+                    //create default for this selectedStoreId
+                    //DEEP IS NOT GOOD
+                    this.productOrders[this.selectedStoreId] = {};
+                }
+                this.productOrders[this.selectedStoreId][currentSelectedProductId] = this.order;
+                let orderDiv = this.currentProductDiv.querySelector('p.order');
+                if(!orderDiv){
+                    orderDiv = document.createElement('p');
+                    orderDiv.classList = 'item-margin order';
+                    this.currentProductDiv.appendChild(orderDiv);
+                }
+                orderDiv.textContent = `Order: ${this.order}`;
+
+                this._hideEditBar();
             },
             _hideEditBar: function(){
                 let editBarElement = this.$$('my-edit-bar');
@@ -362,6 +405,74 @@
                     console.log('Clear firebase data, by reload to home page');
                     window.location.href = window.location.origin;
                 }
+            },
+            _validateOrder: function(){
+                let currentSelectedProductId = this.selectedProductIds[this.selectedProductIds.length - 1];
+                let stock = this.products[currentSelectedProductId]['quanity'];
+                let msg = 'Out of stock';
+                let shouldToast = false;
+                if(this.order > stock){
+                    this.order = stock;
+                    /**
+                     * Toast something
+                     */
+                    shouldToast = true;
+                }
+
+                if(this.order < 0){
+                    this.order = 0;
+                    msg = 'Minimum: 0';
+                    shouldToast =  true;
+                }
+
+                if(shouldToast){
+                    let toast = this.$.toast;
+                    toast.text = msg;
+                    toast.fitInto = this.currentProductDiv;
+                    toast.open();
+                }
+            },
+            _askRemoveOrder: function(e){
+                log('_askRemoveOrder');
+                this._hideEditBar();
+                let askCancelOrder = this.$.askCancelOrder;
+                /**
+                 * Re compute the count on the new one
+                 */
+                /**
+                 * Move EditBar to where current div
+                 */
+                let target = e.detail.target;
+                let bound = target.getBoundingClientRect()
+                /**
+                 * Un-hide editBar
+                 */
+                askCancelOrder.classList = '';
+                askCancelOrder.style.top = (bound.top + bound.height - 100) + 'px';
+                askCancelOrder.style.right = (bound.left - 10) + 'px';
+
+                this.currentProductDiv = target;
+                this.currentProductDiv.style.pointerEvents = 'none';
+            },
+            _editOrder: function(){
+                this.currentProductDiv.style.pointerEvents = 'inherit';
+                this.currentProductDiv.click();
+                let askCancelOrder = this.$.askCancelOrder;
+                askCancelOrder.classList = 'hidden';
+            },
+            _removeOrder: function(){
+                this.currentProductDiv.style.pointerEvents = 'inherit';
+
+                let currentSelectedProductId = this.selectedProductIds[this.selectedProductIds.length - 1];
+                delete this.productOrders[this.selectedStoreId][currentSelectedProductId];
+
+                let orderDiv = this.currentProductDiv.querySelector('p.order');
+                if(orderDiv){
+                    this.currentProductDiv.removeChild(orderDiv);
+                }
+
+                let askCancelOrder = this.$.askCancelOrder;
+                askCancelOrder.classList = 'hidden';
             }
         });
     </script>

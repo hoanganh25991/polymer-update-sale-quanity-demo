@@ -131,20 +131,25 @@
                 var item = this.$.repeater.itemForElement(e.target);
                 this.$.selector.select(item);
                 console.log(this.selected);
-                this.fire('item-selected', {target: e.currentTarget});
+                if(this.$.selector.isSelected(item)){
+                    this.fire('item-selected', {target: e.currentTarget});
+                }else{
+                    this.fire('item-deselected', {target: e.currentTarget});
+                }
+
 
 //                let itemDiv = e.target;
                 let itemDiv = e.currentTarget;
                 if(this.$.selector.isSelected(item) && this.$.selector.multi){
-//                    itemDiv.style.backgroundColor = 'var(--paper-blue-100)';
-                    itemDiv.style.backgroundColor = '#2196F3';
+                    itemDiv.querySelector('paper-ripple').downAction();
                 }else{
-                    itemDiv.style.backgroundColor = 'white';
+                    itemDiv.querySelector('paper-ripple').upAction();
                 }
             },
             _updateSelected: function(){
                 console.log('re-render list, not lose track on selected item');
                 let arraySelector = this.$.selector;
+
                 function empty(x){
                     if(x){
                         // x has length, x is array, lenght should > 0
@@ -157,6 +162,7 @@
 
                     return true;
                 }
+
                 if(!empty(arraySelector.selected)){
                     this.selected = arraySelector.selected;
                 }
