@@ -173,7 +173,9 @@
                         by="name"
                         hidden$="[[_computeItemHiddenAttr(item)]]"
                         selected="{{selectedProductIds}}"
-                        on-item-selected="_openEditBar">
+                        on-item-selected="_openEditBar"
+                        toggle-selector="true"
+                        multi-selector="true">
                     <template id="templ">
                         <div
                                 class="list-item"

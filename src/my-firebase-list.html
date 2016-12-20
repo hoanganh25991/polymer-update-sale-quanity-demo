@@ -22,7 +22,7 @@
                         selected="[[selected]]"
                         on-selected-changed="_updateSelected"
                         toggle$="[[toggleSelector]]"
-        multi$="[[multiSelector]]"></array-selector>
+                        multi$="[[multiSelector]]"></array-selector>
     </template>
     <script>
         Polymer({
@@ -128,12 +128,10 @@
             },
             _toggleSelection: function(e){
                 console.log('Tap tap tap');
-                console.log(e);
                 var item = this.$.repeater.itemForElement(e.target);
                 this.$.selector.select(item);
                 console.log(this.selected);
                 this.fire('item-selected', {target: e.currentTarget});
-//                e.currentTarget.scrollIntoView();
             },
             _updateSelected: function(){
                 console.log('re-render list, not lose track on selected item');
