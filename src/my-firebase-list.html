@@ -8,6 +8,10 @@
                 position: relative;
                 border-radius: 3px;
             }
+
+            [selected] {
+                background-color: #c7c7c7;
+            }
         </style>
         <!--<pre>[[selected]]</pre>-->
         <content></content>
@@ -156,7 +160,7 @@
                 function empty(x){
                     if(x){
                         // x has length, x is array, lenght should > 0
-                        if(x.length){
+                        if(Array.isArray(x)){
                             return !(x.length > 0);
                         }
                         // x just a normal String item id
@@ -168,6 +172,10 @@
 
                 if(!empty(arraySelector.selected)){
                     this.selected = arraySelector.selected;
+                }else{
+                    if(this.selected || (Array.isArray(this.selected) && this.selected.length > 0)){
+                        arraySelector.selected = this.selected;
+                    }
                 }
             },
             attached: function(){
@@ -190,6 +198,9 @@
                      */
                     return this.selected == uuid;
                 }
+            },
+            _computeRippeDownEffect: function(item){
+
             }
         });
     </script>
