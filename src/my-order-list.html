@@ -154,7 +154,7 @@
                 let val = zeroValue;
                 try {
                     val = this[a][this.selectedStoreId][b];
-                    val = val != undefined ? val : 0;
+                    val = val != undefined ? val : zeroValue;
                 }catch(error){
                     console.log(error);
                 }
@@ -246,7 +246,11 @@
                     /**
                      * Should change backgroundColor base on selected change event
                      */
-                    itemDiv.style.backgroundColor = '#c7c7c7';
+//                    itemDiv.style.backgroundColor = '#c7c7c7';
+                    /**
+                     * Use attribute as what initial from selected does
+                     */
+                    itemDiv.setAttribute('selected', true);
                     /**
                      * update orders
                      */
@@ -272,6 +276,7 @@
                     }
                 }else{
                     this.fire('item-deselected', {target: itemDiv, item: item});
+                    itemDiv.removeAttribute('selected', true);
                 }
             },
 //            _updateSelected: function(){
