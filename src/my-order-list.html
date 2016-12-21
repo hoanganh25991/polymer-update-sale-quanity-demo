@@ -1,0 +1,255 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="my-util.html">
+
+<dom-module id="my-order-list">
+    <template>
+        <style is="custom-style">
+            :host {
+                display: block;
+                position: relative;
+                border-radius: 3px;
+            }
+
+            .list-item {
+                position: relative;
+                background-color: white;
+                margin: 24px auto;
+                max-width: 800px;
+                padding-bottom: 1px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }
+
+            .item-margin {
+                margin: 16px 20px;
+            }
+
+            h2 {
+                border-bottom: 1px solid #e5e5e5;
+                font-size: 20px;
+                line-height: 28px;
+                padding: 10px 18px;
+                margin: 0;
+                font-weight: normal;
+            }
+
+            .reference-link {
+                float: right;
+                margin: 12px 18px;
+                color: #999;
+            }
+
+            pre {
+                padding: 20px;
+                background: #fafafa;
+                border: solid #e5e5e5;
+                border-width: 1px 0;
+            }
+
+            [selected] {
+                background-color: #c7c7c7;
+            }
+        </style>
+
+        <template is="dom-repeat" items="[[items]]" id="repeater">
+            <div
+                    class="list-item"
+                    animated
+                    hidden$="[[_computeHiddenAttr(item)]]"
+                    on-tap="_toggleSelection"
+                    selected$="[[_computeSelectedAttr(item)]]">
+                <h2>[[_computeVal('localProducts', item, 'name')]]</h2>
+                <p class="item-margin">Price: [[_computeVal('localProducts', item, 'price')]]</p>
+                <p class="item-margin">Stock: [[_computeVal('localProducts', item, 'quanity')]] [[_computeVal('localProducts', item, 'type')]]</p>
+                <p class="item-margin" id="orderDiv">Order: [[_computeOrder('orders', item, 0)]]</p>
+                <paper-ripple></paper-ripple>
+            </div>
+        </template>
+
+        <array-selector id="selector"
+                        items="[[items]]"
+                        selected="{{selected}}"
+                        toggle
+                        multi></array-selector>
+    </template>
+    <script>
+        Polymer({
+            is: 'my-order-list',
+            properties: {
+                localProducts: {
+                    type: Object,
+                    notify: true,
+                    reflectToAttribute: true,
+                    value: function(){
+                        return {};
+                    }
+                },
+                orders: {
+                    type: Object,
+                    notify: true,
+                    reflectToAttribute: true
+                },
+                selectedStoreId: {
+                    type: String,
+                    reflectToAttribute: true
+                },
+                searchTerm: {
+                    type: String,
+                    reflectToAttribute: true
+                },
+                by: {
+                    type: String,
+                    reflectToAttribute: true
+                },
+                selected: {
+                    type: Array,
+                    notify: true,
+                    reflectToAttribute: true
+                }
+            },
+            observers: [
+                '_transform(searchTerm, by)',
+                '_computeItems(localProducts, searchTerm, by)'
+            ],
+            _transform: function(searchTerm, by){
+                console.log('%c _transform(searchTerm, by)', 'color: blue; font-weight: bold;');
+                this.searchTerm = searchTerm || '\\w';
+                this.by = by || 'name';
+            },
+            _computeItems: function(localProducts, searchTerm, by){
+                log('_computeItems');
+                var uuids = Object.keys(localProducts);
+
+                var items = uuids.filter(function(uuid){
+                    if(localProducts[uuid][by]){
+                        return localProducts[uuid][by].match(new RegExp(searchTerm, 'i'));
+                    }
+
+                    return false;
+                });
+                console.log('items searchTerm by', items, searchTerm, by);
+
+                this._delayUpdateItems(items);
+            },
+            ready: function(){
+//                this._modelBindItemTemplate();
+            },
+            _computeVal: function(a, b, c){
+                try {
+                    return this[a][b][c];
+                }catch(error){
+                    return undefined;
+                }
+            },
+            _computeOrder: function(a, b, zeroValue){
+                try {
+                    return this[a][this.selectedStoreId][b];
+                }catch(error){
+                    return zeroValue;
+                }
+            },
+//            _computeIdLink: function(uuid, path){
+//                let val = this.firebaseObj[uuid][path];
+//                return val.toLowerCase().replace(/\s+/g, '-');
+//            },
+            _computeHiddenAttr: function(uuid){
+                return this.localProducts[uuid][this.by].match(new RegExp(this.searchTerm, 'i')) ? false : true;
+            },
+            _computeSelectedAttr: function(uuid){
+                return this.$.selector.isSelected(uuid);
+            },
+//            _modelBindItemTemplate: function(){
+//                const itemContentTemplate = this.querySelector('#templ');
+//                this.$.repeater.templatize(itemContentTemplate);
+//                Polymer.Bind.prepareModel(this.$.repeater);
+//                Polymer.Base.prepareModelNotifyPath(this.$.repeater);
+//            },
+            listeners: {
+                /**
+                 * Test complet, comment out
+                 */
+//                'items-changed': '_logPropertiesChanged'
+            },
+//            _logPropertiesChanged: function(e){
+//                console.log('properties x changed');
+//                console.log(e);
+//            },
+            _delayUpdateItems: function(items){
+                this.set('items', []);
+                (function(scope){
+                    var delay = new Promise(function(resolve){
+//                        setTimeout(resolve, 100);
+                        setTimeout(resolve, 10);
+                    });
+                    delay.then(function(){
+                        console.log('delay set items');
+//                        console.log(scope);
+                        scope.set('items', items);
+                    });
+                })(this);
+            },
+            _toggleSelection: function(e){
+                log('_toggleSelection');
+                var item = this.$.repeater.itemForElement(e.target);
+//                let oldState = this.$.selector.isSelected(item);
+                this.$.selector.select(item);
+//                let newState = this.$.selector.isSelected(item);
+                console.log(this.selected);
+
+                if(this.$.selector.isSelected(item)){
+                    this.fire('item-selected', {target: e.currentTarget});
+                }else{
+                    this.fire('item-deselected', {target: e.currentTarget, item: item});
+                }
+            },
+//            _updateSelected: function(){
+//                console.log('re-render list, not lose track on selected item');
+//                let arraySelector = this.$.selector;
+//
+//                function empty(x){
+//                    if(x){
+//                        // x has length, x is array, lenght should > 0
+//                        if(Array.isArray(x)){
+//                            return !(x.length > 0);
+//                        }
+//                        // x just a normal String item id
+//                        return false;
+//                    }
+//
+//                    return true;
+//                }
+//
+//                if(!empty(arraySelector.selected)){
+//                    this.selected = arraySelector.selected;
+//                }else{
+//                    if(this.selected || (Array.isArray(this.selected) && this.selected.length > 0)){
+//                        arraySelector.selected = this.selected;
+//                    }
+//                }
+//            },
+            attached: function(){
+//                console.log('Attach to page');
+            },
+//            _computeSelectedItem: function(uuid){
+//                // Make sure sth selected
+//                // if not undefined
+//                if(this.selected){
+//                    /**
+//                     * Array case
+//                     */
+//                    if(this.selected.length){
+//                        return this.selected.includes(uuid);
+//                    }
+//
+//
+//                    /**
+//                     * String case
+//                     */
+//                    return this.selected == uuid;
+//                }
+//            },
+//            _computeRippeDownEffect: function(item){
+//
+//            }
+        });
+    </script>
+</dom-module>

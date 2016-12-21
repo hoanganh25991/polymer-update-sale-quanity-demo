@@ -18,6 +18,7 @@
 <link rel="import" href="my-firebase.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="my-order-list.html">
 
 <dom-module id="my-stores">
     <template>
@@ -108,7 +109,7 @@
                 max-width: 200px;
                 margin-top: 20px;
                 --paper-button: {
-                  background-color: var(--paper-grey-400);
+                    background-color: var(--paper-grey-400);
                 };
                 --paper-button-flat-keyboard-focus: var(--paper-grey-900);
             }
@@ -172,40 +173,23 @@
                             dialog-dismiss
                             style="float: right">
                     </paper-icon-button>
-                    <h2>[[_computeVal(stores, filterProductByStoreId, 'name')]]</h2>
+                    <h2>[[_computeVal(stores, selectedStoreId, 'name')]]</h2>
                 </header>
 
                 <my-search-bar
                         search-term="{{searchProduct}}">
                 </my-search-bar>
 
-                <my-firebase-list
-                        id="listProduct"
-                        firebase-obj="[[products]]"
+                <my-order-list
+                        local-products="{{localProducts}}"
+                        orders="{{productOrders}}"
                         search-term="[[searchProduct]]"
+                        selected-store-id="[[selectedStoreId]]"
                         by="name"
-                        hidden$="[[_computeItemHiddenAttr(item)]]"
                         selected="{{selectedProductIds}}"
                         on-item-selected="_openEditBar"
-                        on-item-deselected="_askRemoveOrder"
-                        toggle-selector="true"
-                        multi-selector="true">
-                    <template id="templ">
-                        <div
-                                class="list-item"
-                                elevation="0"
-                                animated
-                                hidden$="[[_computeItemHiddenAttr(item)]]"
-                                on-tap="_toggleSelection"
-                                selected$="[[_computeSelectedItem(item)]]">
-                            <h2>[[_computeVal(item, 'name')]]</h2>
-                            <p class="item-margin">Price: [[_computeVal(item, 'price')]]</p>
-                            <p class="item-margin">Stock: [[_computeVal(item, 'quanity')]] [[_computeVal(item,
-                                'type')]]</p>
-                            <paper-ripple></paper-ripple>
-                        </div>
-                    </template>
-                </my-firebase-list>
+                        on-item-deselected="_askRemoveOrder">
+                </my-order-list>
             </div>
         </paper-dialog>
 
@@ -273,6 +257,13 @@
                     type: Object,
                     notify: true,
                     value: {}
+                },
+                localProducts: {
+                    type: Object,
+                    notify: true,
+                    value: function(){
+                        return {};
+                    }
                 }
             },
             /**
@@ -294,9 +285,9 @@
                     this.shadowRoot.appendChild(backDrop);
                 }
             },
-            _computeVal: function(stores, filterProductByStoreId, path){
-                if(stores[filterProductByStoreId]){
-                    return stores[filterProductByStoreId][path];
+            _computeVal: function(stores, selectedStoreId, path){
+                if(stores[selectedStoreId]){
+                    return stores[selectedStoreId][path];
 
                 }
 
@@ -357,13 +348,17 @@
                     this.productOrders[this.selectedStoreId] = {};
                 }
                 this.productOrders[this.selectedStoreId][currentSelectedProductId] = this.order;
-                let orderDiv = this.currentProductDiv.querySelector('p.order');
-                if(!orderDiv){
-                    orderDiv = document.createElement('p');
-                    orderDiv.classList = 'item-margin order';
-                    this.currentProductDiv.appendChild(orderDiv);
-                }
-                orderDiv.textContent = `Order: ${this.order}`;
+//                let orderDiv = this.currentProductDiv.querySelector('p.order');
+//                if(!orderDiv){
+//                    orderDiv = document.createElement('p');
+//                    orderDiv.classList = 'item-margin order';
+//                    this.currentProductDiv.appendChild(orderDiv);
+//                }
+//                orderDiv.textContent = `Order: ${this.order}`;
+                /**
+                 * ASK TO RERENDER to expensive
+                 */
+                this._updateOrderDiv();
 
                 this._hideEditBar();
             },
@@ -399,7 +394,49 @@
             },
             observers: [
 //                '_resetFirebase(signedIn)'
+                '_computeLocalProducts(products)'
             ],
+            _computeLocalProducts: function(products){
+                let keys = Object.keys(products);
+                // Loop through update localProducts
+//                if(!this.localProducts){
+//                    // Set default value
+//                    this.localProducts = {};
+//                }
+                let ms = this;
+                keys.forEach(function(key){
+                    ms.localProducts[key] = products[key];
+                });
+
+                let keyLs = Object.keys(this.localProducts);
+                // Get out the diff between localProducts & products
+                // localProducts HAVE TO RESPECT what changed on products
+                let diffKeys = keyLs.filter(function(key){
+                    return keys.indexOf(key) < 0;
+                });
+
+                diffKeys.forEach(function(key){
+                    delete this.localProducts[key];
+                });
+
+                let localProducts = this.localProducts;
+
+                this._delayUpdateItems('localProducts', localProducts, {});
+            },
+            _delayUpdateItems: function(path, val, zeroValue){
+                this.set(path, zeroValue);
+                (function(scope){
+                    var delay = new Promise(function(resolve){
+//                        setTimeout(resolve, 100);
+                        setTimeout(resolve, 10);
+                    });
+                    delay.then(function(){
+                        console.log('delay set ' + path);
+//                        console.log(scope);
+                        scope.set(path, val);
+                    });
+                })(this);
+            },
             _resetFirebase: function(signedIn, oldVal){
                 log('_resetFirebase');
                 console.log(signedIn, oldVal);
@@ -427,7 +464,7 @@
                 if(this.order < 0){
                     this.order = 0;
                     msg = 'Minimum: 0';
-                    shouldToast =  true;
+                    shouldToast = true;
                 }
 
                 if(shouldToast){
@@ -471,13 +508,27 @@
 
                 delete this.productOrders[this.selectedStoreId][this.lastProductDeselected];
 
-                let orderDiv = this.currentProductDiv.querySelector('p.order');
-                if(orderDiv){
-                    this.currentProductDiv.removeChild(orderDiv);
-                }
+                this.order = 0;
+
+                this._updateOrderDiv();
+
 
                 let askCancelOrder = this.$.askCancelOrder;
                 askCancelOrder.classList = 'hidden';
+            },
+            /**
+             * To save compute, query to orderDiv
+             * change the value, rather than reupdate the WHOLE list
+             * @private
+             */
+            _updateOrderDiv: function(){
+                let orderDiv = this.currentProductDiv.querySelector('p#orderDiv');
+                if(!orderDiv){
+                    orderDiv = document.createElement('p');
+                    orderDiv.classList = 'item-margin order';
+                    this.currentProductDiv.appendChild(orderDiv);
+                }
+                orderDiv.textContent = `Order: ${this.order}`;
             }
         });
     </script>
