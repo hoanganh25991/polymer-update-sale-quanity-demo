@@ -169,7 +169,7 @@
                 modal
                 entry-animation="scale-up-animation"
                 exit-animation="fade-out-animation">
-            <div class="dialog" hidden$="[[!summaryMode]]">
+            <div class="dialog">
                 <header style="z-index: 10; background-color: #eee">
                     <paper-icon-button
                             icon="close"
@@ -177,15 +177,17 @@
                             style="float: right">
                     </paper-icon-button>
                     <h2>[[_computeVal(stores, selectedStoreId, 'name')]]</h2>
-                    <paper-button hidden$="[[summaryMode]]" on-tap="_toggleSumaryMode">Summary</paper-button>
-                    <paper-button hidden$="[[summaryMode]]" on-tap="_updateProductOrders">Update</paper-button>
+                    <paper-button on-tap="_toggleSumaryMode">Summary</paper-button>
+                    <paper-button on-tap="_updateProductOrders">Update</paper-button>
                 </header>
 
                 <my-search-bar
+                        hidden$="[[summaryMode]]"
                         search-term="{{searchProduct}}">
                 </my-search-bar>
 
                 <my-order-list
+                        hidden$="[[summaryMode]]"
                         local-products="{{localProducts}}"
                         orders="{{productOrders}}"
                         search-term="[[searchProduct]]"
@@ -195,10 +197,11 @@
                         on-item-selected="_openEditBar"
                         on-item-deselected="_askRemoveOrder">
                 </my-order-list>
+
+                <my-summary
+                        hidden$="[[!summaryMode]]"
+                ></my-summary>
             </div>
-            <my-summary
-                    hidden$="[[!summaryMode]]"
-            ></my-summary>
         </paper-dialog>
 
         <my-edit-bar
@@ -211,10 +214,14 @@
         <paper-toast id="toast"></paper-toast>
 
         <div class="hidden" id="askCancelOrder" style="position: fixed; z-index: 104;">
-            <!--<paper-button on-tap="_editOrder" style="display: block">Continue edit</paper-button>-->
-            <!--<paper-button on-tap="_removeOrder" style="display: block">Remove</paper-button>-->
-            <paper-icon-button on-tap="_editOrder" style="display: block" icon="create"></paper-icon-button>
-            <paper-icon-button on-tap="_removeOrder" style="display: block" icon="delete-forever"></paper-icon-button>
+            <paper-button on-tap="_editOrder">
+                <iron-icon icon="create"></iron-icon>
+            </paper-button>
+            <paper-button on-tap="_removeOrder">
+                <iron-icon icon="delete"></iron-icon>
+            </paper-button>
+            <!--<paper-icon-button on-tap="_editOrder" style="display: block" icon="create"></paper-icon-button>-->
+            <!--<paper-icon-button on-tap="_removeOrder" style="display: block" icon="delete-forever"></paper-icon-button>-->
         </div>
 
     </template>
@@ -550,16 +557,17 @@
                 // Need show summary
                 // Compute summary products into my-summary
                 if(this.summaryMode){
+                    let ms = this;
                     let mySummary = this.$$('my-summary');
                     let productKeys = Object.keys(this.products);
                     let summaryProducts = productKeys.map(function(item){
-                        let product = this.products[item];
-                        product.order = this.productOrders[this.selectedStoreId][item];
+                        let product = ms.products[item];
+                        product.order = ms.productOrders[ms.selectedStoreId][item];
 
                         return product;
                     });
 
-                    mySummary.products = summaryProducts;
+                    mySummary.set('products', summaryProducts);
                 }
             },
             _updateProductOrders: function(){

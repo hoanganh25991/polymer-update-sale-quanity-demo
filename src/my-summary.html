@@ -3,7 +3,7 @@
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="my-icons.html">
 
-<dom-module id="my-search-bar">
+<dom-module id="my-summary">
     <template>
         <style is="cutom-style"
                include="shared-styles">
@@ -52,6 +52,7 @@
             properties: {
                 products: {
                     type: Object,
+                    notify: true,
                     reflectToAttribute: true,
                     value: {}
                 },
