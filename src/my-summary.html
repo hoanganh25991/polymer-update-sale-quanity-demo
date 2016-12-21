@@ -15,36 +15,60 @@
             .list-item {
                 display: flex;
                 flex-direction: row;
+                background-color: white;
+                padding-bottom: 1px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
+
             .name {
                 display: flex;
                 flex: 6;
+            }
+
+            .name p {
                 text-align: left;
             }
+
             .price {
                 display: flex;
                 flex: 3;
+            }
+
+            .price p {
                 text-align: right;
             }
+
             .order {
                 display: flex;
                 flex: 3;
+            }
+
+            .order p {
                 text-align: right;
+            }
+
+            h2 {
+                text-align: right;
+            }
+
+            p {
+                width: 100%;
             }
         </style>
         <template is="dom-repeat" items="[[items]]">
             <div class="list-item">
                 <div class="name">
-                    [[_computeVal(item, 'name')]]
+                    <p>[[_computeVal(item, 'name')]]</p>
                 </div>
                 <div class="price">
-                    [[_computeVal(item, 'price')]]
+                    <p> [[_computeVal(item, 'price')]] </p>
                 </div>
                 <div class="order">
-                    [[_computeVal(item, 'order')]]
+                    <p>[[_computeVal(item, 'order')]]</p>
                 </div>
             </div>
         </template>
+        <h2>[[total]]</h2>
     </template>
     <script>
         Polymer({
@@ -58,7 +82,11 @@
                 },
                 items: {
                     type: Array,
-                    compute: '_computeItems(products)'
+                    computed: '_computeItems(products)'
+                },
+                total: {
+                    type: Number,
+                    computed: '_computeTotal(products)'
                 }
             },
             _computeVal: function(item, path){
@@ -69,6 +97,20 @@
 //                    return [];
 //                }
                 return Object.keys(products);
+            },
+            _computeTotal: function(products){
+                let productKeys = Object.keys(products);
+                let total = 0;
+
+                if(productKeys.length == 0){
+                    return 0;
+                }
+
+                productKeys.forEach(function(item){
+                    total += products[item]['price'] * products[item]['order'];
+                });
+
+                return total;
             }
         });
     </script>

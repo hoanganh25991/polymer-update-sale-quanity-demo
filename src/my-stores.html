@@ -166,6 +166,7 @@
         <paper-dialog
                 id="modal"
                 on-iron-overlay-opened="_patchOverlay"
+                on-iron-overlay-closed="_changeSummaryMode"
                 modal
                 entry-animation="scale-up-animation"
                 exit-animation="fade-out-animation">
@@ -430,16 +431,16 @@
                     ms.localProducts[key] = products[key];
                 });
 
-                let keyLs = Object.keys(this.localProducts);
+//                let keyLs = Object.keys(this.localProducts);
                 // Get out the diff between localProducts & products
                 // localProducts HAVE TO RESPECT what changed on products
-                let diffKeys = keyLs.filter(function(key){
-                    return keys.indexOf(key) < 0;
-                });
+//                let diffKeys = keyLs.filter(function(key){
+//                    return keys.indexOf(key) < 0;
+//                });
 
-                diffKeys.forEach(function(key){
-                    delete this.localProducts[key];
-                });
+//                diffKeys.forEach(function(key){
+//                    delete this.localProducts[key];
+//                });
 
                 let localProducts = this.localProducts;
 
@@ -458,6 +459,7 @@
                         scope.set(path, val);
                     });
                 })(this);
+//                this.set(path, val);
             },
             _resetFirebase: function(signedIn, oldVal){
                 log('_resetFirebase');
@@ -559,7 +561,7 @@
                 if(this.summaryMode){
                     let ms = this;
                     let mySummary = this.$$('my-summary');
-                    let productKeys = Object.keys(this.products);
+                    let productKeys = Object.keys(this.productOrders[this.selectedStoreId]);
                     let summaryProducts = productKeys.map(function(item){
                         let product = ms.products[item];
                         product.order = ms.productOrders[ms.selectedStoreId][item];
@@ -571,6 +573,25 @@
                 }
             },
             _updateProductOrders: function(){
+                log('_updateProductOrders');
+                let ms = this;
+                let productKeys = Object.keys(this.products);
+                let products = productKeys.map(function(item){
+                    let product = ms.products[item];
+                    let productOrder = ms.productOrders[ms.selectedStoreId][item];
+                    if(productOrder){
+                        product.quanity = product.quanity - productOrder;
+                    }
+
+                    return product;
+                });
+
+                ms.set('products', products);
+            },
+            _changeSummaryMode: function(){
+                this._toggleSumaryMode();
+
+                // Reset selected on my-order-list
 
             }
         });
