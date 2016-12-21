@@ -576,21 +576,27 @@
                 log('_updateProductOrders');
                 let ms = this;
                 let productKeys = Object.keys(this.products);
-                let products = productKeys.map(function(item){
+                let products = {};
+                productKeys.forEach(function(item){
                     let product = ms.products[item];
                     let productOrder = ms.productOrders[ms.selectedStoreId][item];
                     if(productOrder){
                         product.quanity = product.quanity - productOrder;
                     }
 
-                    return product;
+                    products[item] = product;
                 });
 
                 ms.set('products', products);
             },
             _changeSummaryMode: function(){
-                this._toggleSumaryMode();
-
+//                this._toggleSumaryMode();
+                this.summaryMode = false;
+                let dialog = this.$.modal;
+                let mo = dialog.querySelector('my-order-list');
+                let arraySelector = mo.$.selector;
+                arraySelector._clearSelection();
+                console.log(arraySelector.selected);
                 // Reset selected on my-order-list
 
             }
