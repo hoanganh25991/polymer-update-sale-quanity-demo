@@ -151,11 +151,15 @@
                 }
             },
             _computeOrder: function(a, b, zeroValue){
+                let val = zeroValue;
                 try {
-                    return this[a][this.selectedStoreId][b];
+                    val = this[a][this.selectedStoreId][b];
+                    val = val != undefined ? val : 0;
                 }catch(error){
-                    return zeroValue;
+                    console.log(error);
                 }
+
+                return val;
             },
 //            _computeIdLink: function(uuid, path){
 //                let val = this.firebaseObj[uuid][path];
