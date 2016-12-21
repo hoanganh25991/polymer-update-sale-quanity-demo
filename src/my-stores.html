@@ -18,7 +18,9 @@
 <link rel="import" href="my-firebase.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-order-list.html">
+<link rel="import" href="my-summary.html">
 
 <dom-module id="my-stores">
     <template>
@@ -112,6 +114,7 @@
                     background-color: var(--paper-grey-400);
                 };
                 --paper-button-flat-keyboard-focus: var(--paper-grey-900);
+                font-size: 1em;
             }
         </style>
 
@@ -166,7 +169,7 @@
                 modal
                 entry-animation="scale-up-animation"
                 exit-animation="fade-out-animation">
-            <div class="dialog">
+            <div class="dialog" hidden$="[[!summaryMode]]">
                 <header style="z-index: 10; background-color: #eee">
                     <paper-icon-button
                             icon="close"
@@ -174,6 +177,8 @@
                             style="float: right">
                     </paper-icon-button>
                     <h2>[[_computeVal(stores, selectedStoreId, 'name')]]</h2>
+                    <paper-button hidden$="[[summaryMode]]" on-tap="_toggleSumaryMode">Summary</paper-button>
+                    <paper-button hidden$="[[summaryMode]]" on-tap="_updateProductOrders">Update</paper-button>
                 </header>
 
                 <my-search-bar
@@ -191,6 +196,9 @@
                         on-item-deselected="_askRemoveOrder">
                 </my-order-list>
             </div>
+            <my-summary
+                    hidden$="[[!summaryMode]]"
+            ></my-summary>
         </paper-dialog>
 
         <my-edit-bar
@@ -203,8 +211,10 @@
         <paper-toast id="toast"></paper-toast>
 
         <div class="hidden" id="askCancelOrder" style="position: fixed; z-index: 104;">
-            <paper-button on-tap="_editOrder" style="display: block">Edit</paper-button>
-            <paper-button on-tap="_removeOrder" style="display: block">Remove</paper-button>
+            <!--<paper-button on-tap="_editOrder" style="display: block">Continue edit</paper-button>-->
+            <!--<paper-button on-tap="_removeOrder" style="display: block">Remove</paper-button>-->
+            <paper-icon-button on-tap="_editOrder" style="display: block" icon="create"></paper-icon-button>
+            <paper-icon-button on-tap="_removeOrder" style="display: block" icon="delete-forever"></paper-icon-button>
         </div>
 
     </template>
@@ -264,6 +274,11 @@
                     value: function(){
                         return {};
                     }
+                },
+                summaryMode: {
+                    type: Boolean,
+                    notify: true,
+                    value: false
                 }
             },
             /**
@@ -529,6 +544,26 @@
                     this.currentProductDiv.appendChild(orderDiv);
                 }
                 orderDiv.textContent = `Order: ${this.order}`;
+            },
+            _toggleSumaryMode: function(){
+                this.summaryMode = !this.summaryMode;
+                // Need show summary
+                // Compute summary products into my-summary
+                if(this.summaryMode){
+                    let mySummary = this.$$('my-summary');
+                    let productKeys = Object.keys(this.products);
+                    let summaryProducts = productKeys.map(function(item){
+                        let product = this.products[item];
+                        product.order = this.productOrders[this.selectedStoreId][item];
+
+                        return product;
+                    });
+
+                    mySummary.products = summaryProducts;
+                }
+            },
+            _updateProductOrders: function(){
+
             }
         });
     </script>

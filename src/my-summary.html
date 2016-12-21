@@ -1,0 +1,74 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="my-icons.html">
+
+<dom-module id="my-search-bar">
+    <template>
+        <style is="cutom-style"
+               include="shared-styles">
+            :host {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .list-item {
+                display: flex;
+                flex-direction: row;
+            }
+            .name {
+                display: flex;
+                flex: 6;
+                text-align: left;
+            }
+            .price {
+                display: flex;
+                flex: 3;
+                text-align: right;
+            }
+            .order {
+                display: flex;
+                flex: 3;
+                text-align: right;
+            }
+        </style>
+        <template is="dom-repeat" items="[[items]]">
+            <div class="list-item">
+                <div class="name">
+                    [[_computeVal(item, 'name')]]
+                </div>
+                <div class="price">
+                    [[_computeVal(item, 'price')]]
+                </div>
+                <div class="order">
+                    [[_computeVal(item, 'order')]]
+                </div>
+            </div>
+        </template>
+    </template>
+    <script>
+        Polymer({
+            is: 'my-summary',
+            properties: {
+                products: {
+                    type: Object,
+                    reflectToAttribute: true,
+                    value: {}
+                },
+                items: {
+                    type: Array,
+                    compute: '_computeItems(products)'
+                }
+            },
+            _computeVal: function(item, path){
+                return this.products[item][path];
+            },
+            _computeItems: function(products){
+//                if(!products){
+//                    return [];
+//                }
+                return Object.keys(products);
+            }
+        });
+    </script>
+</dom-module>
