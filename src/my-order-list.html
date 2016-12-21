@@ -65,6 +65,12 @@
             </div>
         </template>
 
+        <!--<array-selector id="selector"-->
+                        <!--items="[[items]]"-->
+                        <!--selected="[[selected]]"-->
+                        <!--on-selected-changed="_updateSelected"-->
+                        <!--toggle-->
+                        <!--multi></array-selector>-->
         <array-selector id="selector"
                         items="[[items]]"
                         selected="{{selected}}"
@@ -108,7 +114,8 @@
             },
             observers: [
                 '_transform(searchTerm, by)',
-                '_computeItems(localProducts, searchTerm, by)'
+                '_computeItems(localProducts, searchTerm, by)',
+//                '_updateBackgroundColor(selected)'
             ],
             _transform: function(searchTerm, by){
                 console.log('%c _transform(searchTerm, by)', 'color: blue; font-weight: bold;');
@@ -129,6 +136,9 @@
                 console.log('items searchTerm by', items, searchTerm, by);
 
                 this._delayUpdateItems(items);
+
+
+
             },
             ready: function(){
 //                this._modelBindItemTemplate();
@@ -174,18 +184,48 @@
 //                console.log(e);
 //            },
             _delayUpdateItems: function(items){
-                this.set('items', []);
-                (function(scope){
-                    var delay = new Promise(function(resolve){
-//                        setTimeout(resolve, 100);
-                        setTimeout(resolve, 10);
-                    });
-                    delay.then(function(){
-                        console.log('delay set items');
-//                        console.log(scope);
-                        scope.set('items', items);
-                    });
-                })(this);
+//                this.set('items', []);
+//                (function(scope){
+//                    var delay = new Promise(function(resolve){
+////                        setTimeout(resolve, 100);
+//                        setTimeout(resolve, 10);
+//                    });
+//                    delay.then(function(){
+//                        console.log('delay set items');
+////                        console.log(scope);
+//                        /**
+//                         * When items re-rendered > array selector reset
+//                         * Also at this point, we re-update the list
+//                         */
+//                        let listSelectedProducts = [];
+//                        try{
+//                            listSelectedProducts = Object.keys(scope.orders[scope.selectedStoreId]);
+//                        }catch(err){
+//                            console.log('Selected products empty');
+//                            console.log(err);
+//                        }
+//
+////                        scope.$.selector._set('selected', listSelectedProducts);
+////                        scope.$.selector._setSelected(listSelectedProducts);
+//                        listSelectedProducts.forEach(function(item){
+//                            scope.$.selector.select(item);
+//                        });
+//                        /**
+//                         * This is the right place to update thing related to selected
+//                         */
+//                        scope.set('items', items);
+//                    });
+//                })(this);
+//                let scope = this;
+//                let listSelectedProducts = [];
+//                try{
+//                    listSelectedProducts = Object.keys(scope.orders[scope.selectedStoreId]);
+//                }catch(err){
+//                    console.log('Selected products empty');
+//                    console.log(err);
+//                }
+//                this.$.selector._selectedColl = Polymer.Collection.get(listSelectedProducts);
+                this.set('items', items);
             },
             _toggleSelection: function(e){
                 log('_toggleSelection');
@@ -195,10 +235,39 @@
 //                let newState = this.$.selector.isSelected(item);
                 console.log(this.selected);
 
+                let itemDiv = e.currentTarget;
+
                 if(this.$.selector.isSelected(item)){
-                    this.fire('item-selected', {target: e.currentTarget});
+                    this.fire('item-selected', {target: itemDiv});
+                    /**
+                     * Should change backgroundColor base on selected change event
+                     */
+                    itemDiv.style.backgroundColor = '#c7c7c7';
+                    /**
+                     * update orders
+                     */
+//                    if(!this.orders[this.selectedStoreId] && !this.orders[this.selectedStoreId][item]){
+//                        // right at the time of clicking
+//                        // set up order
+//                        this.orders[this.selectedStoreId][item] = 0;
+//                    }
+                    let needUpdateItem = true;
+                    try{
+                        needUpdateItem = this.orders[this.selectedStoreId][item];
+                        needUpdateItem = needUpdateItem == undefined ? true : false;
+                    }catch(err){
+                        console.log(err);
+                    }
+
+                    if(needUpdateItem){
+                        if(!this.orders[this.selectedStoreId]){
+                            this.orders[this.selectedStoreId] = {};
+                        }
+
+                        this.orders[this.selectedStoreId][item] = 0;
+                    }
                 }else{
-                    this.fire('item-deselected', {target: e.currentTarget, item: item});
+                    this.fire('item-deselected', {target: itemDiv, item: item});
                 }
             },
 //            _updateSelected: function(){
@@ -229,27 +298,32 @@
             attached: function(){
 //                console.log('Attach to page');
             },
-//            _computeSelectedItem: function(uuid){
-//                // Make sure sth selected
-//                // if not undefined
-//                if(this.selected){
-//                    /**
-//                     * Array case
-//                     */
-//                    if(this.selected.length){
-//                        return this.selected.includes(uuid);
-//                    }
-//
-//
-//                    /**
-//                     * String case
-//                     */
-//                    return this.selected == uuid;
-//                }
+//            _updateSelected: function(){
+//                this.selected = this.$.selector.selected;
 //            },
-//            _computeRippeDownEffect: function(item){
-//
-//            }
+            _updateBackgroundColor: function(selected){
+
+            },
+            attached: function(){
+                let mo = this;
+                let arraySelector = this.$.selector;
+                /**
+                 * Override without reuse of parent
+                 * @WARN may failed when items list changed actually on products id
+                 */
+//                let clearSelection = arraySelector.clearSelection.bind(this);
+                arraySelector.clearSelection = function(){
+                    // Initialize selection
+                    if (this.multi) {
+                        if (!this.selected) {
+                            this.selected = [];
+                            this._selectedColl = Polymer.Collection.get(this.selected);
+                        }
+                    }
+                    
+                    this.selectedItem = null;
+                };
+            }
         });
     </script>
 </dom-module>
