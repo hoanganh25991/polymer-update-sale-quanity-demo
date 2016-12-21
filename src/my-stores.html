@@ -88,11 +88,11 @@
             }
 
             #modal {
-                top: 5vh;
+                /*top: 5vh;*/
                 background-color: #eeeeee;
                 overflow: auto;
-                max-height: 80vh;
-                min-width: 75%;
+                /*max-height: 80vh;*/
+                /*min-width: 85%;*/
                 /*absolute when scroll > wrong place, dialog now on top*/
                 /*everything belove it*/
                 /*position: absolute;*/
@@ -306,6 +306,15 @@
                     let backDrop = e.target.backdropElement;
 //                    backDrop.style.position = 'absolute';
                     this.shadowRoot.appendChild(backDrop);
+
+                    let bound = backDrop.getBoundingClientRect();
+
+                    dialog.style.width = (bound.width * 0.8) + 'px';
+                    dialog.style.maxWidth = (bound.width * 0.8) + 'px';
+                    dialog.style.height = (bound.height * 0.8) + 'px';
+
+                    dialog.style.left = (bound.width * 0.1 - 40) + 'px';
+                    dialog.style.top = (64) + 'px';
                 }
             },
             _computeVal: function(stores, selectedStoreId, path){
