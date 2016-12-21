@@ -119,7 +119,8 @@
             observers: [
                 '_transform(searchTerm, by)',
                 '_computeItems(localProducts, searchTerm, by)',
-//                '_updateBackgroundColor(selected)'
+//                '_updateBackgroundColor(selected)',
+                '_reRenderRepeater(selected)'
             ],
             _transform: function(searchTerm, by){
                 console.log('%c _transform(searchTerm, by)', 'color: blue; font-weight: bold;');

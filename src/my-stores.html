@@ -597,7 +597,13 @@
                 let arraySelector = mo.$.selector;
                 arraySelector._clearSelection();
                 console.log(arraySelector.selected);
+
+//                let template = mo.$.repeater;
+//                template.render();
                 // Reset selected on my-order-list
+                let items = mo.items;
+                let delay = this._delayUpdateItems.bind(mo);
+                delay('items', items, []);
 
             }
         });
