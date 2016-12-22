@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="my-icons.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="shared-styles.html">
 
@@ -9,7 +10,7 @@
         <style is="custom-style" include="shared-styles iron-flex">
             :host {
                 position: fixed;
-                z-index: 104;
+                z-index: var(--my-edit-bar-z-index);
             }
 
             paper-fab {
@@ -19,7 +20,8 @@
             }
 
             #ok {
-                --paper-fab-background: var(--paper-green-500);
+                /*--paper-fab-background: var(--paper-green-500);*/
+                --paper-fab-background: var(--app-primary-color);
                 --paper-fab-keyboard-focus-background: var(--paper-green-900);
             }
 
@@ -27,14 +29,13 @@
                 margin-left: 20px;
             }
         </style>
-        <div id="editBar" hidden>
+        <div id="editBar">
             <div class="layout horizontal center">
                 <content></content>
-
                 <div class="layout vertical" id="buttonDiv">
-                    <paper-fab mini icon="expand-less" on-tap="_add"></paper-fab>
-                    <paper-fab mini icon="done" id="ok" on-tap="_confirm"></paper-fab>
-                    <paper-fab mini icon="expand-more" on-tap="_minus"></paper-fab>
+                    <paper-icon-button mini icon="expand-less" on-tap="_add"></paper-icon-button>
+                    <paper-icon-button mini icon="done" id="ok" on-tap="_confirm"></paper-icon-button>
+                    <paper-icon-button mini icon="expand-more" on-tap="_minus"></paper-icon-button>
                 </div>
             </div>
         </div>
@@ -65,11 +66,7 @@
             _minus: function(){
                 this.order--;
                 this.fire('edit');
-            },
-//            ready: function(){
-//                const itemContentTemplate = this.querySelector('#templ');
-//                this.$.repeater.templatize(itemContentTemplate);
-//            }
+            }
         });
     </script>
 </dom-module>

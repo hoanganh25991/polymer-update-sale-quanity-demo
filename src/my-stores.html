@@ -21,6 +21,7 @@
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="my-order-list.html">
 <link rel="import" href="my-summary.html">
+<link rel="import" href="../bower_components/paper-badge/paper-badge.html">
 
 <dom-module id="my-stores">
     <template>
@@ -30,6 +31,8 @@
                 display: block;
                 padding: 0 20px;
                 position: relative;
+                /*--iron-icon-fill-color: var(--paper-grey-200);*/
+                --my-edit-bar-z-index: 104;
             }
 
             my-firebase-list::shadow div.list-item {
@@ -120,6 +123,7 @@
             paper-icon-button {
                 background-color: var(--paper-grey-400);
                 border-radius: 5px;
+                --paper-badge-background: var(--paper-red-300);
             }
         </style>
 
@@ -213,7 +217,11 @@
                 order="{{order}}"
                 on-confirm="_updateProductQuanity"
                 on-edit="_validateOrder">
-            <h1>Order: [[order]]</h1>
+            <paper-icon-button id="order" icon="shop">
+            </paper-icon-button>
+            <!--<paper-badge for="order" label="[[order]]" style="background-color: #2196f3;">-->
+            <paper-badge for="order" label="[[order]]">
+            </paper-badge>
         </my-edit-bar>
 
         <paper-toast id="toast"></paper-toast>
