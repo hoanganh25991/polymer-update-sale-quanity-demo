@@ -14,22 +14,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="shared-styles">
     <template>
         <style>
-            .card {
-                /*margin: 24px;*/
-                margin: 0px 5px 15px 5px;
-                padding: 16px;
-
-                color: #757575;
-                border-radius: 5px;
-                background-color: #fff;
+            .list-item {
+                position: relative;
+                background-color: white;
+                margin: 24px auto;
+                padding-bottom: 1px;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             }
 
             h1 {
                 margin: 16px 0;
-
                 color: #212121;
-
                 font-size: 22px;
             }
 
@@ -50,11 +45,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             }
 
             .shadow {
-                box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+                box-shadow: 0 2px 4px -1px rgba(0, 0, 0, .2), 0 4px 5px 0 rgba(0, 0, 0, .14), 0 1px 10px 0 rgba(0, 0, 0, .12);
             }
-            /*svg {*/
-                /*fill: var(--app-primary-color);*/
-            /*}*/
+
+            [selected] {
+                background-color: #c7c7c7;
+            }
+
+            .selected {
+                background-color: #c7c7c7;
+            }
         </style>
     </template>
 </dom-module>
