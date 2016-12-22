@@ -94,61 +94,61 @@
                 reflectToAttribute: true
             }
         },
-        __computeQuery: function(ref, orderByChild, orderByValue, limitToFirst, limitToLast, startAt, endAt, equalTo) {
-            if (ref == null) {
+        __computeQuery: function(ref, orderByChild, orderByValue, limitToFirst, limitToLast, startAt, endAt, equalTo){
+            if(ref == null){
                 return null;
             }
             var query;
-            if (orderByChild) {
+            if(orderByChild){
                 query = ref.orderByChild(orderByChild);
-            } else if (orderByValue) {
+            }else if(orderByValue){
                 query = ref.orderByValue();
-            } else {
+            }else{
                 query = ref.orderByKey();
             }
-            if (limitToFirst) {
+            if(limitToFirst){
                 query = query.limitToFirst(limitToFirst);
-            } else if (limitToLast) {
+            }else if(limitToLast){
                 query = query.limitToLast(limitToLast);
             }
-            if (startAt) {
+            if(startAt){
                 query = query.startAt(startAt);
             }
-            if (endAt) {
+            if(endAt){
                 query = query.endAt(endAt);
             }
-            if (equalTo !== null) {
+            if(equalTo !== null){
                 query = query.equalTo(equalTo);
             }
             return query;
         },
-        __queryChanged: function(query, oldQuery) {
-            if (oldQuery) {
+        __queryChanged: function(query, oldQuery){
+            if(oldQuery){
                 oldQuery.off('value', this.__onFirebaseValue, this);
             }
-            if (query) {
+            if(query){
                 query.on('value', this.__onFirebaseValue, this.__onError, this);
             }
         },
-        attached: function() {
-          this.__queryChanged(this.query, this.query);
+        attached: function(){
+            this.__queryChanged(this.query, this.query);
         },
-        detached: function() {
-          if (this.query == null) {
-            return;
-          }
-          this.__queryChanged(null, this.query);
+        detached: function(){
+            if(this.query == null){
+                return;
+            }
+            this.__queryChanged(null, this.query);
         },
         /**
          * @override
          */
-        get isNew() {
+        get isNew(){
             return this.disabled || !this.__pathReady(this.path);
         },
         /**
          * @override
          */
-        get zeroValue() {
+        get zeroValue(){
             return {};
         },
         /**
@@ -163,19 +163,19 @@
          *     written to the new path.
          * @override
          */
-        save: function(parentPath, key) {
-            return new Promise(function(resolve, reject) {
+        save: function(parentPath, key){
+            return new Promise(function(resolve, reject){
                 var path;
-                if (!this.app) {
+                if(!this.app){
                     reject(new Error('No app configured!'));
                 }
-                if (key) {
+                if(key){
                     path = parentPath + '/' + key;
                     resolve(this._setFirebaseValue(path, this.data));
-                } else {
+                }else{
                     path = firebase.database(this.app).ref(parentPath)
-                                   .push(this.data, function(error) {
-                                       if (error) {
+                                   .push(this.data, function(error){
+                                       if(error){
                                            reject(error);
                                            return;
                                        }
@@ -188,24 +188,24 @@
         /**
          * @override
          */
-        reset: function() {
+        reset: function(){
             this.path = null;
             return Promise.resolve();
         },
         /**
          * @override
          */
-        destroy: function() {
-            return this._setFirebaseValue(this.path, null).then(function() {
+        destroy: function(){
+            return this._setFirebaseValue(this.path, null).then(function(){
                 return this.reset();
             }.bind(this));
         },
         /**
          * @override
          */
-        memoryPathToStoragePath: function(path) {
+        memoryPathToStoragePath: function(path){
             var storagePath = this.path;
-            if (path !== 'data') {
+            if(path !== 'data'){
                 storagePath += path.replace(/^data\.?/, '/').split('.').join('/');
             }
             return storagePath;
@@ -213,11 +213,11 @@
         /**
          * @override
          */
-        storagePathToMemoryPath: function(storagePath) {
+        storagePathToMemoryPath: function(storagePath){
             var path = 'data';
             storagePath =
                     storagePath.replace(this.path, '').split('/').join('.');
-            if (storagePath) {
+            if(storagePath){
                 path += '.' + storagePath;
             }
             return path;
@@ -225,11 +225,11 @@
         /**
          * @override
          */
-        getStoredValue: function(path) {
-            return new Promise(function(resolve, reject) {
-                this.db.ref(path).once('value', function(snapshot) {
+        getStoredValue: function(path){
+            return new Promise(function(resolve, reject){
+                this.db.ref(path).once('value', function(snapshot){
                     var value = snapshot.val();
-                    if (value == null) {
+                    if(value == null){
                         resolve(this.zeroValue);
                     }
                     resolve(value);
@@ -239,17 +239,17 @@
         /**
          * @override
          */
-        setStoredValue: function(path, value) {
+        setStoredValue: function(path, value){
             return this._setFirebaseValue(path, value);
         },
-        __onFirebaseValue: function(snapshot) {
+        __onFirebaseValue: function(snapshot){
             var value = snapshot.val();
-            if (value == null) {
+            if(value == null){
                 value = this.zeroValue;
             }
-            if (!this.new) {
-                this.async(function() {
-                    this.syncToMemory(function() {
+            if(!this.new){
+                this.async(function(){
+                    this.syncToMemory(function(){
                         this._log('Updating data from Firebase value:', value);
                         this.set('data', value);
                     });
