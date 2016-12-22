@@ -27,6 +27,7 @@
 
             .name p {
                 text-align: left;
+                margin-left: 20px;
             }
 
             .price {
@@ -36,6 +37,7 @@
 
             .price p {
                 text-align: right;
+                margin-right: 20px;
             }
 
             .order {
@@ -45,6 +47,7 @@
 
             .order p {
                 text-align: right;
+                margin-right: 20px;
             }
 
             h2 {
@@ -82,21 +85,38 @@
                 },
                 items: {
                     type: Array,
-                    computed: '_computeItems(products)'
+                    notify: true
                 },
                 total: {
                     type: Number,
+                    notify: true,
                     computed: '_computeTotal(products)'
                 }
             },
+            observers: [
+                '_computeItems(products)'
+            ],
             _computeVal: function(item, path){
                 return this.products[item][path];
             },
             _computeItems: function(products){
-//                if(!products){
-//                    return [];
-//                }
-                return Object.keys(products);
+                let items = Object.keys(products);
+                this._delayUpdateItems('items', items, []);
+            },
+            _delayUpdateItems: function(path, val, zeroValue){
+                this.set(path, zeroValue);
+                (function(scope){
+                    var delay = new Promise(function(resolve){
+//                        setTimeout(resolve, 100);
+                        setTimeout(resolve, 10);
+                    });
+                    delay.then(function(){
+                        console.log('delay set ' + path);
+//                        console.log(scope);
+                        scope.set(path, val);
+                    });
+                })(this);
+//                this.set(path, val);
             },
             _computeTotal: function(products){
                 let productKeys = Object.keys(products);

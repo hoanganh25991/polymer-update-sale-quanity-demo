@@ -116,6 +116,11 @@
                 --paper-button-flat-keyboard-focus: var(--paper-grey-900);
                 font-size: 1em;
             }
+
+            paper-icon-button {
+                background-color: var(--paper-grey-400);
+                border-radius: 5px;
+            }
         </style>
 
         <my-search-bar
@@ -177,7 +182,7 @@
                             style="float: right">
                     </paper-icon-button>
                     <h2>[[_computeVal(stores, selectedStoreId, 'name')]]</h2>
-                    <paper-button on-tap="_toggleSumaryMode">Summary</paper-button>
+                    <paper-button on-tap="_summaryView">Summary</paper-button>
                     <paper-button on-tap="_updateProductOrders">Update</paper-button>
                 </header>
 
@@ -214,12 +219,14 @@
         <paper-toast id="toast"></paper-toast>
 
         <div class="hidden" id="askCancelOrder" style="position: fixed; z-index: 104;">
-            <paper-button on-tap="_editOrder">
-                <iron-icon icon="create"></iron-icon>
-            </paper-button>
-            <paper-button on-tap="_removeOrder">
-                <iron-icon icon="delete"></iron-icon>
-            </paper-button>
+            <paper-icon-button icon="create" on-tap="_editOrder"></paper-icon-button>
+            <paper-icon-button icon="delete" on-tap="_removeOrder"></paper-icon-button>
+            <!--<paper-button on-tap="_editOrder">-->
+                <!--<iron-icon icon="create"></iron-icon>-->
+            <!--</paper-button>-->
+            <!--<paper-button on-tap="_removeOrder">-->
+                <!--<iron-icon icon="delete"></iron-icon>-->
+            <!--</paper-button>-->
             <!--<paper-icon-button on-tap="_editOrder" style="display: block" icon="create"></paper-icon-button>-->
             <!--<paper-icon-button on-tap="_removeOrder" style="display: block" icon="delete-forever"></paper-icon-button>-->
         </div>
@@ -425,7 +432,8 @@
             },
             observers: [
 //                '_resetFirebase(signedIn)'
-                '_computeLocalProducts(products)'
+                '_computeLocalProducts(products)',
+                '_addToProductOrders(selectedStoreId)'
             ],
             _computeLocalProducts: function(products){
                 let keys = Object.keys(products);
@@ -562,8 +570,8 @@
                 }
                 orderDiv.textContent = `Order: ${this.order}`;
             },
-            _toggleSumaryMode: function(){
-                this.summaryMode = !this.summaryMode;
+            _summaryView: function(){
+                this.summaryMode = true;
                 // Need show summary
                 // Compute summary products into my-summary
                 if(this.summaryMode){
@@ -571,7 +579,7 @@
                     let mySummary = this.$$('my-summary');
                     let productKeys = Object.keys(this.productOrders[this.selectedStoreId]);
                     let summaryProducts = productKeys.map(function(item){
-                        let product = ms.products[item];
+                        let product = Object.assign({}, ms.products[item]);
                         product.order = ms.productOrders[ms.selectedStoreId][item];
 
                         return product;
@@ -609,10 +617,18 @@
 //                let template = mo.$.repeater;
 //                template.render();
                 // Reset selected on my-order-list
-                let items = mo.items;
-                let delay = this._delayUpdateItems.bind(mo);
-                delay('items', items, []);
+                /**
+                 * When selectedStoreChange > auto re-render
+                 */
+//                let items = mo.items;
+//                let delay = this._delayUpdateItems.bind(mo);
+//                delay('items', items, []);
 
+            },
+            _addToProductOrders: function(storeId){
+                if(!this.productOrders[storeId]){
+                    this.productOrders[storeId] = {};
+                }
             }
         });
     </script>

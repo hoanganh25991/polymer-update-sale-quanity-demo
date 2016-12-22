@@ -96,6 +96,7 @@
                 },
                 selectedStoreId: {
                     type: String,
+                    notify: true,
                     reflectToAttribute: true
                 },
                 searchTerm: {
@@ -119,6 +120,7 @@
             observers: [
                 '_transform(searchTerm, by)',
                 '_computeItems(localProducts, searchTerm, by)',
+                '_reComputeItems(selectedStoreId)'
 //                '_updateBackgroundColor(selected)',
 //                '_reRenderRepeater(selected)'
             ],
@@ -140,7 +142,7 @@
                 });
                 console.log('items searchTerm by', items, searchTerm, by);
 
-                this._delayUpdateItems(items);
+                this._delayUpdateItems('items', items, []);
 
 
 
@@ -192,49 +194,20 @@
 //                console.log('properties x changed');
 //                console.log(e);
 //            },
-            _delayUpdateItems: function(items){
-//                this.set('items', []);
-//                (function(scope){
-//                    var delay = new Promise(function(resolve){
-////                        setTimeout(resolve, 100);
-//                        setTimeout(resolve, 10);
-//                    });
-//                    delay.then(function(){
-//                        console.log('delay set items');
-////                        console.log(scope);
-//                        /**
-//                         * When items re-rendered > array selector reset
-//                         * Also at this point, we re-update the list
-//                         */
-//                        let listSelectedProducts = [];
-//                        try{
-//                            listSelectedProducts = Object.keys(scope.orders[scope.selectedStoreId]);
-//                        }catch(err){
-//                            console.log('Selected products empty');
-//                            console.log(err);
-//                        }
-//
-////                        scope.$.selector._set('selected', listSelectedProducts);
-////                        scope.$.selector._setSelected(listSelectedProducts);
-//                        listSelectedProducts.forEach(function(item){
-//                            scope.$.selector.select(item);
-//                        });
-//                        /**
-//                         * This is the right place to update thing related to selected
-//                         */
-//                        scope.set('items', items);
-//                    });
-//                })(this);
-//                let scope = this;
-//                let listSelectedProducts = [];
-//                try{
-//                    listSelectedProducts = Object.keys(scope.orders[scope.selectedStoreId]);
-//                }catch(err){
-//                    console.log('Selected products empty');
-//                    console.log(err);
-//                }
-//                this.$.selector._selectedColl = Polymer.Collection.get(listSelectedProducts);
-                this.set('items', items);
+            _delayUpdateItems: function(path, val, zeroValue){
+                this.set(path, zeroValue);
+                (function(scope){
+                    var delay = new Promise(function(resolve){
+//                        setTimeout(resolve, 100);
+                        setTimeout(resolve, 10);
+                    });
+                    delay.then(function(){
+                        console.log('delay set ' + path);
+//                        console.log(scope);
+                        scope.set(path, val);
+                    });
+                })(this);
+//                this.set(path, val);
             },
             _toggleSelection: function(e){
                 log('_toggleSelection');
@@ -338,6 +311,10 @@
                     
                     this.selectedItem = null;
                 };
+            },
+            _reComputeItems: function(){
+                let items = this.items;
+                 this._delayUpdateItems('items', items, []);
             }
         });
     </script>
