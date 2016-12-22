@@ -12,7 +12,7 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="my-edit-bar.html">
 <link rel="import" href="my-util.html">
-<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
+<!--<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">-->
 <link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
 <link rel="import" href="../bower_components/polymerfire/polymerfire.html">
 <link rel="import" href="my-firebase.html">
@@ -168,7 +168,6 @@
                 on-iron-overlay-opened="_patchOverlay"
                 on-iron-overlay-closed="_changeSummaryMode"
                 modal
-                entry-animation="scale-up-animation"
                 exit-animation="fade-out-animation">
             <div class="dialog">
                 <header style="z-index: 10; background-color: #eee">
@@ -182,10 +181,10 @@
                     <paper-button on-tap="_updateProductOrders">Update</paper-button>
                 </header>
 
-                <my-search-bar
-                        hidden$="[[summaryMode]]"
-                        search-term="{{searchProduct}}">
-                </my-search-bar>
+                <!--<my-search-bar-->
+                        <!--hidden$="[[summaryMode]]"-->
+                        <!--search-term="{{searchProduct}}">-->
+                <!--</my-search-bar>-->
 
                 <my-order-list
                         hidden$="[[summaryMode]]"
