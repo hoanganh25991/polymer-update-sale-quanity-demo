@@ -1,5 +1,4 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="shared-styles.html">
@@ -10,47 +9,34 @@
         <style is="cutom-style"
                include="shared-styles">
             :host {
-                display: block;
-            }
-
-            #searchBar {
                 display: flex;
                 flex-direction: row;
-                background-color: #fff;
-                position: relative;
+                background-color: var(--med-background-color, white);
                 margin: 24px auto;
-                max-width: 800px;
                 padding-bottom: 1px;
                 box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2)
+                --iron-icon-fill-color: var(--med-icon-fill-color, #999);
             }
 
-            #searchBar paper-input {
+            #inputSearch {
                 flex: 1;
             }
 
             paper-input {
-                display: inline-block;
-                --paper-input-container-underline-focus: var(--paper-grey-50);
-                --paper-input-container-focus-color: var(--paper-grey-500);
-                --paper-input-container-input-color: black;
-            }
-
-            paper-icon-button {
-                --paper-icon-button-ink-color: var(--paper-grey-50);
+                --paper-input-container-focus-color: var(--app-primary-color);
             }
         </style>
-        <div id="searchBar"
-        >
-            <paper-icon-button icon="search" ></paper-icon-button>
-            <paper-input
-                    placeholder="Find your store"
-                    no-label-float
-                    id="inputSearch"
-                    value="{{searchTerm}}">
-            </paper-input>
-            <paper-icon-button icon="close"
-            on-tap="_clearInputSearch"></paper-icon-button>
-        </div>
+        <paper-icon-button icon="search"></paper-icon-button>
+        <paper-input
+                placeholder="[[placeholder]]"
+                no-label-float
+                id="inputSearch"
+                value="{{searchTerm}}"
+        ></paper-input>
+        <paper-icon-button
+                icon="close"
+                on-tap="_clearInputSearch"
+        ></paper-icon-button>
     </template>
     <script>
         Polymer({
@@ -61,24 +47,14 @@
                     notify: true,
                     reflectToAttribute: true
                 },
-            },
-            listeners: {
-                'keydown': '_setSearchTerm'
-            },
-            _setSearchTerm: function(e){
-                console.log('keydown');
-                if(e.keyCode === 13){
-                    // enter pressed!
-                    this.searchTerm = this.$.inputSearch.value;
-                    this._reverse();
+                placeholder: {
+                    type: String,
+                    value: 'Find your store',
+                    reflectToAttribute: true
                 }
             },
-            _reverse: function(){
-                this.toggleSearchBar = !this.toggleSearchBar;
-                this.toggleSearchIcon = !this.toggleSearchIcon;
-            },
             _clearInputSearch: function(){
-                this.$.inputSearch.value = '';
+                this.searchTerm = '';
             }
         });
     </script>
