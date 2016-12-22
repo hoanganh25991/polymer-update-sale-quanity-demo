@@ -3,4 +3,22 @@
         color = color || 'blue';
         console.log(`%c ${msg}`, `color: ${color}; font-weight: bold`);
     }
+    window.MyBehaviors = window.MyBehaviors || {};
+    MyBehaviors.DelayUpdateProperty = {
+        _delayUpdateProperty: function(path, val, zeroValue){
+            this.set(path, zeroValue);
+            /**
+             * Delay by Promise
+             */
+            (function(scope){
+                var delay = new Promise(function(resolve){
+                    setTimeout(resolve, 10);
+                });
+                delay.then(function(){
+                    log('_delayUpdateProperty on: ' + path);
+                    scope.set(path, val);
+                });
+            })(this);
+        },
+    };
 </script>
